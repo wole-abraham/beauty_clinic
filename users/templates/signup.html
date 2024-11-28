@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+</head>
+
+<body>
+    <div class="login-box">
+        <p style="font-family: sans-serif;">Create Account</p>
+        <form method="POST" action="{% url 'signup' %}">
+            {% csrf_token %}
+            <!-- First Name -->
+            <div class="user-box">
+                <input required name="first_name" type="text">
+                <label>First Name</label>
+            </div>
+            <!-- Last Name -->
+            <div class="user-box">
+                <input required name="last_name" type="text">
+                <label>Last Name</label>
+            </div>
+            <div class="user-box">
+                <input required name="username" type="text">
+                <label>Username</label>
+            </div>
+            <div class="user-box">
+                <input required name="email" type="text">
+                <label>Email</label>
+            </div>
+            <!-- Age -->
+            <div class="user-box">
+                <input required name="age" type="date">
+                <label>Date of Birth</label>
+            </div>
+            <!-- Location -->
+            <div class="user-box">
+                <input required name="location" type="text">
+                <label>Location</label>
+            </div>
+            <!-- Password -->
+            <div class="user-box">
+                <input required name="password1" type="password">
+                <label>Password</label>
+            </div>
+            <!-- Confirm Password -->
+            <div class="user-box">
+                <input required name="password2" type="password">
+                <label>Confirm Password</label>
+            </div>
+            <!-- Submit Button -->
+            <button type="submit">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Create Account
+            </button>
+        </form>
+        <p>Already have an account? <a href="#" class="a2">Log in!</a></p>
+    </div>
+</body>
+
+</html>

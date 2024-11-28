@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        .nav-link {
+            cursor: pointer;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .status-select {
+            min-width: 120px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Admin Dashboard</h1>
+
+        <!-- Navigation -->
+        <ul class="nav nav-tabs mt-4" id="dashboardTabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-target="#appointments" onclick="showSection('appointments')">Appointments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-target="#services" onclick="showSection('services')">Services</a>
+            </li>
+        </ul>
+
+        <!-- Appointments Section -->
+        <div id="appointments" class="section active mt-4">
+            <h3>Appointments</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Service</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example data -->
+                     {% for appointment in appointments %}
+                    <tr>
+                        <td>{{appointment.id}}</td>
+                        <td>{{appointment.service}}</td>
+                        <td>{{appointment.time}}</td>
+                        <td>9:00 AM</td>
+                        <td>
+                            <select class="status-select form-control" onchange="updateStatus(1, this.value)">
+                                <option value="Pending">Pending</option>
+                                <option value="Confirmed">Confirmed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </td>
+                        <td><button class="btn btn-primary btn-sm">Update</button></td>
+                    </tr>
+                    {% endfor %}
+                    <!-- Dynamic rows go here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Services Section -->
+        <div id="services" class="section mt-4">
+            <h3>Services</h3>
+            <p>This section can be expanded to manage services.</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+
+            // Highlight active tab
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[data-target="#${sectionId}"]`).classList.add('active');
+        }
+
+        function updateStatus(appointmentId, newStatus) {
+            console.log(`Updating appointment ${appointmentId} to status: ${newStatus}`);
+            // Implement backend integration via AJAX or form submission
+        }
+    </script>
+</body>
+
+</html>

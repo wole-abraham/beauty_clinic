@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+
+<body>
+    <div class="login-box">
+        <p style="font-family: sans-serif;">Login</p>
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="user-box">
+                <input required name="email" type="text">
+                <label>Username / Email</label>
+            </div>
+            <div class="user-box">
+                <input required name="password" type="password">
+                <label>Password</label>
+            </div>
+            <button type="submit">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Submit
+            </button>
+        </form>
+        <p style="font-family: Arial, Helvetica, sans-serif;">Don't have an account? <a href="#" class="a2">Sign up!</a></p>
+    </div>
+</body>
+
+</html>
