@@ -4,24 +4,26 @@ from django.conf import settings
 
 class Service(models.Model):
 
-    name = models.CharField(max_length=50, null=False)
-    availablity = models.BooleanField(default=True)
+    servicetype= models.CharField(max_length=50, null=False)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     
     def __str__(self):
-        return self.name
+        return self.servicetype
+
 class Appointment(models.Model):
     choices = [
         ('Pending', 'Pending'),
-        ('Confirmed', 'Confirmed'),
+        ('Scheduled', 'Scheduled'),
         ('Cancelled', 'Cancelled'),
 
     ]
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    client = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     time = models.DateTimeField()
-
-    status = models.CharField(max_length=50, default='Pending', choices=choices)  # Pending, Confirmed, Cancelled
+    status = models.CharField(max_length=50, default='Confirmed', choices=choices, null=True)
+    
+      # Pending, Confirmed, Cancelled
 
     def __str__(self):
-        return f'{self.user} -> {self.service}'
+        return f'{self.service}'

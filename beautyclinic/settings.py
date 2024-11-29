@@ -75,14 +75,25 @@ WSGI_APPLICATION = 'beautyclinic.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'beautyClinic',
+        'USER': 'postgres',
+        'PASSWORD': 'UKPOWEH22',
+        'HOST': 'database-1.ctoc8qcc6ldb.eu-north-1.rds.amazonaws.com',  # or the appropriate host
+        'PORT': '5432',       # default PostgreSQL port
     }
 }
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'users.Clients'
 
 
 # Password validation

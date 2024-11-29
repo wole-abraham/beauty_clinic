@@ -42,6 +42,10 @@
                 <input required name="location" type="text">
                 <label>Location</label>
             </div>
+            <div class="user-box">
+                <input required name="phone_number" type="text">
+                <label>Phone</label>
+            </div>
             <!-- Password -->
             <div class="user-box">
                 <input required name="password1" type="password">
@@ -61,7 +65,7 @@
                 Create Account
             </button>
         </form>
-        <p>Already have an account? <a href="#" class="a2">Log in!</a></p>
+        <p style="color: white; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Already have an account? <a href="{% url 'login' %}" class="a2">Log in!</a></p>
     </div>
 </body>
 

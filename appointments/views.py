@@ -1,7 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Appointment, Service
 from django.core.mail import send_mail
+from django.http import JsonResponse
+from django.core.mail import EmailMessage
+import json
+from datetime import datetime
 # Create your views here.
 
 
@@ -11,33 +15,79 @@ def bookings(request):
     if request.method == 'POST':
         user = request.user
         service = request.POST.get('service')
-        service = Service.objects.get(name='Manicure')
-        time =  request.POST.get('date')
+        service = Service.objects.get(servicetype=service)
+        # Date and time as strings
+        date_str = request.POST.get('date')
+        time_str = request.POST.get('time')
+
+        # Combine them into a single string
+        combined_str = f"{date_str} {time_str}"
+
+        # Parse the combined string into a datetime object
+        final_datetime = datetime.strptime(combined_str, "%Y-%m-%d %H:%M")
 
         appointment = Appointment.objects.create(
-            user = user,
+            client = user,
             service = service,
-            time = time
+            time = final_datetime
         )
+        message = f'''
+    <html>
+        <body>
+            <p>Hello {appointment.client.first_name} {appointment.client.last_name},</p>
+            <p><strong>Confirmed:</strong> Your Appointment Has Been Booked</p>
+            <p><strong>Date:</strong>  {appointment.time.strftime('%d-%m-%Y %H:%M')}</p>
+        </body>
+    </html>
+'''
 
-        send_mail(
-            message= 'Your Appointment Has been booked',
-            recipient_list=[f'{request.user.email}'],
+        email = EmailMessage(
+            body= message,
+            to=[f'{request.user.email}'],
             subject='Booking Confirmed',
             from_email='testprojectmail75@gmail.com',
-            fail_silently=False,
     
         )
-        return render(request, 'bookings/confirmation.html', {'appointment': appointment})
 
-    
-    return render(request, 'bookings/bookings.html')
+        email.content_subtype = "html"  # Set the email content type to HTML
+        email.send()
+        return render(request, 'dashboard/bookings/confirmation.html', {'appointment': appointment})
+
+    services = Service.objects.all()
+
+    return render(request, 'dashboard/bookings/bookings.html', {'services': services})
 7
+
+
 
 
 
 def dashboard(request):
     appointment  = Appointment.objects.all()
+    service = Service.objects.all()
 
     return render(request, 'dashboard/dashboard.html',
-                   {'appointments': appointment})
+                   {'appointments': appointment, 'services':service})
+
+
+def add_service(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        servicetype = data.get('servicetype')
+        price = data.get('price')
+
+        Service.objects.create(servicetype=servicetype, price=price)
+
+        return redirect('dashboard')
+    
+
+def delete_service(request, id):
+    try:
+        service = Service.objects.get(id=id)
+        service.delete()
+    except Service.DoesNotExist:
+        pass
+
+    return redirect('dashboard')
+
+

@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, get_user_model
 # Create your views here.
 
 def landing(request):
-    return render(request, 'landing.html')
+    return render(request, 'new/landing.html')
 
 def login_view(request):
     if request.method == 'POST':
@@ -16,7 +16,7 @@ def login_view(request):
             login(request, user)
             return redirect('bookings')
         else:
-            return render(request, {"error": "Invalid email or password"})
+            return render(request, 'login.html', {"error": "Invalid email or password"})
     return render(request, 'login.html')
 
 
@@ -30,6 +30,8 @@ def signup(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         birth_date = request.POST.get('age')
+        gender = request.POST.get('gender')
+        phone_number = request.POST.get('phone_number')
         location = request.POST.get('location')
         password = request.POST.get('password1')
         email = request.POST.get('email')
@@ -45,7 +47,9 @@ def signup(request):
             birth_date = birth_date,
             password=password,
             location=location,
-            username=username
+            username=username,
+            gender=gender,
+            phone_number=phone_number
 
         )
         return redirect('bookings')

@@ -26,4 +26,7 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('bookings/', include('appointments.urls')),
     path('dashboard/', ap_views.dashboard, name='dashboard'),
+    path('add-service/', ap_views.add_service, name='add-service'),
+    path('delete-service/<int:id>/', ap_views.delete_service, name='delete-service')
+    # path('')
 ]

@@ -4,11 +4,13 @@ from django.db import models
 # Create your models here.
 
 
-class User(AbstractUser):
+class Clients(AbstractUser):
 
     email = models.EmailField(unique=True)
     birth_date = models.DateField(null=True)
     user_location = models.CharField(max_length=50, null=True)
+    gender = models.CharField(max_length=50, default='Female', choices=[('Male', 'Male'), ('Female', 'Female')], null=True)
+    phone_number = models.CharField(max_length=15)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
@@ -21,8 +23,10 @@ class User(AbstractUser):
 
 class Location(models.Model):
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    user = models.ForeignKey(Clients, on_delete=models.CASCADE)
+    latitude = models.DecimalField(decimal_places=6, max_digits=9)
+    longitude = models.DecimalField(decimal_places=6, max_digits=9)
+    region = models.CharField(max_length=200, null=True)
+
     def __str__(self):
         return f" id: {self.user.id} ({self.latitude}, {self.longitude})"
