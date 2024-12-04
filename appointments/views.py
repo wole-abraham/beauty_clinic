@@ -32,14 +32,39 @@ def bookings(request):
             time = final_datetime
         )
         message = f'''
-    <html>
-        <body>
-            <p>Hello {appointment.client.first_name} {appointment.client.last_name},</p>
-            <p><strong>Confirmed:</strong> Your Appointment Has Been Booked</p>
-            <p><strong>Date:</strong>  {appointment.time.strftime('%d-%m-%Y %H:%M')}</p>
-        </body>
-    </html>
+<html>
+    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <div style="max-width: 600px; margin: auto; border: 1px solid #e0e0e0; padding: 20px; border-radius: 10px;">
+            <h2 style="color: #4CAF50; text-align: center;">Appointment Confirmation</h2>
+            <p>Dear {appointment.client},</p>
+            
+            <p>We are pleased to confirm your appointment. Below are the details:</p>
+            
+            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #e0e0e0;"><strong>Service:</strong></td>
+                    <td style="padding: 10px; border: 1px solid #e0e0e0;">{appointment.service.servicetype}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #e0e0e0;"><strong>Date & Time:</strong></td>
+                    <td style="padding: 10px; border: 1px solid #e0e0e0;">{appointment.time.strftime('%A, %d %B %Y at %H:%M')}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #e0e0e0;"><strong>Status:</strong></td>
+                    <td style="padding: 10px; border: 1px solid #e0e0e0;">{appointment.status}</td>
+                </tr>
+            </table>
+            
+            <p>If you have any questions or need to reschedule, feel free to contact us at <a href="mailto:support@beautyclinic.com">support@beautyclinic.com</a>.</p>
+            
+            <p>Thank you for choosing our services. We look forward to serving you!</p>
+            
+            <p style="text-align: center; color: #888;">&copy; 2024 Beauty Clinic | All Rights Reserved</p>
+        </div>
+    </body>
+</html>
 '''
+
 
         email = EmailMessage(
             body= message,

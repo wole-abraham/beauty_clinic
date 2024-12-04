@@ -29,6 +29,71 @@
 
         <!-- Template Stylesheet -->
         <link href="{% static 'new/css/style.css' %}" rel="stylesheet">
+
+
+        <style>
+            .reviews h3 {
+                color: #333;
+                font-weight: bold;
+            }
+            
+            .card {
+                border: none;
+                border-radius: 8px;
+            }
+            
+            .card-body {
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 8px;
+            }
+            
+            .text-warning {
+                font-size: 1.2rem;
+            }
+            
+            .text-muted {
+                font-size: 0.85rem;
+            }
+            
+            /* Hide extra reviews by default */
+.review-item:nth-child(n+4) {
+    display: none;
+}
+    /* Hide extra reviews by default */
+.review-item:nth-child(n+4) {
+    display: none;
+}
+
+/* Style for the toggle button */
+#toggle-reviews {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 25px;
+    transition: background-color 0.3s, transform 0.2s ease-in-out;
+}
+
+/* Center the button */
+
+/* Hover effect for the button */
+#toggle-reviews:hover {
+    background-color: #007bff;
+    transform: scale(1.05);
+}
+
+/* Button text color */
+#toggle-reviews {
+    color: white;
+}
+
+/* Button focus styling */
+#toggle-reviews:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+}
+
+            
+        </style>
     </head>
 
     <body>
@@ -75,7 +140,11 @@
                         <div class="collapse navbar-collapse bg-light py-3" id="navbarCollapse">
                             <div class="navbar-nav mx-auto border-top">
                                 <a href="{% url 'landing' %}" class="nav-item nav-link active">Home</a>
-                                <a href="#about" class="nav-item nav-link">About</a>
+                                <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
+                                {% if request.user.is_superuser %}
+                                <a href="{% url 'dashboard' %}" class="nav-item nav-link">Dashboard</a>
+                                {% endif %}
+
         
                                 </div>
         
@@ -965,7 +1034,61 @@
         </div>
         <!-- Contact End -->
 
+        <section class="container py-5">
+            <div class="review">
+                <h2 class="mb-4" style="font-family: sans-serif;">Write a Review</h2>
+                <form action="{% url 'review' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                        <textarea name="comment" class="form-control" rows="4" placeholder="Write your review here..." required></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="number" name="rating" class="form-control" min="1" max="5" placeholder="Rate (1-5)" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </section>
 
+        <div class="reviews mt-5">
+            <h3 class="text-center mb-4">What Others Say</h3>
+            <div id="review-list">
+                {% for review in reviews %}
+                    <div class="card mb-4 shadow-sm review-item">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="card-title mb-1">{{ review.user.username }}</h5>
+                                    <small class="text-muted">{{ review.date|date:"F j, Y, g:i a" }}</small>
+                                </div>
+                                <div>
+                                    {% for i in "★★★★★" %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <span class="text-warning">&#9733;</span>
+                                        {% else %}
+                                            <span class="text-secondary">&#9733;</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p class="mt-3 mb-0">{{ review.comment }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-center text-muted">No reviews yet. Be the first to leave one!</p>
+                {% endfor %}
+            </div>
+        
+            <div class="text-center mt-4">
+                <button id="toggle-reviews" class="btn btn-primary btn-lg">View More</button>
+            </div>
+        </div>
+        
+        
+        
+
+
+        
 
         <!-- Footer Start -->
         <div class="container-fluid footer py-5">
@@ -1016,22 +1139,17 @@
             <div class="container">
                 <div class="row g-4 align-items-center">
                     <div class="col-md-4 text-center text-md-start mb-md-0">
-                        <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All right reserved.</span>
+                        <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Mary Nassif Chbat</a>, All right reserved.</span>
                     </div>
                     <div class="col-md-4">
                         <div class="d-flex justify-content-center">
-                            <a href="" class="btn btn-light btn-light-outline-0 btn-sm-square rounded-circle me-2"><i class="fab fa-facebook-f"></i></a>
-                            <a href="" class="btn btn-light btn-light-outline-0 btn-sm-square rounded-circle me-2"><i class="fab fa-twitter"></i></a>
-                            <a href="" class="btn btn-light btn-light-outline-0 btn-sm-square rounded-circle me-2"><i class="fab fa-instagram"></i></a>
-                            <a href="" class="btn btn-light btn-light-outline-0 btn-sm-square rounded-circle me-0"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://web.facebook.com/marynassifchbat" class="me-3 btn-square border rounded-circle nav-fill"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="me-3 btn-square border rounded-circle nav-fill"><i class="fab fa-twitter"></i></a>
+                                <a href="https://www.instagram.com/marynassifchbat" class="me-3 btn-square border rounded-circle nav-fill"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="btn-square border rounded-circle nav-fill"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
-                    <div class="col-md-4 text-center text-md-end text-white">
-                        <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
-                        <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
-                        <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                       
-                    </div>
+       
                 </div>
             </div>
         </div>
@@ -1055,6 +1173,27 @@
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        document.getElementById('toggle-reviews').addEventListener('click', function() {
+            const hiddenReviews = document.querySelectorAll('.review-item:nth-child(n+4)');
+            const button = this;
+        
+            // Check the current state and toggle visibility
+            if (hiddenReviews[0].style.display === 'none') {
+                hiddenReviews.forEach(review => {
+                    review.style.display = 'block';  // Show hidden reviews
+                });
+                button.innerHTML = 'View Less';  // Change button text
+            } else {
+                hiddenReviews.forEach(review => {
+                    review.style.display = 'none';  // Hide extra reviews
+                });
+                button.innerHTML = 'View More';  // Change button text
+            }
+        });
+        
+        
+    </script>
     </body>
 
 </html>
