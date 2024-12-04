@@ -171,7 +171,7 @@ def user_location(request):
 def clients_list(request):
     """API to retrieve all clients."""
     clients = Clients.objects.values(
-        "id", "first_name", "last_name", "email", "phone_number", "user_location", "gender", "birth_date"
+        "id", "first_name", "last_name", "email", "phone_number", "country", "state", "gender", "birth_date"
     )
     return JsonResponse(list(clients), safe=False)
 
