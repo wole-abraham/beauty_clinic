@@ -1,0 +1,93 @@
+.signup-box {
+  max-width: 100%;
+  margin: auto;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 10px;
+  color: white;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+}
+
+.signup-box h2 {
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.signup-box .form-group {
+  margin-bottom: 15px;
+}
+
+.signup-box .form-control {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background: #1a1a1a;
+  color: white;
+}
+
+.signup-box .form-control:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.signup-box button {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.signup-box button:hover {
+  background: #0056b3;
+}
+
+.signup-box p {
+  text-align: center;
+  color: #aaa;
+}
+
+.signup-box p a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.signup-box p a:hover {
+  color: #007bff;
+}
+
+
+/* Ensure phone input and country flag have consistent background */
+#phone {
+  background-color: #1a1a1a !important;
+  color: white;
+}
+
+.iti__flag {
+  background-color: transparent !important; /* Remove background from flag */
+}
+
+/* Style selected flag */
+.iti__selected-flag {
+  background-color: #1a1a1a !important; /* Match the input background */
+  border-radius: 5px;
+}
+
+body {
+  background-color: #1a1a1a;
+}
+
+
+.iti__country {
+  background-color: #1a1a1a;
+}
+
+.iti__country.iti__highlight {
+  background-color: rgb(39 5 5 / 79%);
+}

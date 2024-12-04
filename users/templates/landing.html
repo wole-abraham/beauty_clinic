@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block scripts %}
+<style>
+    /* Navbar styling */
+    .navbar-nav .nav-link {
+        font-weight: normal;
+    }
+    /* Hero Section */
+    .hero {
+        background-image: url('{% static "images/wavy.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 100px 0;
+    }
+    /* Section Heading */
+    .section-heading {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+    }
+    /* Offer Cards */
+    .offer-card {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    /* Products Cards */
+    .product-card img {
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    #gallery .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    #gallery .gallery-item img {
+        transition: transform 0.3s ease-in-out;
+        border-radius: 10px;
+    }
+    
+    #gallery .gallery-item:hover img {
+        transform: scale(1.1);
+    }
+    .carousel-item {
+        text-align: center;
+    }
+    .carousel-item img {
+        max-height: 300px;
+        object-fit: cover;
+        margin: 0 auto;
+        transition: transform 0.5s ease-in-out;
+    }
+    .carousel-item:hover img {
+        transform: scale(1.1);
+    }
+    .service-name {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-top: 15px;
+        animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+</style>
+{% endblock scripts %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero text-center">
+        <div class="container">
+            <h2 class="display-4">Enhancing Your Natural Beauty</h2>
+            <p class="lead">Professional beauty treatments for every skin type and need</p>
+            <a href="{% url 'bookings' %}" class="btn btn-light">Book an Appointment</a>
+        </div>
+    </section>
+
+    <!-- Offers Section -->
+    <section id="offers" class="py-5">
+        <div class="container text-center">
+            <h2 class="section-heading">Special Offers</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="offer-card">
+                        <h5>Facial Glow Package</h5>
+                        <p>Get 20% off on facial treatments this month!</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="offer-card">
+                        <h5>Holiday Manicure & Pedicure</h5>
+                        <p>Combo package at just $50. Limited time offer.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="offer-card">
+                        <h5>Free Consultation</h5>
+                        <p>Book a service and get a free skin consultation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-5 bg-light">
+        <div class="container text-center">
+            <h2 class="section-heading">Our Products</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="product-card">
+                        <img src="product1.jpg" class="img-fluid" alt="Product 1">
+                        <h5>Glow Face Cream</h5>
+                        <p>Hydrate your skin with our natural glow cream.</p>
+                        <button class="btn btn-outline-primary btn-sm">Buy Now</button>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="product-card">
+                        <img src="product2.jpg" class="img-fluid" alt="Product 2">
+                        <h5>Relaxing Body Oil</h5>
+                        <p>Perfect for massages and daily hydration.</p>
+                        <button class="btn btn-outline-primary btn-sm">Buy Now</button>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="product-card">
+                        <img src="product3.jpg" class="img-fluid" alt="Product 3">
+                        <h5>Organic Nail Polish</h5>
+                        <p>Non-toxic and long-lasting nail polish in vibrant colors.</p>
+                        <button class="btn btn-outline-primary btn-sm">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-5">
+        <div class="container text-center">
+            <h2 class="section-heading">Our Services</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Facial Treatments</h5>
+                    <p>Rejuvenate your skin with our professional facials.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Pedicure</h5>
+                    <p>Relax with our soothing pedicure services.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Manicure</h5>
+                    <p>Beautifully groomed hands with our expert manicures.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Gallery Section -->
+<section id="gallery" class="py-5">
+    <div class="container text-center">
+        <h2 class="section-heading">Our Gallery</h2>
+        <p class="mb-4">Discover our space, services, and happy clients.</p>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="gallery-item">
+                    <a href="{% static 'images/service1.jpg' %}" data-lightbox="gallery" data-title="Relaxing Facial Room">
+                        <img src="{% static 'images/service1.jpg' %}" class="img-fluid" alt="Relaxing Facial Room">
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="gallery-item">
+                    <a href="{% static 'images/service2.jpg' %}" data-lightbox="gallery" data-title="Luxury Manicure Setup">
+                        <img src="{% static 'images/service2.jpg' %}" class="img-fluid" alt="Luxury Manicure Setup">
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="gallery-item">
+                    <a href="{% static 'images/service2.jpg' %}" data-lightbox="gallery" data-title="Our Team at Work">
+                        <img src="{% static 'images/service2.jpg' %}" class="img-fluid" alt="Our Team at Work">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-5">
+    <h2 class="text-center mb-4">Our Services</h2>
+    <div id="servicesCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <!-- Service 1 -->
+            <div class="carousel-item active">
+                <img src="{% static 'images/service1.jpg' %}" alt="Service 1" class="d-block w-100">
+                <div class="service-name"></div>
+            </div>
+            <!-- Service 2 -->
+            <div class="carousel-item">
+                <img src="{% static 'images/service1.jpg' %}" alt="Service 2" class="d-block w-100">
+                <div class="service-name">Training Personnel</div>
+            </div>
+            <!-- Service 3 -->
+            <div class="carousel-item">
+                <img src="{% static 'images/service1.jpg' %}" alt="Service 3" class="d-block w-100">
+                <div class="service-name">Market Analysis</div>
+            </div>
+        </div>
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#servicesCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#servicesCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+    
+
+  {% endblock content %}
+
+  {% block script2 %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  {% endblock script2 %}
+
