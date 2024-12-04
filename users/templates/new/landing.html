@@ -131,8 +131,11 @@
             <div class="container-fluid bg-light">
                 <div class="container px-0">
                     <nav class="navbar navbar-light navbar-expand-xl">
-                        <a href="{% url 'landing' %}" class="navbar-brand">
-                            <h1 class="text-primary display-4">Mary Nassif Chbat</h1>
+                        <a href="{% url 'landing' %}" class="navbar-brand d-flex align-items-center">
+                            <img src="{% static 'images/logo.png' %}" alt="Brand Logo" style="width: 60px; height: 60px; margin-right: 10px; border-radius: 50%">
+                            <h1 class="text-primary display-4" style="font-size: medium; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+                                Mary Nassif Chbat
+                            </h1>
                         </a>
                         <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                             <span class="fa fa-bars text-primary"></span>
@@ -141,17 +144,10 @@
                             <div class="navbar-nav mx-auto border-top">
                                 <a href="{% url 'landing' %}" class="nav-item nav-link active">Home</a>
                                 <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
+                                <a href="{% url 'bookings' %}" class="nav-item nav-link">Bookings</a>
                                 {% if request.user.is_superuser %}
                                 <a href="{% url 'dashboard' %}" class="nav-item nav-link">Dashboard</a>
                                 {% endif %}
-
-        
-                                </div>
-        
-                            </div>
-                            <div class="d-flex align-items-center flex-nowrap pt-xl-0">
-                                
-                                <a href="{% url 'bookings' %}" class="btn btn-primary btn-primary-outline-0 rounded-pill py-3 px-4 ms-4">Book Appointment</a>
                             </div>
                         </div>
                     </nav>
@@ -197,9 +193,23 @@
                             <div class="p-3" style="max-width: 900px;">
                                 <h4 class="text-primary text-uppercase mb-3">Beauty Clinic</h4>
                                 <h1 class="display-1 text-capitalize text-dark mb-3">Facial Care</h1>
-                                <p class="mx-md-5 fs-4 px-4 mb-5 text-dark">Facial care is something that most people want so they’ll have smoother skin. Of course, shaving and waxing are the most viable options although you have to do that regularly and spend frequently. If you want a more practical and more permanent option, we’ve got laser removal for facial hair and electro thermolysis.</p>
+                                <p class="mx-md-5 fs-4 px-4 mb-5 text-dark">Facial care is something that most people want so they’ll have smoother skin..</p>
                                 <div class="d-flex align-items-center justify-content-center">
-                                    <a class="btn btn-light btn-light-outline-0 rounded-pill py-3 px-5 me-4" href="#">Get Start</a>
+                        
+                                    <a class="btn btn-primary btn-primary-outline-0 rounded-pill py-3 px-5" href="{% url 'bookings' %}">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{% static 'new/img/makeup.jpg'  %}" class="img-fluid" alt="Image">
+                        <div class="carousel-caption">
+                            <div class="p-3" style="max-width: 900px;">
+                                <h4 class="text-primary text-uppercase mb-3" style="letter-spacing: 3px;">Beauty Clinic</h4>
+                                <h1 class="display-1 text-capitalize text-dark mb-3">Makeup</h1>
+                                <p class="mx-md-5 fs-4 px-5 mb-5 text-dark">We have a broad spectrum of makeup:</p>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <a class="btn btn-light btn-light-outline-0 rounded-pill py-3 px-5 me-4" href="#"></a>
                                     <a class="btn btn-primary btn-primary-outline-0 rounded-pill py-3 px-5" href="{% url 'bookings' %}">Book Now</a>
                                 </div>
                             </div>
@@ -210,24 +220,10 @@
                         <div class="carousel-caption">
                             <div class="p-3" style="max-width: 900px;">
                                 <h4 class="text-primary text-uppercase mb-3" style="letter-spacing: 3px;">Beauty Clinic</h4>
-                                <h1 class="display-1 text-capitalize text-dark mb-3">Makeup</h1>
-                                <p class="mx-md-5 fs-4 px-5 mb-5 text-dark">We have a broad spectrum of makeup services ranging from bridal makeup, regular makeup, and even artistic makeup. Here are some of the makeup services we offer:</p>
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <a class="btn btn-light btn-light-outline-0 rounded-pill py-3 px-5 me-4" href="#">Get Start</a>
-                                    <a class="btn btn-primary btn-primary-outline-0 rounded-pill py-3 px-5" href="{% url 'bookings' %}">Book Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="{% static 'new/img/carousel-1.jpg'  %}" class="img-fluid" alt="Image">
-                        <div class="carousel-caption">
-                            <div class="p-3" style="max-width: 900px;">
-                                <h4 class="text-primary text-uppercase mb-3" style="letter-spacing: 3px;">Beauty Clinic</h4>
                                 <h1 class="display-1 text-capitalize text-dark">Laser Removal</h1>
-                                <p class="mx-md-5 fs-4 px-5 mb-5 text-dark">We make use of a special laser that will tame the hair follicles so that the hair won’t grow back any time soon. The laser aims at the hair follicles while they are growing so that the growth will be halted. This slows it down, thus giving you smoother skin without the extra hair. We usually offer three to four sessions so that you can have the look that you want.</p>
+                                <p class="mx-md-5 fs-4 px-5 mb-5 text-dark">We make use of a special laser that will tame the</p>
                                 <div class="d-flex align-items-center justify-content-center">
-                                    <a class="btn btn-light btn-light-outline-0 rounded-pill py-3 px-5 me-4" href="#">Get Start</a>
+                                    
                                     <a class="btn btn-primary btn-primary-outline-0 rounded-pill py-3 px-5" href="{% url 'bookings' %}"">Book Now</a>
                                 </div>
                             </div>
@@ -262,7 +258,7 @@
                                     <div class="services-content text-end">
                                         <h3>Permanent Makeup (Tattoo)</h3>
                                         <p>Makeup tattoo is one of the coolest fashion trends in the industry. We’ve got eyebrow tattoos, lip tattoos, hair tattoos, and more. Here are a few of our tattoo services that you may want to know of.</p>
-                                        <a href="#" class="btn btn-primary btn-primary-outline-0 rounded-pill py-2 px-4">Make Order</a>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-4">
@@ -285,7 +281,7 @@
                                     <div class="services-content text-start">
                                         <h3>Artistic Makeup</h3>
                                         <p>You would definitely want to look beautiful for your special day and for your husband-to-be. That’s why we have a special type of makeup for beautiful brides. We offer natural looks wherein your skin will be able to glow, giving you that romantic and sweet type of look.</p>
-                                        <a href="#" class="btn btn-primary btn-primary-outline-0 rounded-pill py-2 px-4">Make Order</a>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -299,7 +295,7 @@
                                         <h3>Perming</h3>
                                         <p>
                                             Our eyelash perming services can give your eyes a fresher look by making them look bigger and brighter. With permed eyelashes, you don’t need to use too much mascara since your eyelashes are already naturally curled.</p>
-                                        <a href="#" class="btn btn-primary btn-primary-outline-0 rounded-pill py-2 px-4">Make Order</a>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-4">
@@ -323,7 +319,7 @@
                                         <h3>Electro Thermolysis</h3>
                                         <p>
                                             The other option for hair removal would be electro thermolysis. Electro thermolysis would permanently halt the growth of hair instead of just slowing it down. If you don’t like going back for the next sessions, then this one is the procedure for you. As for safety, all our beauticians are fully licensed and experienced so you have no need to worry.</p>
-                                        <a href="#" class="btn btn-primary btn-primary-outline-0 rounded-pill py-2 px-4">Make Order</a>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -336,7 +332,7 @@
                                     <div class="services-content text-end">
                                         <h3>Makeup</h3>
                                         <p>We have a broad spectrum of makeup services ranging from bridal makeup, regular makeup, and even artistic makeup. Here are some of the makeup services we offer</p>
-                                        <a href="#" class="btn btn-primary btn-primary-outline-0 rounded-pill py-2 px-4">Make Order</a>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-4">
@@ -359,7 +355,7 @@
                                     <div class="services-content text-start">
                                         <h3>Bridal Makeup</h3>
                                         <p>You would definitely want to look beautiful for your special day and for your husband-to-be. That’s why we have a special type of makeup for beautiful brides. We offer natural looks wherein your skin will be able to glow, giving you that romantic and sweet type of look.</p>
-                                        <a href="#" class="btn btn-primary btn-primary-outline-0 rounded-pill py-2 px-4">Make Order</a>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -372,7 +368,7 @@
                                     <div class="services-content text-end">
                                         <h3>Regular Makeup</h3>
                                         <p>Are you going to an event or maybe a special date? We offer makeup services for cocktail parties, evening gown events, and many more. We can make you look the best that you can and give you a look that can really exude your natural beauty.</p>
-                                        <a href="#" class="btn btn-primary btn-primary-outline-0 rounded-pill py-2 px-4">Make Order</a>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-4">
@@ -394,8 +390,8 @@
                                 <div class="col-8">
                                     <div class="services-content text-start">
                                         <h3>Facial Care</h3>
-                                        <p>Facial care is something that most people want so they’ll have smoother skin. Of course, shaving and waxing are the most viable options although you have to do that regularly and spend frequently. If you want a more practical and more permanent option, we’ve got laser removal for facial hair and electro thermolysis.</p>
-                                        <a href="#" class="btn btn-primary btn-primary-outline-0 rounded-pill py-2 px-4">Make Order</a>
+                                        <p>Facial care is something that most people want so they’ll have smoother skin.</p>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -429,9 +425,9 @@
                     </div>
                     <div class="col-lg-7">
                         <p class="fs-4 text-uppercase text-primary">About Us</p>
-                        <h1 class="display-4 mb-4">Your Trusted Beauty & Skin Care Clinic</h1>
+                        <h1 class="display-4 mb-4">Your Trusted Beauty & Eye Lashes (tatoo) Clinic</h1>
                         <p class="mb-4">
-                            Welcome to Mary Nassif Chbat, where we bring you the best in beauty and skin care. We specialize in providing high-quality treatments tailored to your needs, whether you're looking for a rejuvenating facial, advanced skincare, or a complete beauty transformation. Our expert team is committed to delivering results that not only meet but exceed your expectations. With years of experience and a passion for enhancing natural beauty, we're here to help you look and feel your best.
+                            Welcome to Mary Nassif Chbat, where we bring you the best in beauty and Eye Lashes (tatoo). We specialize in providing high-quality treatments tailored to your needs, whether you're looking for a rejuvenating facial, advanced skincare, or a complete beauty transformation. Our expert team is committed to delivering results that not only meet but exceed your expectations. With years of experience and a passion for enhancing natural beauty, we're here to help you look and feel your best.
                         </p>
                        
                       
@@ -469,28 +465,9 @@
                             <h1 class="display-4 mb-4 text-white">Get Appointment</h1>
                             <form>
                                 <div class="row gy-3 gx-4">
-                                    <div class="col-lg-6">
-                                        <input type="text" class="form-control py-3 border-white bg-transparent text-white" placeholder="First Name">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <input type="email" class="form-control py-3 border-white bg-transparent text-white" placeholder="Email">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <select class="form-select py-3 border-white bg-transparent" aria-label="Default select example">
-                                            <option selected>Open this select menu</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <input type="date" class="form-control py-3 border-white bg-transparent">
-                                    </div>
+
                                     <div class="col-lg-12">
-                                        <textarea class="form-control border-white bg-transparent text-white" name="text" id="area-text" cols="30" rows="5" placeholder="Write Comments"></textarea>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <button type="button" class="btn btn-primary btn-primary-outline-0 w-100 py-3 px-5">SUBMIT NOW</button>
+                                       <a href="{% url 'bookings' %}"><button type="button" class="btn btn-primary btn-primary-outline-0 w-100 py-3 px-5">BOOk NOW</button></a> 
                                     </div>
                                 </div>
                             </form>
@@ -500,32 +477,31 @@
                         <div class="appointment-time p-5">
                             <h1 class="display-5 mb-4">Opening Hours</h1>
                             <div class="d-flex justify-content-between fs-5 text-white">
-                                <p>Saturday:</p>
+                                <p>Sat:</p>
                                 <p>09:00 am – 4:00 pm</p>
                             </div>
                             <div class="d-flex justify-content-between fs-5 text-white">
-                                <p>Sunday:</p>
+                                <p>Sun:</p>
                                 <p>09:00 am – 4:00 pm</p>
                             </div>
                             <div class="d-flex justify-content-between fs-5 text-white">
-                                <p>Monday:</p>
+                                <p>Mon:</p>
                                 <p>09:00 am – 4:00 pm</p>
                             </div>
                             <div class="d-flex justify-content-between fs-5 text-white">
-                                <p>Tuesday:</p>
+                                <p>Tue:</p>
                                 <p>09:00 am – 4:00 pm</p>
                             </div>
                             <div class="d-flex justify-content-between fs-5 text-white">
-                                <p>Wednes:</p>
+                                <p>Wed:</p>
                                 <p>09:00 am – 4:00 pm</p>
                             </div>
                             <div class="d-flex justify-content-between fs-5 text-white mb-4">
-                                <p>Thursday:</p>
+                                <p>Thu:</p>
                                 <p>09:00 am – 05:00 pm</p>
                             </div>
                             <div class="d-flex justify-content-between fs-5 text-white mb-4">
-                                <p>Friday:</p>
-                                <p>CLOSED</p>
+                                <p>Fri: Closed</p>
                             </div>
                             <p class="text-dark">Check out seasonal discounts for best offers.</p>
                         </div>
@@ -553,24 +529,16 @@
                         </li>
                         <li class="nav-item">
                             <a class="d-flex py-2 mx-3 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
-                                <span class="text-dark" style="width: 150px;">Skin Care</span>
+                                <span class="text-dark" style="width: 150px;">Eye Lashes (tatoo)</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
-                                <span class="text-dark" style="width: 150px;">Stream Bath</span>
+                                <span class="text-dark" style="width: 150px;">Facials</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-4">
-                                <span class="text-dark" style="width: 150px;">Stone Therapy</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-5">
-                                <span class="text-dark" style="width: 150px;">Face Massage</span>
-                            </a>
-                        </li>
+                       
+                        
                     </ul>
                     <div class="tab-content">
                         <div id="tab-1" class="tab-pane fade show p-0 active">
@@ -579,53 +547,53 @@
                                     <div class="row g-4">
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/makeup.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/makeup00.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
-                                                    <h4 class="text-secondary">Skin Care</h4>
+                                                    <h4 class="text-secondary">Eye Lashes (tatoo)</h4>
                                                 </div>
                                                 <div class="search-icon">
-                                                    <a href="{% static 'new/img/gallery-1.jpg'  %}" data-lightbox="Gallery-1" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
+                                                    <a href="{% static 'images/makeup0.jpg'  %}" data-lightbox="Gallery-1" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-2.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/makeup1.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
-                                                    <h4 class="text-secondary">Stream Bath</h4>
+                                                    <h4 class="text-secondary">Facials</h4>
                                                 </div>
                                                 <div class="search-icon">
-                                                    <a href="{% static 'new/img/gallery-2.jpg'  %}" data-lightbox="Gallery-2" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
+                                                    <a href="{% static 'images/makeup3.jpg'  %}" data-lightbox="Gallery-2" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-3.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/makeup4.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
                                                     <h4 class="text-secondary">Stone Therapy</h4>
                                                 </div>
                                                 <div class="search-icon">
-                                                    <a href="{% static 'new/img/gallery-3.jpg'  %}" data-lightbox="Gallery-3" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
+                                                    <a href="{% static 'images/makeup5.jpg'  %}" data-lightbox="Gallery-3" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-4.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/makeup6.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
                                                     <h4 class="text-secondary">Face Massage</h4>
                                                 </div>
                                                 <div class="search-icon">
-                                                    <a href="{% static 'new/img/gallery-4.jpg'  %}" data-lightbox="Gallery-4" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
+                                                    <a href="{% static 'images/makeup7.jpg'  %}" data-lightbox="Gallery-4" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-5.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/makeup7.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
-                                                    <h4 class="text-secondary">Skin Care</h4>
+                                                    <h4 class="text-secondary">Eye Lashes (tatoo)</h4>
                                                 </div>
                                                 <div class="search-icon">
                                                     <a href="{% static 'new/img/gallery-5.jpg'  %}" data-lightbox="Gallery-5" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
@@ -634,9 +602,9 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-6.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/makeup8.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
-                                                    <h4 class="text-secondary">Stream Bath</h4>
+                                                    <h4 class="text-secondary">Facials</h4>
                                                 </div>
                                                 <div class="search-icon">
                                                     <a href="{% static 'new/img/gallery-6.jpg'  %}" data-lightbox="Gallery-6" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
@@ -645,7 +613,7 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-7.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/makeup9.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
                                                     <h4 class="text-secondary">Stone Therapy</h4>
                                                 </div>
@@ -656,7 +624,7 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-8.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/makeup10.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
                                                     <h4 class="text-secondary">Face Massage</h4>
                                                 </div>
@@ -675,20 +643,20 @@
                                     <div class="row g-4">
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-9.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/tatoo1.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
-                                                    <h4 class="text-secondary">Skin Care</h4>
+                                                    <h4 class="text-secondary">Eye Lashes (tatoo)</h4>
                                                 </div>
                                                 <div class="search-icon">
-                                                    <a href="{% static 'new/img/gallery-9.jpg'  %}" data-lightbox="Gallery-9" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
+                                                    <a href="{% static 'images/tatoo1.jpg'  %}" data-lightbox="Gallery-9" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-10.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/tatoo2.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
-                                                    <h4 class="text-secondary">Skin Care</h4>
+                                                    <h4 class="text-secondary">Eye Lashes (tatoo)</h4>
                                                 </div>
                                                 <div class="search-icon">
                                                     <a href="{% static 'new/img/gallery-10.jpg'  %}" data-lightbox="Gallery-10" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
@@ -697,9 +665,9 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-5.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/tatoo3.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
-                                                    <h4 class="text-secondary">Skin Care</h4>
+                                                    <h4 class="text-secondary">Eye Lashes (tatoo)</h4>
                                                 </div>
                                                 <div class="search-icon">
                                                     <a href="{% static 'new/img/gallery-5.jpg'  %}" data-lightbox="Gallery-11" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
@@ -708,9 +676,9 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-1.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/tatoo4.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
-                                                    <h4 class="text-secondary">Skin Care</h4>
+                                                    <h4 class="text-secondary">Eye Lashes (tatoo)</h4>
                                                 </div>
                                                 <div class="search-icon">
                                                     <a href="{% static 'new/img/gallery-1.jpg'  %}" data-lightbox="Gallery-12" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
@@ -727,9 +695,9 @@
                                     <div class="row g-4">
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-11.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/facial1.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
-                                                    <h4 class="text-secondary">Stream Bath</h4>
+                                                    <h4 class="text-secondary">Facials</h4>
                                                 </div>
                                                 <div class="search-icon">
                                                     <a href="{% static 'new/img/gallery-11.jpg'  %}" data-lightbox="Gallery-13" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
@@ -738,9 +706,9 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-12.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/facial2.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
-                                                    <h4 class="text-secondary">Stream Bath</h4>
+                                                    <h4 class="text-secondary">Facials</h4>
                                                 </div>
                                                 <div class="search-icon">
                                                     <a href="{% static 'new/img/gallery-12.jpg'  %}" data-lightbox="Gallery-14" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
@@ -749,9 +717,9 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-2.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/facial3.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
-                                                    <h4 class="text-secondary">Stream Bath</h4>
+                                                    <h4 class="text-secondary">Facials</h4>
                                                 </div>
                                                 <div class="search-icon">
                                                     <a href="{% static 'new/img/gallery-2.jpg'  %}" data-lightbox="Gallery-15" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
@@ -760,9 +728,9 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="gallery-img">
-                                                <img class="img-fluid rounded w-100" src="{% static 'new/img/gallery-6.jpg'  %}" alt="">
+                                                <img class="img-fluid rounded w-100" src="{% static 'images/facial4.jpg'  %}" alt="">
                                                 <div class="gallery-overlay p-4">
-                                                    <h4 class="text-secondary">Stream Bath</h4>
+                                                    <h4 class="text-secondary">Facials</h4>
                                                 </div>
                                                 <div class="search-icon">
                                                     <a href="{% static 'new/img/gallery-6.jpg'  %}" data-lightbox="Gallery-16" class="my-auto"><i class="fas fa-search-plus btn-primary btn-primary-outline-0 rounded-circle p-3"></i></a>
