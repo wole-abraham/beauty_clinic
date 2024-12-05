@@ -35,6 +35,7 @@ urlpatterns = [
     path('api/appointments/', views.appointments_list, name='appointments-list'),
     path('api/services/', views.services_list, name='services-list'),
     path('states/<str:country>', views.get_states),
-    path('countries/', views.get_countries)
+    path('countries/', views.get_countries),
+    path('reviews/', views.reviews, name='reviews')
 
 ]

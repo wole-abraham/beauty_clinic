@@ -144,6 +144,7 @@
                             <div class="navbar-nav mx-auto border-top">
                                 <a href="{% url 'landing' %}" class="nav-item nav-link active">Home</a>
                                 <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
+                                <a href="{% url 'reviews' %}" class="nav-item nav-link">Reviews</a>
                                 <a href="{% url 'bookings' %}" class="nav-item nav-link">Bookings</a>
                                 {% if request.user.is_superuser %}
                                 <a href="{% url 'dashboard' %}" class="nav-item nav-link">Dashboard</a>
@@ -412,17 +413,7 @@
         <div class="container-fluid about py-5">
             <div class="container py-5">
                 <div class="row g-5 align-items-center">
-                    <div class="col-lg-5">
-                        <div class="video">
-                            <img src="{% static 'new/img/about-1.jpg'  %}" class="img-fluid rounded" alt="">
-                            <div class="position-absolute rounded border-5 border-top border-start border-white" style="bottom: 0; right: 0;;">
-                                <img src="{% static 'new/img/about-2.jpg'  %}" class="img-fluid rounded" alt="">
-                            </div>
-                            <button type="button" class="btn btn-play" data-bs-toggle="modal" data-src="https://www.youtube.com/embed/DWRcNpR6Kdc" data-bs-target="#videoModal">
-                                <span></span>
-                            </button>
-                        </div>
-                    </div>
+                    
                     <div class="col-lg-7">
                         <p class="fs-4 text-uppercase text-primary">About Us</p>
                         <h1 class="display-4 mb-4">Your Trusted Beauty & Eye Lashes (tatoo) Clinic</h1>

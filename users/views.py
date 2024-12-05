@@ -9,6 +9,7 @@ import json
 from appointments.models import Appointment, Service
 from twilio.rest import Client
 import os
+import requests
 
 # Create your views here.
 current_dir = os.path.dirname(__file__)
@@ -203,3 +204,9 @@ def get_states(request, country):
         
 def get_countries(request):
     return JsonResponse(countries, safe=False)
+
+
+def reviews(request):
+    req = requests.get('https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJ5_Mqfa4XHxURbKJPgfvIZtc&key=AIzaSyAPGjrjlps_hoq7j3y3AOJOA4YXUVKZE60')
+    reviews = req.json().get('result', {}).get('reviews', []) if req.status_code == 200 else []
+    return render(request, 'reviews.html', {'reviews': reviews})
