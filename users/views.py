@@ -7,9 +7,13 @@ from .models import Location
 from .models import Clients
 import json
 from appointments.models import Appointment, Service
-from twilio.rest import Client
-import os
 
+from users.models import Location
+import os
+import requests
+
+
+url = 'https://hook.eu2.make.com/y75uqqqe3jf6lsy6vhaow75t1iuyfkqs'
 # Create your views here.
 current_dir = os.path.dirname(__file__)
 
@@ -43,8 +47,8 @@ def login_view(request):
 
 def signup(request):
     """
-        cerate user view 
-        using sign up 
+        cerate user view
+        using sign up
     """
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -72,10 +76,19 @@ def signup(request):
             state = state,
             username=username,
             phone_number=phone_number,
-        
+            )
 
-        )
-            
+
+            Location.objects.create(
+                user = user,
+                longitude = request.POST.get('longitude'),
+                latitude = request.POST.get('latitude'),
+                country = country,
+                state = state,
+            )
+
+
+
             message = f'''
                 <html>
                     <head>
@@ -127,7 +140,7 @@ def signup(request):
                             </div>
                             <div class="footer">
                                 <p><strong>Contact Us:</strong></p>
-                                <p>Email: contact@beautyclinic.com | Phone: +961 1 895 168 </p>
+                                <p>Email: customerservice@marynassifchbat.com | Phone: +961 3 799 407 </p>
                                 <p>Follow us on social media: <a href="https://web.facebook.com/marynassifchbat">Facebook</a> | <a href="https://www.instagram.com/marynassifchbat/">Instagram</a></p>
                             </div>
                         </div>
@@ -136,17 +149,11 @@ def signup(request):
                 '''
 
 
-            email = EmailMessage(
-                body= message,
-                to=[f'{user.email}'],
-                subject='Account Created',
-                from_email='testprojectmail75@gmail.com',
-        
-            )
 
-            email.content_subtype = "html"  # Set the email content type to HTML
-            email.send()
-            
+            email = {'body': message, 'recipient': f'{user.email}', 'subject': 'Account Created'}
+            requests.post(url, data=email)
+
+
         except Exception as e:
             return render(request, 'signup.html', {'error': 'error'})
 
@@ -179,13 +186,13 @@ def clients_list(request):
 def appointments_list(request):
     """API to retrieve all appointments."""
     appointments = Appointment.objects.values(
-        "id", 
-        "client__id", 
-        "client__first_name", 
-        "client__last_name", 
-        "service__id", 
-        "service__servicetype", 
-        "time", 
+        "id",
+        "client__id",
+        "client__first_name",
+        "client__last_name",
+        "service__id",
+        "service__servicetype",
+        "time",
         "status"
     )
     return JsonResponse(list(appointments), safe=False)
@@ -200,6 +207,12 @@ def get_states(request, country):
     for countrys in countries:
         if countrys.get('name') == country:
             return JsonResponse(countrys.get('states'), safe=False)
-        
+
 def get_countries(request):
     return JsonResponse(countries, safe=False)
+
+
+def reviews(request):
+    req = requests.get('https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJ5_Mqfa4XHxURbKJPgfvIZtc&key=AIzaSyAPGjrjlps_hoq7j3y3AOJOA4YXUVKZE60')
+    reviews = req.json().get('result', {}).get('reviews', []) if req.status_code == 200 else []
+    return render(request, 'reviews.html', {'reviews': reviews})

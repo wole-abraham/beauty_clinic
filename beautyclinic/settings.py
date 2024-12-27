@@ -83,6 +83,7 @@ DATABASES = {
     }
 }
 
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -94,8 +95,8 @@ DATABASES = {
 #     }
 # }
 
-AUTH_USER_MODEL = 'users.Clients'
 
+AUTH_USER_MODEL = 'users.Clients'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -132,7 +133,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = '/home/woleabrahamthedev/beauty_clinic/static'
+STATICFILESDIR = BASE_DIR / 'static'
 LOGIN_URL = '/login/'
 
 # Default primary key field type

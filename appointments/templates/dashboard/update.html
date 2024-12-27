@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Appointment</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Update Appointment</h1>
+        <form method="POST">
+            {%csrf_token%}
+            <div class="form-group">
+                <label for="service">Service</label>
+                <select class="form-control" id="service" name="service" required>
+                    {% for service in services %}
+                    <option value="{{ service.id }}" {% if service.id == appointment.service_id %}selected{% endif %}>
+                        {{ service.servicetype }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="clientName">Client Name</label>
+                <input type="text" class="form-control" id="clientName" name="clientName" value="{{ appointment.client }}" placeholder="{{ appointment.client}}" disabled>
+            </div>
+            <div class="form-group">
+                <label for="clientName">Client Email</label>
+                <input type="text" class="form-control" id="clientName" name="clientName" value="{{ appointment.client.email }}" placeholder="{{ appointment.client}}" disabled>
+            </div>
+            <div class="form-group">
+                <label for="appointmentDate">Date</label>
+                <input type="date" class="form-control" id="date" name="date" value="{{ appointment.date }}" placeholder="{{appointment.date}}" required>
+            </div>
+            <div class="form-group">
+                <select name='time' id='time' class="form-select py-3 " aria-label="Select Time" style="background-color: pink;" >
+                    <option value="{{appointment.time}}">{{appointment.time}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" name="status" required>
+ 
+                    <option value="Scheduled" {% if appointment.status == 'Scheduled' %}selected{% endif %}>Scheduled</option>
+                    <option value="Completed" {% if appointment.status == 'Completed' %}selected{% endif %}>Completed</option>
+                    <option value="Postponed" {% if appointment.status == 'Postponed' %}selected{% endif %}>Postponed</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="/appointments" class="btn btn-secondary">Cancel</a>
+            <div style="margin-top: 20px;">
+           
+            <a href="{% url 'cancel_appointment' appointment.id %}" class="btn btn-danger">Cancel Appointment ?</a>
+            <script>
+                document.getElementById('date').addEventListener('change', function () {
+                    const excludedDays = [0, 1, 3]; // Sunday(0), Monday(1), Wednesday(3)
+                    const selectedDate = new Date(this.value);
+                    const dayOfWeek = selectedDate.getDay();
+                    const serviceId = document.getElementById('service').value;
+        
+        
+                  if (serviceId && selectedDate) {
+                    fetch(`/get-available-times/?service_id=${serviceId}&date=${selectedDate}`)
+                      .then(response => response.json())
+                      .then(data => {
+                        const timeDropdown = document.getElementById('time');
+                        timeDropdown.innerHTML = '<option value="">Select a time</option>';
+        
+                        if (data.available_times) {
+                          data.available_times.forEach(time => {
+                            const option = document.createElement('option');
+                            option.value = time;
+                            option.textContent = time;
+                            timeDropdown.appendChild(option);
+                          });
+                        }
+                      })
+                      .catch(error => console.error('Error fetching available times:', error));
+                  }
+                });
+        
+                flatpickr("#date", {
+                    minDate: "today", // Prevent selection of past dates
+                    dateFormat: "D, d M Y", // Customize the date format
+                    disable: [
+                        function (date) {
+                            // Disable specific days (e.g., Sundays, Mondays, and Wednesdays)
+                            const day = date.getDay();
+                            return day === 0 || day === 1 || day === 3; // Sunday(0), Monday(1), Wednesday(3)
+                        }
+                    ],
+                    locale: {
+                        firstDayOfWeek: 1 // Set the first day of the week to Monday (optional)
+                    },
+                });
+        
+              </script>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('date').addEventListener('change', function () {
+            const excludedDays = [0, 1, 3]; // Sunday(0), Monday(1), Wednesday(3)
+            const selectedDate = new Date(this.value);
+            const dayOfWeek = selectedDate.getDay();
+            const serviceId = document.getElementById('service').value;
+
+
+          if (serviceId && selectedDate) {
+            fetch(`/get-available-times/?service_id=${serviceId}&date=${selectedDate}`)
+              .then(response => response.json())
+              .then(data => {
+                const timeDropdown = document.getElementById('time');
+                timeDropdown.innerHTML = '<option value="">Select a time</option>';
+
+                if (data.available_times) {
+                  data.available_times.forEach(time => {
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.textContent = time;
+                    timeDropdown.appendChild(option);
+                  });
+                }
+              })
+              .catch(error => console.error('Error fetching available times:', error));
+          }
+        });
+
+        flatpickr("#date", {
+            minDate: "today", // Prevent selection of past dates
+            dateFormat: "D, d M Y", // Customize the date format
+            disable: [
+                function (date) {
+                    // Disable specific days (e.g., Sundays, Mondays, and Wednesdays)
+                    const day = date.getDay();
+                    return day === 0 || day === 1 || day === 3; // Sunday(0), Monday(1), Wednesday(3)
+                }
+            ],
+            locale: {
+                firstDayOfWeek: 1 // Set the first day of the week to Monday (optional)
+            },
+        });
+
+      </script>
+</body>
+</html>

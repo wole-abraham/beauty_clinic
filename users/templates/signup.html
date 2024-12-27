@@ -33,6 +33,8 @@
                     <label for="first_name">First Name</label>
                     <input required name="first_name" type="text" class="form-control" id="first_name">
                 </div>
+                <input type="hidden" name="latitude" id="latitude">
+                <input type="hidden" name="longitude" id="longitude">
                 <div class="form-group">
                     <label for="last_name">Last Name</label>
                     <input required name="last_name" type="text" class="form-control" id="last_name">
@@ -57,7 +59,7 @@
 
                     </select>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="country">Country</label>
                     <select required name="country" class="form-control" id="country"></select>
@@ -90,6 +92,27 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+
+            const latitudeInput = document.querySelector('#latitude');
+            const longitudeInput = document.querySelector('#longitude');
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        // Set latitude and longitude values
+                        latitudeInput.value = position.coords.latitude;
+                        longitudeInput.value = position.coords.longitude;
+                    },
+                    (error) => {
+                        console.error("Error occurred:", error.message);
+                    },
+                    { enableHighAccuracy: true }
+                );
+            } else {
+                console.log("Geolocation is not supported by this browser.");
+            }
+
+
             const phoneInput = document.querySelector("#phone");
             const countrySelect = document.querySelector("#country");
             const stateSelect = document.querySelector("#state");
@@ -166,6 +189,8 @@
                 stateNameInput.value = selectedState ? selectedState.textContent : "";
             });
         });
+
+
     </script>
 </body>
 

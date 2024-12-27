@@ -27,7 +27,7 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('review/', include('reviews.urls')),
     path('signup/', views.signup, name='signup'),
-    path('bookings/', include('appointments.urls')),
+    path('bookings/', ap_views.bookings, name='bookings'),
     path('dashboard/', ap_views.dashboard, name='dashboard'),
     path('add-service/', ap_views.add_service, name='add-service'),
     path('delete-service/<int:id>/', ap_views.delete_service, name='delete-service'),
@@ -35,6 +35,13 @@ urlpatterns = [
     path('api/appointments/', views.appointments_list, name='appointments-list'),
     path('api/services/', views.services_list, name='services-list'),
     path('states/<str:country>', views.get_states),
-    path('countries/', views.get_countries)
+    path('countries/', views.get_countries),
+    path('reviews/', views.reviews, name='reviews'),
+    path('dashboard/update/<int:id>', ap_views.update, name='update'),
+    path('get-available-times/', ap_views.get_available_times, name='get_available_times'),
+    path('appointments/', ap_views.user_appointments,name='appointments'),
+    path('cancel_appointment/<int:id>', ap_views.cancel_appointment, name='cancel_appointment')
+
+
 
 ]

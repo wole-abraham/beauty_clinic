@@ -143,8 +143,9 @@
                         </button>
                         <div class="collapse navbar-collapse bg-light py-3" id="navbarCollapse">
                             <div class="navbar-nav mx-auto border-top">
-                                <a href="{% url 'landing' %}" class="nav-item nav-link active">Home</a>
-                                <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
+                                <a href="{% url 'landing' %}" class="nav-item nav-link">Home</a>
+                                <a href="{% url 'about' %}" class="nav-item nav-link active">About</a>
+                                <a href="{% url 'reviews' %}" class="nav-item nav-link">Reviews</a>
                                 <a href="{% url 'bookings' %}" class="nav-item nav-link">Bookings</a>
                                 {% if request.user.is_superuser %}
                                 <a href="{% url 'dashboard' %}" class="nav-item nav-link">Dashboard</a>
