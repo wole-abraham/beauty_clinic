@@ -22,7 +22,7 @@ class Appointment(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     date = models.DateField()
     time = models.TimeField()
-    status = models.CharField(max_length=50, default='Confirmed', choices=choices, null=True)
+    status = models.CharField(max_length=50, default='Scheduled', choices=choices, null=True)
 
       # Pending, Confirmed, Cancelled
 
