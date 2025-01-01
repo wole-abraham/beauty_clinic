@@ -4,6 +4,7 @@ from .models import Appointment, Service
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.core.mail import EmailMessage
+from users.models import Clients
 import json
 from datetime import datetime, timedelta
 
@@ -117,6 +118,8 @@ def bookings(request):
     })
 
 
+
+
 def get_available_times(request):
     if request.method == 'GET':
         service_id = request.GET.get('service_id')
@@ -152,9 +155,53 @@ def get_available_times(request):
 def dashboard(request):
     appointment  = Appointment.objects.all().order_by('-date')
     service = Service.objects.all()
+    clients = Clients.objects.all()
 
     return render(request, 'dashboard/dashboard.html',
-                   {'appointments': appointment, 'services':service})
+                   {'appointments': appointment, 'services':service, 'clients': clients})
+
+@login_required
+def admin_bookings(request, id):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        print(id)
+        user = Clients.objects.get(id=request.POST.get('id'))
+        service_type = request.POST.get('service')
+        service = get_object_or_404(Service, id=service_type)
+        date_str = request.POST.get('date')
+        time_str = request.POST.get('time')
+        parsed_date = datetime.strptime(date_str, "%a, %d %b %Y")
+
+        # Format as yyyy-mm-dd
+
+        formatted_date = parsed_date.strftime("%Y-%m-%d")
+        print(formatted_date)
+
+
+        # Combine them into a single string
+
+        try:
+            date_obj = formatted_date
+            time_obj = datetime.strptime(time_str, "%I:%M %p").time()
+        except ValueError:
+            return JsonResponse({'error': 'Invalid date or time format'}, status=400)
+        # Parse the combined string into a datetime object
+         # Create appointment
+        appointment = Appointment.objects.create(
+            client=user,
+            service=service,
+            date=date_obj,
+            time=time_obj,
+        )
+        booking_confirmed(appointment)
+
+
+        return dashboard(request)
+
+    user = Clients.objects.get(id=id)
+    context = {'client': user}
+    context['services'] = Service.objects.all()
+    return render(request, 'dashboard/admin_booking.html', context=context)
 
 
 def add_service(request):
@@ -218,7 +265,9 @@ def cancel_appointment(request, id):
 '''
     email = {'body': message, 'recipient': f'{appointment.client.email}', 'subject': 'Cancelled Booking'}
     requests.post(url, data=email)
-    return redirect('landing')
+    if request.user.is_superuser:
+        return redirect('dashboard')
+    return redirect('appointment')
 
 
 def update(request, id):

@@ -26,6 +26,11 @@
         .status-select {
             min-width: 120px;
         }
+        .input-group-text {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+    }
+
     </style>
 </head>
 
@@ -41,13 +46,27 @@
             <li class="nav-item">
                 <a class="nav-link" data-target="#services" onclick="showSection('services')">Services</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" data-target="#clients" onclick="showSection('clients')">Clients</a>
+            </li>
         </ul>
 
         <!-- Appointments Section -->
 <div id="appointments" class="section active mt-4">
     <div class="d-flex justify-content-between align-items-center">
         <h3>Appointments</h3>
-        <button class="btn btn-success" onclick="openCreateAppointmentModal()">Create Appointment</button>
+
+
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="input-group" style="max-width: 300px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text">
+                    <i class="fas fa-search"></i>
+                </span>
+            </div>
+            <input type="text" class="form-control" id="searchAppointments" placeholder="Search appointments...">
+        </div>
     </div>
     <table class="table table-striped mt-3">
         <thead>
@@ -68,9 +87,7 @@
                 <td>{{ appointment.client.fullname }}</td>
                 <td>{{ appointment.date }}</td>
                 <td>{{ appointment.time }}</td>
-                <td>{{ appointment.status }}</td>
-
-                
+                <td>{{ appointment.status }}</td>                
                 <td>
                     <a href="update/{{appointment.id}}"><button class="btn btn-primary btn-sm">Update</button></a>
                 </td>
@@ -128,6 +145,50 @@
         </tbody>
     </table>
 </div>
+<!-- Clients Section -->
+<div id="clients" class="section mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h3>Clients</h3>
+
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="input-group" style="max-width: 300px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text">
+                    <i class="fas fa-search"></i>
+                </span>
+            </div>
+            <input type="text" class="form-control" id="searchClients" placeholder="Search clients...">
+        </div>
+    </div>
+
+
+    <!-- clients Table -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="servicesTable">
+            <!-- Services will be dynamically loaded here -->
+            {% for client in clients %}
+            <tr>
+          
+                <td>{{ client.username }}</td>
+                <td>{{ client.email }}</td>
+                <td>
+                    <a href="{% url 'admin-booking' client.id %}"><button class="btn btn-primary btn-sm">Book</button></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
 
     <!-- Bootstrap JS and Dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -199,6 +260,35 @@
                     });
             }
         }
+        let debounceTimeout;
+document.getElementById('searchAppointments').addEventListener('input', function () {
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#appointments tbody tr');
+
+        rows.forEach(row => {
+            const cells = Array.from(row.getElementsByTagName('td'));
+            const match = cells.some(cell => cell.textContent.toLowerCase().includes(filter));
+            row.style.display = match ? '' : 'none';
+        });
+    }, 300);
+});
+        
+        let ebounceTimeout;
+document.getElementById('searchClients').addEventListener('input', function () {
+    clearTimeout(ebounceTimeout);
+    debounceTimeout = setTimeout(() => {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#clients tbody tr');
+
+        rows.forEach(row => {
+            const cells = Array.from(row.getElementsByTagName('td'));
+            const match = cells.some(cell => cell.textContent.toLowerCase().includes(filter));
+            row.style.display = match ? '' : 'none';
+        });
+    }, 300);
+});
         
     </script>
 </body>
