@@ -902,8 +902,9 @@
 
         <section class="container py-5">
             <div class="review">
-                <h2 class="mb-4" style="font-family: sans-serif;">Write a Review</h2>
-                <form action="{% url 'review' %}" method="post">
+                <h2 class="mb-4" style="font-family: sans-serif;">Leave a Review</h2>
+                <a href="https://www.bing.com/search?pglt=771&q=marynassifchbat&cvid=29818dab0d2847528ce03dfc175e2630&gs_lcrp=EgRlZGdlKgYIABBFGDkyBggAEEUYOTIGCAEQRRg8MgYIAhBFGDzSAQg5MDY0ajBqMagCALACAA&form=EX0050&pc=U531&filters=local_ypid:"YN8101x4336722059899470738"&shtp=GetUrl&shid=1454a941-1b3b-46cf-910a-ece5fd8c8107&shtk=TWFyeSBOYXNzaWYgQ2hiYXQgQmVhdXR5IEluc3RpdHV0ZQ%3D%3D&shdk=Rm91bmQgb24gQmluZy4%3D&shhk=8x8r5%2FEXMlVu3qT0fkTD5Axov4%2FfUyR65njuyBT75EM%3D">Click to review</a>
+                <!-- <form action="{% url 'review' %}" method="post">
                     {% csrf_token %}
                     <div class="form-group mb-3">
                         <textarea name="comment" class="form-control" rows="4" placeholder="Write your review here..." required></textarea>
@@ -912,7 +913,7 @@
                         <input type="number" name="rating" class="form-control" min="1" max="5" placeholder="Rate (1-5)" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                </form> -->
             </div>
         </section>
 
