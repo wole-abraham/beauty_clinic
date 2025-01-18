@@ -220,7 +220,6 @@
 
 
 .bg-breadcrumb {
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../img/appointment-background.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -377,7 +376,6 @@
 
 /*** Appointment  Start ***/
 .appointment {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/appointment-background.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -494,7 +492,7 @@
 
 /*** Pricing Start ***/
 .pricing {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/appointment-background.jpg);
+   
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -636,7 +634,7 @@
 
 /*** Contact Start ***/
 .contact {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/appointment-background.jpg);
+    
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
