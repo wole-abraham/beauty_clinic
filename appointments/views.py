@@ -156,9 +156,12 @@ def dashboard(request):
     appointment  = Appointment.objects.all().order_by('-date')
     service = Service.objects.all()
     clients = Clients.objects.all()
+    from datetime import date
+    today = date.today()
+
 
     return render(request, 'dashboard/dashboard.html',
-                   {'appointments': appointment, 'services':service, 'clients': clients})
+                   {'appointments': appointment, 'services':service, 'clients': clients, 'today':today},)
 
 @login_required
 def admin_bookings(request, id):
@@ -289,6 +292,7 @@ def update(request, id):
         apppointment.time = time_obj
         apppointment.save()
         booking_confirmed(apppointment)
+        return(dashboard(request))
     
     apppointment = Appointment.objects.get(id=id)
     service  = Service.objects.all()
