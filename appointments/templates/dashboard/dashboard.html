@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Custom CSS -->
     <style>
@@ -31,12 +32,84 @@
         border: 1px solid #ced4da;
     }
 
+    body {
+            background-color: #f8f9fa;
+        }
+
+        .logo {
+            max-height: 60px;
+        }
+
+        .navbar {
+            background-color: #343a40;
+        }
+
+        .navbar-brand {
+            color: #fff;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand img {
+            margin-right: 10px;
+        }
+
+        .nav-tabs .nav-link {
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #fff;
+            background-color: #3e4143;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .status-select {
+            min-width: 120px;
+        }
+
+        .input-group-text {
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #007bff;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
     </style>
 </head>
 
 <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'images/logo.png' %}" alt="Mary Nassif Chbat" style="border-radius: 50px;" class="logo">
+                Mary Nassif Chbat Admin
+            </a>
+        </div>
+    </nav>
     <div class="container mt-4">
-        <h1 class="text-center">Admin Dashboard</h1>
 
         <!-- Navigation -->
         <ul class="nav nav-tabs mt-4" id="dashboardTabs">
@@ -85,11 +158,15 @@
 
                 <td>{{ appointment.service }}</td>
                 <td>{{ appointment.client.fullname }}</td>
-                <td>{{ appointment.date }}</td>
+                <td>{% if appointment.date == today %}
+                    Today
+                {% else %}
+                    {{ appointment.date }}
+                {% endif %}</td>
                 <td>{{ appointment.time }}</td>
                 <td>{{ appointment.status }}</td>                
                 <td>
-                    <a href="update/{{appointment.id}}"><button class="btn btn-primary btn-sm">Update</button></a>
+                    <a href="/dashboard/update/{{appointment.id}}"><button class="btn btn-primary btn-sm">Update</button></a>
                 </td>
             </tr>
             {% endfor %}
@@ -161,6 +238,7 @@
             <input type="text" class="form-control" id="searchClients" placeholder="Search clients...">
         </div>
     </div>
+    
 
 
     <!-- clients Table -->
@@ -169,6 +247,7 @@
             <tr>
                 <th>Client</th>
                 <th>Email</th>
+                <th>Phone</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -179,6 +258,7 @@
           
                 <td>{{ client.username }}</td>
                 <td>{{ client.email }}</td>
+                <td>{{ client.phone_number }}</td>
                 <td>
                     <a href="{% url 'admin-booking' client.id %}"><button class="btn btn-primary btn-sm">Book</button></a>
                 </td>
@@ -289,6 +369,8 @@ document.getElementById('searchClients').addEventListener('input', function () {
         });
     }, 300);
 });
+
+
         
     </script>
 </body>
