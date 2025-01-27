@@ -7,12 +7,16 @@ from django.core.mail import EmailMessage
 from users.models import Clients
 import json
 from datetime import datetime, timedelta
+from django.contrib.auth.decorators import user_passes_test
 
 import requests
 # Create your views here.
 
 url = 'https://hook.eu2.make.com/y75uqqqe3jf6lsy6vhaow75t1iuyfkqs'
 
+
+def is_admin(user):
+    return user.is_authenticated and user.is_staff
 
 def get_availble_days():
     today = datetime.now().date()
@@ -152,6 +156,7 @@ def get_available_times(request):
         return JsonResponse({'available_times': available_times})
 
 
+@user_passes_test(is_admin)
 def dashboard(request):
     appointment  = Appointment.objects.all().order_by('-date')
     service = Service.objects.all()
@@ -282,6 +287,8 @@ def update(request, id):
         time_str = request.POST.get('time')
         parsed_date = datetime.strptime(date_str, "%a, %d %b %Y")
         formatted_date = parsed_date.strftime("%Y-%m-%d")
+        service = request.POST.get('service')
+        service = Service.objects.get(id=service)
 
      
         time_obj = datetime.strptime(time_str, "%I:%M %p").time()
@@ -289,10 +296,11 @@ def update(request, id):
         apppointment = Appointment.objects.get(id=id)
         apppointment.date = formatted_date
         apppointment.status = request.POST.get('status')
+        apppointment.service = service
         apppointment.time = time_obj
         apppointment.save()
         booking_confirmed(apppointment)
-        return(dashboard(request))
+        return redirect('dashboard')
     
     apppointment = Appointment.objects.get(id=id)
     service  = Service.objects.all()

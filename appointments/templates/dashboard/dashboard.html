@@ -27,12 +27,13 @@
         .status-select {
             min-width: 120px;
         }
-        .input-group-text {
-        background-color: #f8f9fa;
-        border: 1px solid #ced4da;
-    }
 
-    body {
+        .input-group-text {
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+        }
+
+        body {
             background-color: #f8f9fa;
         }
 
@@ -65,23 +66,6 @@
             background-color: #3e4143;
         }
 
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        .status-select {
-            min-width: 120px;
-        }
-
-        .input-group-text {
-            background-color: #f8f9fa;
-            border: 1px solid #ced4da;
-        }
-
         h1 {
             font-size: 2rem;
             color: #007bff;
@@ -103,7 +87,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{% url 'landing' %}">
                 <img src="{% static 'images/logo.png' %}" alt="Mary Nassif Chbat" style="border-radius: 50px;" class="logo">
                 Mary Nassif Chbat Admin
             </a>
@@ -125,150 +109,177 @@
         </ul>
 
         <!-- Appointments Section -->
-<div id="appointments" class="section active mt-4">
-    <div class="d-flex justify-content-between align-items-center">
-        <h3>Appointments</h3>
-
-
-    </div>
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="input-group" style="max-width: 300px;">
-            <div class="input-group-prepend">
-                <span class="input-group-text">
-                    <i class="fas fa-search"></i>
-                </span>
+        <div id="appointments" class="section active mt-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3>Appointments</h3>
             </div>
-            <input type="text" class="form-control" id="searchAppointments" placeholder="Search appointments...">
+            
+            <!-- Filter Controls -->
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-3">
+                        <select class="form-control" id="filterService">
+                            <option value="">Select Service</option>
+                            {% for service in services %}
+                            <option value="{{ service.servicetype }}">{{ service.servicetype }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" class="form-control" id="filterDate">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" id="filterTime">
+                            <option value="">Select Time</option>
+                            <option value="09:00 AM">09:00 AM</option>
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="11:00 AM">11:00 AM</option>
+                            <option value="12:00 PM">12:00 PM</option>
+                            <option value="01:00 PM">01:00 PM</option>
+                            <option value="02:00 PM">02:00 PM</option>
+                            <option value="03:00 PM">03:00 PM</option>
+                            <option value="04:00 PM">04:00 PM</option>
+                            <option value="05:00 PM">05:00 PM</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-secondary btn-block" id="clearFilters">Clear</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="input-group" style="max-width: 300px;">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div>
+                    <input type="text" class="form-control" id="searchAppointments" placeholder="Search appointments...">
+                </div>
+            </div>
+
+            <table class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Client</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="appointmentsTable">
+                    {% for appointment in appointments %}
+                    <tr data-service="{{ appointment.service }}" data-date="{{ appointment.date }}" data-time="{{ appointment.time }}">
+                        <td>{{ appointment.service }}</td>
+                        <td>{{ appointment.client.fullname }}</td>
+                        <td>{% if appointment.date == today %}Today{% else %}{{ appointment.date }}{% endif %}</td>
+                        <td>{{ appointment.time|time:"h:i A"  }}</td>
+                        <td>{{ appointment.status }}</td>
+                        <td>
+                            <a href="/dashboard/update/{{ appointment.id }}">
+                                <button class="btn btn-primary btn-sm">Update</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-    </div>
-    <table class="table table-striped mt-3">
-        <thead>
-            <tr>
-                <th>Service</th>
-                <th>Client</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for appointment in appointments %}
-            <tr>
-
-                <td>{{ appointment.service }}</td>
-                <td>{{ appointment.client.fullname }}</td>
-                <td>{% if appointment.date == today %}
-                    Today
-                {% else %}
-                    {{ appointment.date }}
-                {% endif %}</td>
-                <td>{{ appointment.time }}</td>
-                <td>{{ appointment.status }}</td>                
-                <td>
-                    <a href="/dashboard/update/{{appointment.id}}"><button class="btn btn-primary btn-sm">Update</button></a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
 
         <!-- Services Section -->
-<div id="services" class="section mt-4">
-    <h3>Services</h3>
+        <div id="services" class="section mt-4">
+            <h3>Services</h3>
 
-    <!-- Add New Service -->
-    <div class="mb-4">
-        <h5>Add a New Service</h5>
-        <form id="addServiceForm">
-            <div class="form-row">
-                <div class="col-md-5">
-                    <input type="text" class="form-control" id="servicetype" name='servicetype' placeholder="Service Type" required>
-                </div>
-                <div class="col-md-3">
-                    <input type="number" step="0.01" class="form-control" id="price" name='price' placeholder="Price" required>
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-success btn-block">Add Service</button>
-                </div>
+            <!-- Add New Service -->
+            <div class="mb-4">
+                <h5>Add a New Service</h5>
+                <form id="addServiceForm">
+                    <div class="form-row">
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" id="servicetype" name='servicetype' placeholder="Service Type" required>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" step="0.01" class="form-control" id="price" name='price' placeholder="Price" required>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-success btn-block">Add Service</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
 
-    <!-- Services Table -->
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Service Type</th>
-                <th>Price</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="servicesTable">
-            <!-- Services will be dynamically loaded here -->
-            {% for service in services %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ service.servicetype }}</td>
-                <td>£{{ service.price }}</td>
-                <td>
-                    <button class="btn btn-danger btn-sm" onclick="deleteService({{ service.id }})">Delete</button>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-<!-- Clients Section -->
-<div id="clients" class="section mt-4">
-    <div class="d-flex justify-content-between align-items-center">
-        <h3>Clients</h3>
-
-    </div>
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="input-group" style="max-width: 300px;">
-            <div class="input-group-prepend">
-                <span class="input-group-text">
-                    <i class="fas fa-search"></i>
-                </span>
-            </div>
-            <input type="text" class="form-control" id="searchClients" placeholder="Search clients...">
+            <!-- Services Table -->
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Service Type</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="servicesTable">
+                    {% for service in services %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ service.servicetype }}</td>
+                        <td>£{{ service.price }}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="deleteService({{ service.id }})">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+
+        <!-- Clients Section -->
+        <div id="clients" class="section mt-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3>Clients</h3>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="input-group" style="max-width: 300px;">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div>
+                    <input type="text" class="form-control" id="searchClients" placeholder="Search clients...">
+                </div>
+            </div>
+
+            <!-- Clients Table -->
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="clientsTable">
+                    {% for client in clients %}
+                    <tr>
+                        <td>{{ client.username }}</td>
+                        <td>{{ client.email }}</td>
+                        <td>{{ client.phone_number }}</td>
+                        <td>
+                            <a href="{% url 'admin-booking' client.id %}">
+                                <button class="btn btn-primary btn-sm">Book</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
     </div>
-    
-
-
-    <!-- clients Table -->
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Client</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="servicesTable">
-            <!-- Services will be dynamically loaded here -->
-            {% for client in clients %}
-            <tr>
-          
-                <td>{{ client.username }}</td>
-                <td>{{ client.email }}</td>
-                <td>{{ client.phone_number }}</td>
-                <td>
-                    <a href="{% url 'admin-booking' client.id %}"><button class="btn btn-primary btn-sm">Book</button></a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-
 
     <!-- Bootstrap JS and Dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -290,89 +301,104 @@
             document.querySelector(`[data-target="#${sectionId}"]`).classList.add('active');
         }
 
-        function updateStatus(appointmentId, newStatus) {
-            console.log(`Updating appointment ${appointmentId} to status: ${newStatus}`);
-            // Implement backend integration via AJAX or form submission
-        }
-
-        document.getElementById("addServiceForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-        
-            const servicetype = document.getElementById("servicetype").value;
-            const price = document.getElementById("price").value;
-        
-            fetch('/add-service/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}' // Django CSRF token
-                },
-                body: JSON.stringify({ servicetype, price })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("Service added successfully!");
-                        location.reload(); // Reload page to show new service
-                    } else {
-                        alert("Failed to add service: " + data.error);
-                    }
-                });
-        });
-        
-        function deleteService(serviceId) {
-            if (confirm("Are you sure you want to delete this service?")) {
-                fetch(`/delete-service/${serviceId}/`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}' // Django CSRF token
-                    }
-                })
-                    .then(()=>location.reload())
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert("Service deleted successfully!");
-                            location.reload(); // Reload page to reflect changes
-                        } else {
-                            alert("Failed to delete service: " + data.error);
-                        }
-                    });
-            }
-        }
+        // Debounced search for appointments
         let debounceTimeout;
-document.getElementById('searchAppointments').addEventListener('input', function () {
-    clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(() => {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#appointments tbody tr');
+        document.getElementById('searchAppointments').addEventListener('input', function () {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#appointments tbody tr');
 
-        rows.forEach(row => {
-            const cells = Array.from(row.getElementsByTagName('td'));
-            const match = cells.some(cell => cell.textContent.toLowerCase().includes(filter));
-            row.style.display = match ? '' : 'none';
+                rows.forEach(row => {
+                    const cells = Array.from(row.getElementsByTagName('td'));
+                    const match = cells.some(cell => cell.textContent.toLowerCase().includes(filter));
+                    row.style.display = match ? '' : 'none';
+                });
+            }, 300);
         });
-    }, 300);
-});
-        
+
+        // Debounced search for clients
         let ebounceTimeout;
-document.getElementById('searchClients').addEventListener('input', function () {
-    clearTimeout(ebounceTimeout);
-    debounceTimeout = setTimeout(() => {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#clients tbody tr');
+        document.getElementById('searchClients').addEventListener('input', function () {
+            clearTimeout(ebounceTimeout);
+            ebounceTimeout = setTimeout(() => {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#clients tbody tr');
 
-        rows.forEach(row => {
-            const cells = Array.from(row.getElementsByTagName('td'));
-            const match = cells.some(cell => cell.textContent.toLowerCase().includes(filter));
-            row.style.display = match ? '' : 'none';
+                rows.forEach(row => {
+                    const cells = Array.from(row.getElementsByTagName('td'));
+                    const match = cells.some(cell => cell.textContent.toLowerCase().includes(filter));
+                    row.style.display = match ? '' : 'none';
+                });
+            }, 300);
         });
-    }, 300);
-});
 
+        // Filter appointments based on service, date, and time
+        document.getElementById('filterService').addEventListener('change', filterAppointments);
+        document.getElementById('filterDate').addEventListener('change', filterAppointments);
+        document.getElementById('filterTime').addEventListener('change', filterAppointments);
+
+        function filterAppointments() {
+    const serviceFilter = document.getElementById('filterService').value.toLowerCase();
+    const dateFilter = document.getElementById('filterDate').value;
+    const timeFilter = document.getElementById('filterTime').value; // Format from dropdown (e.g., "09:00 AM")
+    const rows = document.querySelectorAll('#appointmentsTable tr');
+
+    rows.forEach(row => {
+        const service = row.dataset.service.toLowerCase();
+        const date = row.dataset.date;
+        let time = row.dataset.time.toLowerCase();
+// Time in format like "9 a.m."
+
+        // Normalize the time from the table (e.g., "9 a.m." to "09:00 AM")
+        time = normalizeTime(time);
+        console.log(time)
+
+        // Normalize the time from the dropdown filter (e.g., "09:00 AM" stays as "09:00 AM")
+        const normalizedTimeFilter = timeFilter;
+        console.log(normalizedTimeFilter)
+
+        const serviceMatch = serviceFilter ? service.includes(serviceFilter) : true;
+        const dateMatch = dateFilter ? date === dateFilter : true;
+        const timeMatchFilter = normalizedTimeFilter ? time === normalizedTimeFilter : true;
+
+        if (serviceMatch && dateMatch && timeMatchFilter) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+// Helper function to normalize time format
+// Converts "9 a.m." to "09:00 AM" and keeps "09:00 AM" as is
+function normalizeTime(time) {
+    const timeMatch = time.match(/(\d{1,2})\s*(a|p)\.m\./);  // Matches "9 a.m." or "3 p.m."
+    if (timeMatch) {
+        let hour = timeMatch[1];
+        const period = timeMatch[2].toUpperCase(); // AM or PM
+        hour = hour.length === 1 ? `0${hour}` : hour; // Add leading zero if hour is single digit
+        return `${hour}:00 ${period}M`; // Format as "09:00 AM" or "09:00 PM"
+    }
+    return time; // If already in "09:00 AM" format, return as is
+}
+
+
+document.getElementById('clearFilters').addEventListener('click', function() {
+    // Reset all filters
+    document.getElementById('filterService').value = '';
+    document.getElementById('filterDate').value = '';
+    document.getElementById('filterTime').value = '';
+    
+    // Reset the search input fields
+    document.getElementById('searchAppointments').value = '';
+    document.getElementById('searchClients').value = '';
+    
+    // Call filterAppointments to apply changes (show all appointments)
+    filterAppointments();
+});
 
         
     </script>
 </body>
-
 </html>
