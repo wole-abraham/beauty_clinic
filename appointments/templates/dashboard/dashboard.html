@@ -9,6 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <!-- Custom CSS -->
     <style>
@@ -88,7 +89,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="{% url 'landing' %}">
-                <img src="{% static 'images/logo.png' %}" alt="Mary Nassif Chbat" style="border-radius: 50px;" class="logo">
+                <img src="https://i.ibb.co/CtgmDvn/logo.png" alt="Mary Nassif Chbat" style="border-radius: 50px;" class="logo">
                 Mary Nassif Chbat Admin
             </a>
         </div>
@@ -285,6 +286,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <!-- Custom JavaScript -->
     <script>
@@ -341,6 +343,7 @@
         function filterAppointments() {
     const serviceFilter = document.getElementById('filterService').value.toLowerCase();
     const dateFilter = document.getElementById('filterDate').value;
+    console.log(dateFilter);
     const timeFilter = document.getElementById('filterTime').value; // Format from dropdown (e.g., "09:00 AM")
     const rows = document.querySelectorAll('#appointmentsTable tr');
 
@@ -400,5 +403,14 @@ document.getElementById('clearFilters').addEventListener('click', function() {
 
         
     </script>
+
+<script>
+    flatpickr("#filterDate", {
+        dateFormat: "M. d, Y",  // Jan. 31, 2025
+        altInput: true,         // Display a custom input field instead of the default date input
+        altFormat: "M d, Y",    // This is the format shown in the input field
+        //        // Optional: Disable past dates
+    });
+</script>
 </body>
 </html>
