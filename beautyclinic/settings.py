@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'appointments',
     'users',
-    'phonenumber_field',
     'reviews',
 ]
 
