@@ -197,7 +197,8 @@
             <!-- Add New Service -->
             <div class="mb-4">
                 <h5>Add a New Service</h5>
-                <form id="addServiceForm">
+                <form id="addServiceForm" action="{% url 'add-service' %}" method="post">
+                    {% csrf_token %}
                     <div class="form-row">
                         <div class="col-md-5">
                             <input type="text" class="form-control" id="servicetype" name='servicetype' placeholder="Service Type" required>
@@ -227,9 +228,12 @@
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ service.servicetype }}</td>
-                        <td>£{{ service.price }}</td>
+                        <td>${{ service.price }}</td>
                         <td>
-                            <button class="btn btn-danger btn-sm" onclick="deleteService({{ service.id }})">Delete</button>
+                            <a href="/delete-service/{{ service.id }}">
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </a>
+                        
                         </td>
                     </tr>
                     {% endfor %}
@@ -412,5 +416,11 @@ document.getElementById('clearFilters').addEventListener('click', function() {
         //        // Optional: Disable past dates
     });
 </script>
+
+<script>
+
+
+</script>
+
 </body>
 </html>

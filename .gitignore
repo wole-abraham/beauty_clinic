@@ -1,4 +1,4 @@
 **/__pycache__/
 __pycache__/
-beautyclinic/settings.py
+**/beautyclinic/settings.py
 db.sqlite3

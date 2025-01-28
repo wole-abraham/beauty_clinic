@@ -214,13 +214,13 @@ def admin_bookings(request, id):
 
 def add_service(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        servicetype = data.get('servicetype')
-        price = data.get('price')
+        servicetype = request.POST.get('servicetype')
+        price = request.POST.get('price')
 
         Service.objects.create(servicetype=servicetype, price=price)
 
         return redirect('dashboard')
+    return redirect('dashboard')
 
 
 def delete_service(request, id):
@@ -262,7 +262,7 @@ def cancel_appointment(request, id):
                 </tr>
             </table>
 
-            <p>If you wish to book another appointment or have any questions, please feel free to contact us at <a href="mailto:support@beautyclinic.com">support@beautyclinic.com</a>.</p>
+            <p>If you wish to book another appointment or have any questions, please feel free to contact us at <a href="mailto:support@beautyclinic.com">customerservice@marynassifchbat.com</a>.</p>
 
             <p>Thank you for letting us know, and we look forward to serving you in the future!</p>
 
