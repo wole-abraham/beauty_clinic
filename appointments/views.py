@@ -156,7 +156,7 @@ def get_available_times(request):
         return JsonResponse({'available_times': available_times})
 
 
-@user_passes_test(is_admin)
+
 def dashboard(request):
     appointment  = Appointment.objects.all().order_by('-date')
     service = Service.objects.all()
@@ -168,7 +168,6 @@ def dashboard(request):
     return render(request, 'dashboard/dashboard.html',
                    {'appointments': appointment, 'services':service, 'clients': clients, 'today':today},)
 
-@login_required
 def admin_bookings(request, id):
     if request.method == 'POST':
         id = request.POST.get('id')
