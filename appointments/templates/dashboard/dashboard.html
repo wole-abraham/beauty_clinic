@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+{% load crispy_forms_tags %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -192,53 +193,88 @@
 
         <!-- Services Section -->
         <div id="services" class="section mt-4">
-            <h3>Services</h3>
+            
 
-            <!-- Add New Service -->
+            <!-- Add New  -->
             <div class="mb-4">
-                <h5>Add a New Service</h5>
-                <form id="addServiceForm" action="{% url 'add-service' %}" method="post">
+                <h5>Add a New Customer</h5>
+                <form id="addServiceForm" action="{% url 'register_user' %}" method="post">
                     {% csrf_token %}
-                    <div class="form-row">
-                        <div class="col-md-5">
-                            <input type="text" class="form-control" id="servicetype" name='servicetype' placeholder="Service Type" required>
-                        </div>
-                        <div class="col-md-3">
-                            <input type="number" step="0.01" class="form-control" id="price" name='price' placeholder="Price" required>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn btn-success btn-block">Add Service</button>
-                        </div>
+                    
+                    <!-- First Name Field -->
+                    <div class="mb-3">
+                        <label for="id_first_name" class="form-label">First Name</label>
+                        {{ form.first_name }}
                     </div>
+            
+                    <!-- Last Name Field -->
+                    <div class="mb-3">
+                        <label for="id_last_name" class="form-label">Last Name</label>
+                        {{ form.last_name }}
+                    </div>
+            
+                    <!-- Username Field -->
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Username</label>
+                        {{ form.username }}
+                    </div>
+            
+                    <!-- Email Field -->
+                    <div class="mb-3">
+                        <label for="id_email" class="form-label">Email</label>
+                        {{ form.email }}
+                    </div>
+            
+                    <!-- Birth Date Field -->
+                    <div class="mb-3">
+                        <label for="id_birth_date" class="form-label">Birth Date</label>
+                        {{ form.birth_date }}
+                    </div>
+            
+                    <!-- Gender Field -->
+                    <div class="mb-3">
+                        <label for="id_gender" class="form-label">Gender</label>
+                        {{ form.gender }}
+                    </div>
+            
+                    <!-- Country Field -->
+                    <div class="mb-3">
+                        <label for="id_country" class="form-label">Country</label>
+                        {{ form.country }}
+                    </div>
+            
+                    <!-- State Field -->
+                    <div class="mb-3">
+                        <label for="id_state" class="form-label">State</label>
+                        {{ form.state }}
+                    </div>
+            
+                    <!-- Phone Number Field -->
+                    <div class="mb-3">
+                        <label for="id_phone_number" class="form-label">Phone Number</label>
+                        {{ form.phone_number }}
+                    </div>
+            
+                    <!-- Password Field -->
+                    <div class="mb-3">
+                        <label for="id_password" class="form-label">Password(Kindly use their Surname)</label>
+                        {{ form.password }}
+                    </div>
+            
+                    <!-- Confirm Password Field -->
+                    <div class="mb-3">
+                        <label for="id_confirm_password" class="form-label">Confirm Password</label>
+                        {{ form.confirm_password }}
+                    </div>
+            
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
-
+            
+            
             <!-- Services Table -->
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Service Type</th>
-                        <th>Price</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="servicesTable">
-                    {% for service in services %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ service.servicetype }}</td>
-                        <td>${{ service.price }}</td>
-                        <td>
-                            <a href="/delete-service/{{ service.id }}">
-                                <button class="btn btn-danger btn-sm">Delete</button>
-                            </a>
-                        
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            
         </div>
 
         <!-- Clients Section -->
@@ -270,7 +306,7 @@
                 <tbody id="clientsTable">
                     {% for client in clients %}
                     <tr>
-                        <td>{{ client.username }}</td>
+                        <td>{{ client.fullname }} </td>
                         <td>{{ client.email }}</td>
                         <td>{{ client.phone_number }}</td>
                         <td>

@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'appointments',
     'users',
     'reviews',
+    'crispy_forms',
+    "crispy_bootstrap4",
+
+
 ]
 
 MIDDLEWARE = [
@@ -154,3 +158,8 @@ EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
 EMAIL_HOST_USER = 'testprojectmail755@gmail.com'
 EMAIL_HOST_PASSWORD = 'syfhhzlwforrqdrb'  # Use the generated App Password here
+
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"

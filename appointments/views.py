@@ -5,7 +5,9 @@ from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.core.mail import EmailMessage
 from users.models import Clients
+from users.forms import CustomUserCreationForms
 import json
+from django.contrib.auth import login
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import user_passes_test
 
@@ -159,6 +161,7 @@ def get_available_times(request):
 
 def dashboard(request):
     appointment  = Appointment.objects.all().order_by('-date')
+    form = CustomUserCreationForms()
     service = Service.objects.all()
     clients = Clients.objects.all()
     from datetime import date
@@ -166,7 +169,7 @@ def dashboard(request):
 
 
     return render(request, 'dashboard/dashboard.html',
-                   {'appointments': appointment, 'services':service, 'clients': clients, 'today':today},)
+                   {'appointments': appointment, 'services':service, 'clients': clients, 'today':today, 'form':form},)
 
 def admin_bookings(request, id):
     if request.method == 'POST':
@@ -305,3 +308,14 @@ def update(request, id):
     service  = Service.objects.all()
     
     return render(request, 'dashboard/update.html', context={'appointment': apppointment, 'services': service})
+
+from users.forms import CustomUserCreationForms
+
+def register_user(request):
+    if request.method == "POST":
+        form = CustomUserCreationForms(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Log in the user after registration
+            return redirect("dashboard")  # Redirect to homepage
+    return redirect('dashboard')

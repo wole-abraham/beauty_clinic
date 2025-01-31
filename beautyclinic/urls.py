@@ -41,7 +41,8 @@ urlpatterns = [
     path('dashboard/update/<int:id>', ap_views.update, name='update'),
     path('get-available-times/', ap_views.get_available_times, name='get_available_times'),
     path('appointments/', ap_views.user_appointments,name='appointments'),
-    path('cancel_appointment/<int:id>', ap_views.cancel_appointment, name='cancel_appointment')
+    path('cancel_appointment/<int:id>', ap_views.cancel_appointment, name='cancel_appointment'),
+    path('registeruser/', ap_views.register_user, name='register_user')
 
 
 
