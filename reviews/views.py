@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Review
 
@@ -16,4 +16,4 @@ def review(request):
         )
 
         review = Review.objects.all()
-    return render(request, 'new/landing.html', {'reviews': review})
+    return redirect('reviews')

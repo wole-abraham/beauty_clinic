@@ -13,6 +13,16 @@ User = get_user_model()  # Get the custom user model
 class CustomUserCreationForms(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label="Password")
     confirm_password = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
+    birth_date = forms.DateField(
+    widget=forms.DateInput(
+        attrs={
+            'class': 'flatpickr form-control',  # Add class for flatpickr styling
+            'placeholder': 'Select your birth date',  # Optional: Add placeholder text
+            'type': 'date'  # Ensure it's treated as a text input for Flatpickr
+        }
+    ),
+    label="Birth Date"
+)
 
     class Meta:
         model = User

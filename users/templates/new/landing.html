@@ -775,8 +775,59 @@
         <!-- gallery End -->
 
 
-        <!-- Contact Start -->
-        <div class="container-fluid py-5">
+      
+
+        <section class="container py-5">
+            <div class="review">
+                <h2 class="mb-4" style="font-family: sans-serif;">Leave a Review</h2>
+                <form action="{% url 'review' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                        <textarea name="comment" class="form-control" rows="4" placeholder="Write your review here..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </section>
+
+        <div class="reviews mt-5">
+            <h3 class="text-center mb-4">What Others Say</h3>
+            <div id="review-list">
+                {% for review in reviews %}
+                    <div class="card mb-4 shadow-sm review-item">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="card-title mb-1">{{ review.user.username }}</h5>
+                                    <small class="text-muted">{{ review.date|date:"F j, Y, g:i a" }}</small>
+                                </div>
+                                <div>
+                                    {% for i in "★★★★★" %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <span class="text-warning">&#9733;</span>
+                                        {% else %}
+                                            <span class="text-secondary">&#9733;</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p class="mt-3 mb-0">{{ review.comment }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-center text-muted">No reviews yet. Be the first to leave one!</p>
+                {% endfor %}
+            </div>
+        
+            <div class="text-center mt-4">
+                <a href="{% url 'reviews' %}">
+                    <button id="toggle-reviews" class="btn btn-primary btn-lg">View More</button>
+                </a>
+                
+            </div>
+        </div>
+          <!-- Contact Start -->
+          <div class="container-fluid py-5">
             <div class="container py-5">
                 <div class="row g-4 align-items-center">
                     <div class="col-12">
@@ -817,57 +868,6 @@
             </div>
         </div>
         <!-- Contact End -->
-
-        <section class="container py-5">
-            <div class="review">
-                <h2 class="mb-4" style="font-family: sans-serif;">Leave a Review</h2>
-                <a href="https://g.co/kgs/n9RDDZW">Click to review</a>
-                <!-- <form action="{% url 'review' %}" method="post">
-                    {% csrf_token %}
-                    <div class="form-group mb-3">
-                        <textarea name="comment" class="form-control" rows="4" placeholder="Write your review here..." required></textarea>
-                    </div>
-                    <div class="form-group mb-3">
-                        <input type="number" name="rating" class="form-control" min="1" max="5" placeholder="Rate (1-5)" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form> -->
-            </div>
-        </section>
-
-        <div class="reviews mt-5">
-            <h3 class="text-center mb-4">What Others Say</h3>
-            <div id="review-list">
-                {% for review in reviews %}
-                    <div class="card mb-4 shadow-sm review-item">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5 class="card-title mb-1">{{ review.user.username }}</h5>
-                                    <small class="text-muted">{{ review.date|date:"F j, Y, g:i a" }}</small>
-                                </div>
-                                <div>
-                                    {% for i in "★★★★★" %}
-                                        {% if forloop.counter <= review.rating %}
-                                            <span class="text-warning">&#9733;</span>
-                                        {% else %}
-                                            <span class="text-secondary">&#9733;</span>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <p class="mt-3 mb-0">{{ review.comment }}</p>
-                        </div>
-                    </div>
-                {% empty %}
-                    <p class="text-center text-muted">No reviews yet. Be the first to leave one!</p>
-                {% endfor %}
-            </div>
-        
-            <div class="text-center mt-4">
-                <button id="toggle-reviews" class="btn btn-primary btn-lg">View More</button>
-            </div>
-        </div>
         
         
         
