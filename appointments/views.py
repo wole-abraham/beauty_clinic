@@ -313,9 +313,23 @@ from users.forms import CustomUserCreationForms
 
 def register_user(request):
     if request.method == "POST":
+        print(request.POST)
+
+        service = Service.objects.get(id=request.POST.get('service'))
+        print(service.price)
+
+        time = request.POST.get('time')
+        date = request.POST.get('date')
+        parsed_date = datetime.strptime(date, "%a, %d %b %Y")
+        time_obj = datetime.strptime(time, "%I:%M %p").time()
+
+
         form = CustomUserCreationForms(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Log in the user after registration
+            Appointment.objects.create(client=user, service=service, date=parsed_date, time=time_obj)
+              # Log in the user after registration
             return redirect("dashboard")  # Redirect to homepage
+        else:
+            print(form.errors)
     return redirect('dashboard')
