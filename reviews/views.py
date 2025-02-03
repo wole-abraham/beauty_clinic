@@ -16,4 +16,5 @@ def review(request):
         )
 
         review = Review.objects.all()
+
     return redirect('reviews')

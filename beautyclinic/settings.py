@@ -137,8 +137,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/woleabrahamthedev/beauty_clinic/static'
-STATICFILESDIR = BASE_DIR / 'static'
+STATIC_ROOT = '/home/lebte/beauty_clinic/static'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 LOGIN_URL = '/login/'
 
 # Default primary key field type
@@ -161,5 +161,6 @@ EMAIL_HOST_PASSWORD = 'syfhhzlwforrqdrb'  # Use the generated App Password here
 
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+CSRF_TRUSTED_ORIGINS = ["https://marynassifchbat.com", 'https://www.marynassifchbat.com']
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
