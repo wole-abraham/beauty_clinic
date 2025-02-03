@@ -7,7 +7,7 @@ from .models import Location
 from .models import Clients
 import json
 from appointments.models import Appointment, Service
-
+from reviews.models import Review
 from users.models import Location
 import os
 import requests
@@ -213,6 +213,5 @@ def get_countries(request):
 
 
 def reviews(request):
-    req = requests.get('https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJ5_Mqfa4XHxURbKJPgfvIZtc&key=AIzaSyAPGjrjlps_hoq7j3y3AOJOA4YXUVKZE60')
-    reviews = req.json().get('result', {}).get('reviews', []) if req.status_code == 200 else []
+    reviews = Review.objects.all()
     return render(request, 'reviews.html', {'reviews': reviews})

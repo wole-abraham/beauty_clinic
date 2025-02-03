@@ -17,3 +17,7 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review by {self.user} on {self.date.strftime('%Y-%m-%d')}"
+
+    def first(self):
+        """Returns the first letter of the user's first name or 'U' if empty."""
+        return (self.user.username[:1] or "U").upper()

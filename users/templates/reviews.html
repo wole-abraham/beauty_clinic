@@ -30,94 +30,70 @@
         <!-- Template Stylesheet -->
         <link href="{% static 'new/css/style.css' %}" rel="stylesheet">
 
-  <style>
+  
+
+<style>
+
     .review-card {
-      border: 1px solid #e3e3e3;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      margin-bottom: 20px;
-      transition: transform 0.3s ease;
+        width: 350px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: left;
     }
-    .review-card:hover {
-      transform: scale(1.02);
+    .header {
+        display: flex;
+        align-items: center;
     }
-    .review-avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      object-fit: cover;
+    .avatar {
+        width: 40px;
+        height: 40px;
+        background-color: #ff5722;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
     }
-    .review-author {
-      font-weight: bold;
-      font-size: 1.1rem;
+    .name {
+        font-weight: bold;
+        font-size: 16px;
     }
-    .review-rating {
-      color: #f39c12;
+    .date {
+        font-size: 12px;
+        color: gray;
+    }
+    .stars {
+        color: #ffcc00;
+        margin: 5px 0;
     }
     .review-text {
-      font-size: 0.95rem;
-      color: #555;
-      .about-section {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: space-between;
-        margin: 20px 0;
-    }
-
-    .service-item {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        background: #f8f9fa;
-        border: 2px solid #007bff;
-        border-radius: 10px;
-        padding: 20px;
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .service-item:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .service-image img {
-        width: 100%;
-        max-width: 300px;
-        border-radius: 10px;
-    }
-
-    .service-content h3 {
-        margin: 15px 0 10px;
-        color: #007bff;
-    }
-
-    .service-content p {
-        color: #6c757d;
-        margin-bottom: 15px;
         font-size: 14px;
+        margin-bottom: 15px;
     }
-
-    .btn {
-        display: inline-block;
+    .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        color: gray;
+    }
+    .google-link {
+        display: flex;
+        align-items: center;
+        color: black;
         text-decoration: none;
-        background: #007bff;
-        color: #fff;
-        padding: 10px 20px;
-        border-radius: 50px;
         font-weight: bold;
-        transition: background 0.3s;
     }
-
-    .btn:hover {
-        background: #0056b3;
+    .google-icon {
+        width: 18px;
+        margin-right: 5px;
     }
-
-    }
-  </style>
+</style>
 </head>
 <body>
      <!-- Navbar start -->
@@ -176,6 +152,29 @@
     <!-- Navbar End -->
   <div class="container mt-5">
     <h2 class="text-center mb-4">What Our Customers Say</h2>
+    
+    <div class="rev" style="display: flex; flex-wrap: wrap; width: 100%; margin-top: 20px;">
+    {% for review in reviews %}
+    <div class="review-card">
+        <div class="header">
+            <div class="avatar"> {{ review.first }}</div>
+            <div>
+                <div class="name">{{ review.user }}</div>
+                <div class="date">{{ review.date }}</div>
+            </div>
+        </div>
+        
+        <div class="stars">★★★★★</div>
+    
+        <p class="review-text">
+           {{ review.comment }}
+        </p>
+    
+        
+    </div>
+    {% endfor %}
+</div>
+
     <iframe src='https://widgets.sociablekit.com/google-reviews/iframe/25498226' frameborder='0' width='100%' height='1000'></iframe>
     
   </div>
