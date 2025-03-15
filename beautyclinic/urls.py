@@ -24,6 +24,7 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("robots.txt/", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
+    path("favicon.ico/", TemplateView.as_view(template_name="favicon.ico", content_type="image/x-icon")),
     path('', views.landing, name='landing'),
     # path('user/', include())
     path('login/', views.login_view, name='login'),
