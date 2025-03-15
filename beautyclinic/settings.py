@@ -23,9 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8h=82@8z=47e2#p)#eg5h=zrirb73+-*f_l^3-@zx3ce4^1k4i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['www.marynassifchbat.com', '127.0.0.1']
+ALLOWED_HOSTS = ['www.marynassifchbat.com', '127.0.0.1', 'marynassifchbat.com', 'webapp-2411664.pythonanywhere.com']
+
 
 
 # Application definition
@@ -137,8 +138,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/lebte/beauty_clinic/static'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / "staticfiles"  # Used only in production
+
+# Directories for additional static files during development
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # ✅ Use a different folder (not STATIC_ROOT)
+]
 LOGIN_URL = '/login/'
 
 # Default primary key field type
@@ -151,16 +156,18 @@ AUTHENTICATION_BACKENDS = {
 
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_USE_TLS = False
-EMAIL_HOST_USER = 'testprojectmail755@gmail.com'
-EMAIL_HOST_PASSWORD = 'syfhhzlwforrqdrb'  # Use the generated App Password here
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 465
+# EMAIL_USE_SSL = True
+# EMAIL_USE_TLS = False
+# EMAIL_HOST_USER = 'testprojectmail755@gmail.com'
+# EMAIL_HOST_PASSWORD = 'syfhhzlwforrqdrb'  # Use the generated App Password here
 
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
-CSRF_TRUSTED_ORIGINS = ["https://marynassifchbat.com", 'https://www.marynassifchbat.com']
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+
+CSRF_TRUSTED_ORIGINS = ["http://www.marynassifchbat.com", "https://marynassifchbat.com"]

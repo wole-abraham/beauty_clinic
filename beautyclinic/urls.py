@@ -19,6 +19,7 @@ from django.urls import path, include
 from users import views
 from reviews import views as re_view
 from appointments import views as ap_views
+from django.views.generic import RedirectView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.landing, name='landing'),
@@ -42,7 +43,8 @@ urlpatterns = [
     path('get-available-times/', ap_views.get_available_times, name='get_available_times'),
     path('appointments/', ap_views.user_appointments,name='appointments'),
     path('cancel_appointment/<int:id>', ap_views.cancel_appointment, name='cancel_appointment'),
-    path('registeruser/', ap_views.register_user, name='register_user')
+    path('registeruser/', ap_views.register_user, name='register_user'),
+    path('favicon.ico/', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),
 
 
 

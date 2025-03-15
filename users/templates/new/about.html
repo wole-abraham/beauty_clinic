@@ -6,13 +6,15 @@
         <meta charset="utf-8">
         <title>Mary Nassif Chbat</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <link rel="icon" type="image/png" href="{% static 'favicon.ico' %}">
+
         <meta content="" name="keywords">
         <meta content="" name="description">
 
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=PT+Serif:wght@400;700&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=PT+Serif:wght@400;700&display=swap" rel="stylesheet">
 
         <!-- Icon Font Stylesheet -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
@@ -39,7 +41,7 @@
                 justify-content: space-between;
                 margin: 20px 0;
             }
-            
+
             .service-item {
                 width: 100%;
                 display: flex;
@@ -52,29 +54,29 @@
                 padding: 20px;
                 transition: transform 0.3s, box-shadow 0.3s;
             }
-            
+
             .service-item:hover {
                 transform: scale(1.05);
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             }
-            
+
             .service-image img {
                 width: 100%;
                 max-width: 300px;
                 border-radius: 10px;
             }
-            
+
             .service-content h3 {
                 margin: 15px 0 10px;
                 color: #007bff;
             }
-            
+
             .service-content p {
                 color: #6c757d;
                 margin-bottom: 15px;
                 font-size: 14px;
             }
-            
+
             .btn {
                 display: inline-block;
                 text-decoration: none;
@@ -85,11 +87,11 @@
                 font-weight: bold;
                 transition: background 0.3s;
             }
-            
+
             .btn:hover {
                 background: #0056b3;
             }
-            
+
         </style>
     </head>
 
@@ -122,10 +124,10 @@
                         <div class="col-lg-4">
                             <div class="d-flex align-items-center justify-content-end">
                                 <a href="https://web.facebook.com/marynassifchbat" class="me-3 btn-square border rounded-circle nav-fill"><i class="fab fa-facebook-f"></i></a>
-                             
+
                                 <a href="https://www.instagram.com/marynassifchbat" class="me-3 btn-square border rounded-circle nav-fill"><i class="fab fa-instagram"></i></a>
                                 <a href="https://www.tiktok.com/@marynassifchbat?_t=ZM-8taCz8GmrQb&_r=1" class="me-3 btn-square border rounded-circle nav-fill"><i class="fab fa-tiktok"></i></a>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -161,14 +163,14 @@
         <!-- Navbar End -->
 
 
-      
+
 
 
         <!-- Header Start -->
         <div class="container-fluid bg-breadcrumb py-5" style="background-color: gainsboro">
             <div class="container text-center py-5">
                 <h3 class="text-white display-3 mb-4">About Us</h1>
-        
+
             </div>
         </div>
         <!-- Header End -->
@@ -180,9 +182,9 @@
             <div class="col-lg-5">
                 <div class="video">
                     <img src="img/about-1.jpg" class="img-fluid rounded" alt="">
-                  
-                        <img src="{% static 'images/about.jpg' %}" class="img-fluid rounded" alt="">
-                    
+
+                        <img src="https://i.ibb.co/WpPfsTVC/thatimage.jpg" class="img-fluid rounded" alt="">
+
 \                        <span></span>
                     </button>
                 </div>
@@ -195,9 +197,9 @@
 
                         With our services, we strive to offer the best beauty services in the industry. Some of the services we offer include eyelash curling, facial hair removal, body tattoo, eye tattoo, makeup and more.
                     </p>
-          
+
                 <a href="{% url 'landing' %}" class="btn btn-primary btn-primary-outline-0 rounded-pill py-3 px-5">Explore More</a>
-            </div> 
+            </div>
         </div>
     </div>
 </div>
@@ -208,7 +210,7 @@
         <div class="container-fluid footer py-5">
             <div class="container py-5">
                 <div class="row g-5">
-                    
+
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
                             <h4 class="mb-4 text-white">Our Services</h4>
@@ -222,10 +224,10 @@
                         <div class="footer-item d-flex flex-column">
                             <h4 class="mb-4 text-white">Schedule</h4>
                             <p class="text-muted mb-0">Monday: <span class="text-white"> Closed </span></p>
-                            
+
                             <p class="text-muted mb-0">Tuesday: <span class="text-white"> 08:00 am – 6:00 pm</span></p>
                             <p class="text-muted mb-0">Wednesday</p>: <span class="text-white"> Closed </span></p>
-        
+
                             <p class="text-muted mb-0">Thursday: <span class="text-white"> 08:00 am – 6:00 pm</span></p>
                             <p class="text-muted mb-0">Friday: <span class="text-white"> 08:00 am – 6:00 pm</span></p>
                             <p class="text-muted mb-0">Sunday: <span class="text-white"> 08:00 am – 12:00 pm</span></p>
@@ -240,7 +242,7 @@
                             <h4 class="mb-4 text-white">Follow Us</h4>
                             <a href=""><i class="fas fa-angle-right me-2"></i> Faceboock</a>
                             <a href=""><i class="fas fa-angle-right me-2"></i> Instagram</a>
-                           
+
                             <h4 class="my-4 text-white">Contact Us</h4>
                             <p class="mb-0"><i class="fas fa-envelope text-secondary me-2"></i> customerservice@marynassifchbat.com</p>
                             <p class="mb-0"><i class="fas fa-phone text-secondary me-2"></i>+9613799407</p>
@@ -267,7 +269,7 @@
                             <a href="" class="btn btn-light btn-light-outline-0 btn-sm-square rounded-circle me-0"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
-                  
+
                 </div>
             </div>
         </div>
@@ -276,9 +278,9 @@
 
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
+        <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
-        
+
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
