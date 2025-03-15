@@ -20,8 +20,10 @@ from users import views
 from reviews import views as re_view
 from appointments import views as ap_views
 from django.views.generic import RedirectView
+from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("robots.txt/", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     path('', views.landing, name='landing'),
     # path('user/', include())
     path('login/', views.login_view, name='login'),
