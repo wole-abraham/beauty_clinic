@@ -47,6 +47,11 @@ urlpatterns = [
     path('cancel_appointment/<int:id>', ap_views.cancel_appointment, name='cancel_appointment'),
     path('registeruser/', ap_views.register_user, name='register_user'),
     path('favicon.ico/', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),
+    path('favicon.ico/', RedirectView.as_view(url='/static/android-chrome-192x192.png', permanent=True)),
+    path('favicon.ico/', RedirectView.as_view(url='/static/android-chrome-512x512.png', permanent=True)),
+    path('favicon.ico/', RedirectView.as_view(url='/static/favicon-16x16.png', permanent=True)),
+    path('favicon.ico/', RedirectView.as_view(url='/static/favicon-32x32.png', permanent=True)),
+    path('favicon.ico/', RedirectView.as_view(url='/static/apple-touch-icon.png', permanent=True)),
 
 
 
