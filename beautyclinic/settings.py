@@ -138,12 +138,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "staticfiles"  # Used only in production
+STATIC_ROOT = BASE_DIR / "static"  # Used only in production
 
 # Directories for additional static files during development
-STATICFILES_DIRS = [
-    BASE_DIR / "static",  # ✅ Use a different folder (not STATIC_ROOT)
-]
+
 LOGIN_URL = '/login/'
 
 # Default primary key field type
