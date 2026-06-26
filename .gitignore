@@ -7,3 +7,16 @@
 node_modules/
 frontend/dist/
 backend/venv/
+
+# Legacy Django directories (local only)
+appointments/
+beautyclinic/
+reviews/
+users/
+static/
+staticfiles/
+manage.py
+populate.py
+details.csv
+logo.png
+requirements.txt
