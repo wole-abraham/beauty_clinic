@@ -15,8 +15,8 @@ reviews/
 users/
 static/
 staticfiles/
-manage.py
-populate.py
-details.csv
-logo.png
-requirements.txt
+/manage.py
+/populate.py
+/details.csv
+/logo.png
+/requirements.txt
