@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
-from app.routers import auth, appointments, services, reviews, users, tools
+from app.routers import auth, appointments, services, reviews, users
 
 app = FastAPI(title="Beauty Clinic API", version="1.0.0")
 
@@ -25,7 +25,6 @@ app.include_router(appointments.router)
 app.include_router(services.router)
 app.include_router(reviews.router)
 app.include_router(users.router)
-app.include_router(tools.router)
 
 
 @app.on_event("startup")
