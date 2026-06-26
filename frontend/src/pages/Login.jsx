@@ -1,53 +1,80 @@
-﻿import { useState } from "react"
-import { useNavigate, Link } from "react-router-dom"
+import { useState } from "react"
+import { Link } from "react-router-dom"
 import { useLogin } from "../hooks/useAuth"
 
 export default function Login() {
-  const navigate = useNavigate()
   const login = useLogin()
-  const [form, setForm] = useState({ username: "", password: "" })
+  const [form, setForm] = useState({ email: "", password: "" })
   const [err, setErr] = useState("")
+
+  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setErr("")
     try {
       await login.mutateAsync(form)
-      navigate("/")
     } catch {
-      setErr("Invalid username or password.")
+      setErr("Invalid email or password.")
     }
   }
 
   return (
     <div className="login-split">
       <div className="login-left">
-        <img src="/images/logo.png" alt="Logo" className="login-left-logo" onError={e => e.target.style.display="none"} />
-        <h2 className="login-left-title">Welcome Back</h2>
-        <p className="login-left-sub">Sign in to manage your appointments and beauty treatments at Mary Nassif Chbat.</p>
-        <img src="/img/makeupp.jpg" alt="Beauty" className="login-left-img" onError={e => e.target.style.display="none"} />
+        <img src="/images/logo.png" alt="Logo" className="login-left-logo" onError={e => e.target.style.display = "none"} />
+        <p className="login-left-eyebrow">Beauty Clinic</p>
+        <h2 className="login-left-title">Mary Nassif<br />Chbat</h2>
+        <p className="login-left-sub">Sign in to manage your appointments and experience the art of beauty.</p>
+        <img src="/images/about.jpg" alt="Beauty" className="login-left-img" onError={e => e.target.style.display = "none"} />
       </div>
+
       <div className="login-right">
         <div className="login-form-box">
+          <p className="login-form-eyebrow">Welcome back</p>
           <h1 className="login-form-title">Sign In</h1>
           <p className="login-form-sub">Enter your credentials to continue</p>
-          {err && <div className="form-error">{err}</div>}
-          <form onSubmit={handleSubmit} style={{ marginTop: 24 }}>
+
+          {err && <div className="form-error" style={{ marginBottom: 20 }}>{err}</div>}
+
+          <form onSubmit={handleSubmit} style={{ marginTop: 28 }}>
             <div className="form-group">
-              <label className="form-label">Username</label>
-              <input className="form-input" type="text" placeholder="your_username" required
-                value={form.username} onChange={e => setForm({ ...form, username: e.target.value })} />
+              <label className="form-label">Email Address</label>
+              <input
+                className="form-input"
+                type="email"
+                placeholder="you@example.com"
+                required
+                value={form.email}
+                onChange={set("email")}
+                autoComplete="email"
+              />
             </div>
             <div className="form-group">
               <label className="form-label">Password</label>
-              <input className="form-input" type="password" placeholder="••••••••" required
-                value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} />
+              <input
+                className="form-input"
+                type="password"
+                placeholder="••••••••"
+                required
+                value={form.password}
+                onChange={set("password")}
+                autoComplete="current-password"
+              />
             </div>
-            <button type="submit" className="btn btn-pink" style={{ width: "100%", marginTop: 8, justifyContent: "center" }} disabled={login.isPending}>
-              {login.isPending ? "Signing in..." : "Sign In"}
+            <button
+              type="submit"
+              className="btn btn-pink btn-lg"
+              style={{ width: "100%", justifyContent: "center", marginTop: 8 }}
+              disabled={login.isPending}
+            >
+              {login.isPending ? "Signing in…" : "Sign In →"}
             </button>
           </form>
-          <p className="login-footer">Don&apos;t have an account? <Link to="/signup">Create one</Link></p>
+
+          <p className="login-footer">
+            Don&apos;t have an account? <Link to="/signup">Create one</Link>
+          </p>
         </div>
       </div>
     </div>
