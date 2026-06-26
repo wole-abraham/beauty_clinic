@@ -146,7 +146,12 @@ button { cursor: pointer; font-family: inherit; }
 .navbar-mobile { display: none; border-top: 1px solid rgba(255,255,255,0.06); flex-direction: column; gap: 2px; padding: 12px 0; background: #0E0710; }
 .navbar-mobile .nav-link { padding: 10px 20px; border-radius: 0; width: 100%; display: block; text-align: left; }
 .navbar-mobile.open { display: flex; }
-@media (max-width: 860px) { .navbar-links, .navbar-actions { display: none; } .navbar-toggle { display: flex; } }
+@media (max-width: 1000px) { .navbar-links, .navbar-actions { display: none; } .navbar-toggle { display: flex; } }
+@media (min-width: 1001px) and (max-width: 1200px) {
+  .navbar-inner { gap: 10px; }
+  .nav-link { padding: 8px 9px; font-size: 0.82rem; }
+  .navbar-name { font-size: 0.95rem; }
+}
 
 /* ===== HERO ===== */
 .hero {
@@ -945,10 +950,6 @@ body { overflow-x: hidden; }
 @media (min-width: 641px) and (max-width: 1023px) {
   .container { padding: 0 32px; }
 
-  /* Navbar — show full links on wider tablets */
-  .navbar-links { display: flex; }
-  .navbar-actions { display: flex; }
-  .navbar-toggle { display: none; }
   .navbar { position: sticky; }
 
   /* Hero — stacked but with more visual impact */
