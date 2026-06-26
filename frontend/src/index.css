@@ -1056,8 +1056,8 @@ body { overflow-x: hidden; }
   .btn-lg { padding: 14px 28px; font-size: 0.9rem; }
   .hero-title { font-size: 2.6rem; letter-spacing: 0.02em; }
   .hero-title-accent { font-size: 2rem; }
-  .hero-img { max-width: 300px; width: 80%; }
-  .hero-img-circle { width: 240px; height: 240px; }
+  .hero-img { max-width: none; width: 100%; }
+  .hero-img-circle { width: 240px; height: 240px; display: none; }
   .stat-num { font-size: 3rem; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
   .date-opts { grid-template-columns: repeat(2, 1fr); }
