@@ -705,19 +705,22 @@ button { cursor: pointer; font-family: inherit; }
 .login-left-img { width: 100%; max-width: 340px; height: 260px; object-fit: cover; border-radius: 16px; margin-top: 36px; box-shadow: 0 8px 40px rgba(0,0,0,0.4); opacity: 0.85; }
 .login-right { display: flex; align-items: center; justify-content: center; padding: 60px 48px; background: #0E0710; }
 .login-form-box { width: 100%; max-width: 400px; }
-.login-form-title { font-size: 2rem; color: #fff; margin-bottom: 6px; font-family: 'Bodoni Moda', serif; }
-.login-form-sub { color: rgba(255,255,255,0.45); margin-bottom: 36px; font-size: 0.9rem; }
+.login-form-eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 3px; color: var(--pink); font-weight: 700; font-family: 'Open Sans', sans-serif; margin-bottom: 10px; }
+.login-form-title { font-size: 2.4rem; color: #fff; margin-bottom: 6px; font-family: 'Bodoni Moda', serif; font-style: italic; }
+.login-form-sub { color: rgba(255,255,255,0.45); margin-bottom: 0; font-size: 0.9rem; }
+.login-left-eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 3px; color: var(--pink); font-weight: 700; font-family: 'Open Sans', sans-serif; margin-bottom: 14px; }
 .login-footer { text-align: center; margin-top: 24px; font-size: 0.87rem; color: rgba(255,255,255,0.45); }
 .login-footer a { color: var(--pink); font-weight: 600; }
 @media (max-width: 768px) { .login-split { grid-template-columns: 1fr; } .login-left { display: none; } .login-right { padding: 40px 24px; } }
 
 /* ===== SIGNUP ===== */
 .signup-page { min-height: 100vh; background: #0E0710; display: flex; align-items: center; justify-content: center; padding: 60px 24px; }
-.signup-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; box-shadow: 0 8px 40px rgba(0,0,0,0.4); padding: 48px 40px; width: 100%; max-width: 520px; }
+.signup-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; box-shadow: 0 8px 40px rgba(0,0,0,0.4); padding: 48px 40px; width: 100%; max-width: 640px; }
 .signup-logo { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; margin: 0 auto 20px; border: 2px solid rgba(255,79,157,0.4); filter: grayscale(1) contrast(1.2) brightness(1.1); display: block; }
 .signup-title { font-size: 1.8rem; text-align: center; margin-bottom: 6px; font-family: 'Bodoni Moda', serif; color: #fff; }
 .signup-sub { color: rgba(255,255,255,0.45); text-align: center; font-size: 0.87rem; margin-bottom: 32px; }
-@media (max-width: 560px) { .signup-card { padding: 32px 20px; } }
+.signup-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+@media (max-width: 560px) { .signup-card { padding: 32px 20px; } .signup-row { grid-template-columns: 1fr; } }
 
 /* ===== BOOKINGS ===== */
 .bookings-page { padding: 60px 0 100px; background: #0E0710; min-height: 80vh; }
