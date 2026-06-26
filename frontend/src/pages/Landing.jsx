@@ -1,7 +1,7 @@
 ﻿import { Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import api from "../lib/api"
-import { useState, useEffect, useRef } from "react"
+import { useState } from "react"
 
 const SERVICES = [
   { title: "Nail Care", img: "/img/nailcare.jpg", desc: "Expert nail care from classic treatments to stunning nail art. Enjoy healthy, stylish nails with personalized care and premium products." },
@@ -35,13 +35,7 @@ export default function Landing() {
   const [showAll, setShowAll] = useState(false)
   const visibleReviews = showAll ? reviews : reviews.slice(0, 3)
 
-  const [activeIdx, setActiveIdx] = useState(0)
-  const intervalRef = useRef(null)
-  const startCycle = () => {
-    intervalRef.current = setInterval(() => setActiveIdx(i => (i + 1) % SERVICES.length), 2800)
-  }
-  useEffect(() => { startCycle(); return () => clearInterval(intervalRef.current) }, [])
-  const pickTile = (i) => { clearInterval(intervalRef.current); setActiveIdx(i); startCycle() }
+
 
   return (
     <>
@@ -108,8 +102,7 @@ export default function Landing() {
               <Link
                 to="/bookings"
                 key={i}
-                className={"service-tile" + (i === activeIdx ? " active" : "")}
-                onClick={() => pickTile(i)}
+                className="service-tile"
               >
                 <img src={s.img} alt={s.title} onError={e => e.target.src = "/img/makeup.jpg"} />
                 <div className="service-tile-overlay" />

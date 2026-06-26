@@ -334,7 +334,6 @@ button { cursor: pointer; font-family: inherit; }
     "h i j";
   grid-auto-rows: 280px;
   gap: 16px;
-  perspective: 1200px;
 }
 .service-tile:nth-child(1)  { grid-area: a; }
 .service-tile:nth-child(2)  { grid-area: b; }
@@ -411,29 +410,6 @@ button { cursor: pointer; font-family: inherit; }
 .service-tile:hover .service-tile-arrow { opacity: 0; }
 .service-tile-arrow i { font-size: 0.58rem; }
 
-/* ── Active state (auto-cycling) — pops out ── */
-.service-tile {
-  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-.service-tile.active {
-  transform: scale(1.13) translateY(-16px) rotateX(-6deg);
-  box-shadow:
-    0 2px 4px rgba(0,0,0,0.3),
-    0 8px 16px rgba(0,0,0,0.4),
-    0 24px 48px rgba(0,0,0,0.45),
-    0 48px 96px rgba(0,0,0,0.35),
-    0 0 0 2px var(--pink),
-    0 0 40px rgba(255,79,157,0.2);
-  z-index: 10;
-}
-.service-tile.active img { transform: scale(1.05); }
-.service-tile.active .service-tile-overlay {
-  background: linear-gradient(175deg, rgba(0,0,0,0.06) 0%, rgba(28,26,29,0.80) 100%);
-}
-.service-tile.active .service-tile-desc { max-height: 0; opacity: 0; }
-.service-tile.active .service-tile-arrow { opacity: 0; }
 
 
 @media (max-width: 900px) {
