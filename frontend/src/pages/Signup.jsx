@@ -130,7 +130,7 @@ export default function Signup() {
           </button>
         </form>
 
-        <p style={{ textAlign: "center", marginTop: 20, fontSize: "0.87rem", color: "rgba(255,255,255,0.45)" }}>
+        <p style={{ textAlign: "center", marginTop: 20, fontSize: "0.87rem", color: "var(--muted)" }}>
           Already have an account? <Link to="/login" style={{ color: "var(--pink)", fontWeight: 600 }}>Sign in</Link>
         </p>
       </div>

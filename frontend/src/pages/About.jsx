@@ -9,10 +9,10 @@ export default function About() {
             <div>
               <span className="section-tag">About Us</span>
               <h1 className="section-title">Mary Nassif Chbat<br />Beauty Clinic</h1>
-              <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.75, marginBottom: 8 }}>
+              <p style={{ color: "var(--muted)", lineHeight: 1.75, marginBottom: 8 }}>
                 At Mary Nassif Chbat, we bring you the best in beauty. We specialize in providing high-quality treatments tailored to your needs, whether you are looking for a rejuvenating facial, advanced skincare, or a complete beauty transformation.
               </p>
-              <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.75, marginBottom: 28 }}>
+              <p style={{ color: "var(--muted)", lineHeight: 1.75, marginBottom: 28 }}>
                 Our expert team is committed to delivering results that not only meet but exceed your expectations. With years of experience and a passion for enhancing natural beauty, we are here to help you look and feel your best.
               </p>
               <div className="about-info-list">
@@ -22,11 +22,11 @@ export default function About() {
                 </div>
                 <div className="about-info-row">
                   <i className="fas fa-phone about-info-icon" />
-                  <a href="https://wa.me/9613799407" style={{ color: "rgba(255,255,255,0.65)" }}>+961 3 799 407</a>
+                  <a href="https://wa.me/9613799407" style={{ color: "var(--muted)" }}>+961 3 799 407</a>
                 </div>
                 <div className="about-info-row">
                   <i className="fas fa-envelope about-info-icon" />
-                  <a href="mailto:customerservice@marynassifchbat.com" style={{ color: "rgba(255,255,255,0.65)" }}>customerservice@marynassifchbat.com</a>
+                  <a href="mailto:customerservice@marynassifchbat.com" style={{ color: "var(--muted)" }}>customerservice@marynassifchbat.com</a>
                 </div>
               </div>
               <div className="about-socials">
@@ -42,7 +42,7 @@ export default function About() {
         </div>
       </section>
 
-      <section style={{ padding: "80px 0", background: "#0E0710" }}>
+      <section style={{ padding: "80px 0", background: "var(--surface)" }}>
         <div className="container">
           <div className="section-center" style={{ marginBottom: 48 }}>
             <span className="section-tag">What We Do</span>
@@ -67,10 +67,10 @@ export default function About() {
         </div>
       </section>
 
-      <section style={{ padding: "80px 0", background: "#0E0710", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+      <section style={{ padding: "80px 0", background: "var(--bg)", textAlign: "center", borderTop: "1px solid var(--border)" }}>
         <div className="container">
-          <h2 style={{ color: "#fff", marginBottom: 16, fontFamily: "'Bodoni Moda', serif" }}>Ready to Experience the Difference?</h2>
-          <p style={{ color: "rgba(255,255,255,0.55)", marginBottom: 36, maxWidth: 480, margin: "0 auto 36px" }}>
+          <h2 style={{ color: "var(--dark)", marginBottom: 16, fontFamily: "'Bodoni Moda', serif" }}>Ready to Experience the Difference?</h2>
+          <p style={{ color: "var(--muted)", marginBottom: 36, maxWidth: 480, margin: "0 auto 36px" }}>
             Book your appointment today and discover why clients keep coming back.
           </p>
           <Link to="/bookings" className="btn btn-pink btn-lg">Book Now</Link>
