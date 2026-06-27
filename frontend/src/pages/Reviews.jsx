@@ -49,8 +49,8 @@ export default function Reviews() {
 
         {user && (
           <div className="review-form-card">
-            <h3 style={{ marginBottom: 6, color: "#fff" }}>Leave a Review</h3>
-            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.88rem", marginBottom: 20 }}>How was your experience?</p>
+            <h3 style={{ marginBottom: 6, color: "var(--dark)" }}>Leave a Review</h3>
+            <p style={{ color: "var(--muted)", fontSize: "0.88rem", marginBottom: 20 }}>How was your experience?</p>
             {submitted && <div style={{ background: "rgba(255,79,157,0.12)", color: "var(--pink)", border: "1px solid rgba(255,79,157,0.3)", padding: "10px 16px", borderRadius: 8, marginBottom: 16, fontSize: "0.88rem" }}>Review submitted successfully!</div>}
             <Stars value={form.rating} onChange={r => setForm(f => ({ ...f, rating: r }))} />
             <div className="form-group">
@@ -64,7 +64,7 @@ export default function Reviews() {
         )}
 
         {!user && (
-          <div style={{ textAlign: "center", padding: "40px 0 56px", color: "rgba(255,255,255,0.45)" }}>
+          <div style={{ textAlign: "center", padding: "40px 0 56px", color: "var(--muted)" }}>
             <p style={{ marginBottom: 16 }}>Sign in to leave a review</p>
             <a href="/login" className="btn btn-outline">Sign In</a>
           </div>
