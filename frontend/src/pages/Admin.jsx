@@ -120,14 +120,25 @@ export default function Admin() {
 // ── Appointments Tab ──────────────────────────────────────────────────────────
 function AppointmentsTab({ appointments, services, clients, loading, qc }) {
   const [showForm, setShowForm] = useState(false)
+  const [clientMode, setClientMode] = useState("existing") // "existing" | "new"
   const [newAppt, setNewAppt] = useState({ client_id: "", service_id: "", date: today, time: "09:00" })
+  const [newClient, setNewClient] = useState({ first_name: "", last_name: "", email: "", phone_number: "" })
   const [editId, setEditId] = useState(null)
   const [editForm, setEditForm] = useState({})
   const [filter, setFilter] = useState("All")
 
+  const createClient = useMutation({
+    mutationFn: (body) => api.post("/users/admin", body),
+  })
   const createAppt = useMutation({
     mutationFn: (body) => api.post("/appointments/admin", body),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-appointments"] }); setShowForm(false) },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-appointments"] })
+      qc.invalidateQueries({ queryKey: ["admin-users"] })
+      setShowForm(false)
+      setNewAppt({ client_id: "", service_id: "", date: today, time: "09:00" })
+      setNewClient({ first_name: "", last_name: "", email: "", phone_number: "" })
+    },
   })
   const updateAppt = useMutation({
     mutationFn: ({ id, ...body }) => api.patch(`/appointments/${id}`, body),
@@ -139,6 +150,18 @@ function AppointmentsTab({ appointments, services, clients, loading, qc }) {
   })
 
   const filtered = filter === "All" ? appointments : appointments.filter(a => a.status === filter)
+  const isSubmitting = createClient.isPending || createAppt.isPending
+  const bookError = createClient.error?.response?.data?.detail || createAppt.error?.response?.data?.detail
+
+  const handleBookSubmit = async (e) => {
+    e.preventDefault()
+    let clientId = parseInt(newAppt.client_id)
+    if (clientMode === "new") {
+      const { data: created } = await createClient.mutateAsync(newClient)
+      clientId = created.id
+    }
+    createAppt.mutate({ client_id: clientId, service_id: parseInt(newAppt.service_id), date: newAppt.date, time: newAppt.time })
+  }
 
   return (
     <div>
@@ -161,36 +184,75 @@ function AppointmentsTab({ appointments, services, clients, loading, qc }) {
 
       {showForm && (
         <div className="admin-panel" style={{ padding: 24, marginBottom: 24 }}>
-          <h3 style={{ fontFamily: "'Bodoni Moda',serif", fontSize: "1.15rem", marginBottom: 18 }}>Book Appointment</h3>
-          <form onSubmit={e => { e.preventDefault(); createAppt.mutate({ client_id: parseInt(newAppt.client_id), service_id: parseInt(newAppt.service_id), date: newAppt.date, time: newAppt.time }) }}
-            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: 14, alignItems: "end" }}>
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">Client</label>
-              <select className="form-select" required value={newAppt.client_id} onChange={e => setNewAppt({ ...newAppt, client_id: e.target.value })}>
-                <option value="">Select client</option>
-                {clients.map(c => <option key={c.id} value={c.id}>{c.first_name} {c.last_name}</option>)}
-              </select>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+            <h3 style={{ fontFamily: "'Bodoni Moda',serif", fontSize: "1.15rem", margin: 0 }}>Book Appointment</h3>
+            <div style={{ display: "flex", gap: 0, border: "1.5px solid var(--border)", borderRadius: 8, overflow: "hidden" }}>
+              {[["existing", "Existing Client"], ["new", "Walk-in / New"]].map(([mode, label]) => (
+                <button key={mode} type="button" onClick={() => setClientMode(mode)} style={{
+                  padding: "6px 14px", border: "none", cursor: "pointer", fontFamily: "inherit",
+                  fontSize: "0.78rem", fontWeight: 700, transition: "all 0.15s",
+                  background: clientMode === mode ? "var(--pink)" : "#fff",
+                  color: clientMode === mode ? "#fff" : "var(--muted)",
+                }}>{label}</button>
+              ))}
             </div>
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">Service</label>
-              <select className="form-select" required value={newAppt.service_id} onChange={e => setNewAppt({ ...newAppt, service_id: e.target.value })}>
-                <option value="">Select service</option>
-                {services.map(s => <option key={s.id} value={s.id}>{s.servicetype} (${s.price})</option>)}
-              </select>
+          </div>
+
+          <form onSubmit={handleBookSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {clientMode === "new" && (
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))", gap: 14, padding: "16px 20px", background: "var(--bg)", borderRadius: 10, border: "1.5px dashed var(--border)" }}>
+                <div style={{ gridColumn: "1/-1", fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: 2, color: "var(--muted)", marginBottom: -4 }}>New Client Details</div>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label className="form-label">First Name</label>
+                  <input className="form-input" required placeholder="Lara" value={newClient.first_name} onChange={e => setNewClient({ ...newClient, first_name: e.target.value })} />
+                </div>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label className="form-label">Last Name</label>
+                  <input className="form-input" required placeholder="Khalil" value={newClient.last_name} onChange={e => setNewClient({ ...newClient, last_name: e.target.value })} />
+                </div>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label className="form-label">Email</label>
+                  <input className="form-input" type="email" required placeholder="lara@example.com" value={newClient.email} onChange={e => setNewClient({ ...newClient, email: e.target.value })} />
+                </div>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label className="form-label">Phone (optional)</label>
+                  <input className="form-input" placeholder="+961 70 000000" value={newClient.phone_number} onChange={e => setNewClient({ ...newClient, phone_number: e.target.value })} />
+                </div>
+              </div>
+            )}
+
+            {clientMode === "existing" && (
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Client</label>
+                <select className="form-select" required value={newAppt.client_id} onChange={e => setNewAppt({ ...newAppt, client_id: e.target.value })}>
+                  <option value="">Select client</option>
+                  {clients.map(c => <option key={c.id} value={c.id}>{c.first_name} {c.last_name} — {c.email}</option>)}
+                </select>
+              </div>
+            )}
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))", gap: 14, alignItems: "end" }}>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Service</label>
+                <select className="form-select" required value={newAppt.service_id} onChange={e => setNewAppt({ ...newAppt, service_id: e.target.value })}>
+                  <option value="">Select service</option>
+                  {services.map(s => <option key={s.id} value={s.id}>{s.servicetype} (${s.price})</option>)}
+                </select>
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Date</label>
+                <input className="form-input" type="date" required value={newAppt.date} onChange={e => setNewAppt({ ...newAppt, date: e.target.value })} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Time</label>
+                <input className="form-input" type="time" required value={newAppt.time} onChange={e => setNewAppt({ ...newAppt, time: e.target.value })} />
+              </div>
+              <button type="submit" className="btn btn-pink" style={{ height: 48, justifyContent: "center" }} disabled={isSubmitting}>
+                {isSubmitting ? "Booking…" : clientMode === "new" ? "Create & Book" : "Book"}
+              </button>
             </div>
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">Date</label>
-              <input className="form-input" type="date" required value={newAppt.date} onChange={e => setNewAppt({ ...newAppt, date: e.target.value })} />
-            </div>
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">Time</label>
-              <input className="form-input" type="time" required value={newAppt.time} onChange={e => setNewAppt({ ...newAppt, time: e.target.value })} />
-            </div>
-            <button type="submit" className="btn btn-pink" style={{ height: 48, justifyContent: "center" }} disabled={createAppt.isPending}>
-              {createAppt.isPending ? "Booking…" : "Book"}
-            </button>
           </form>
-          {createAppt.isError && <p style={{ color: "red", marginTop: 10, fontSize: "0.82rem" }}>{createAppt.error?.response?.data?.detail}</p>}
+          {bookError && <p style={{ color: "red", marginTop: 10, fontSize: "0.82rem" }}>{bookError}</p>}
         </div>
       )}
 
