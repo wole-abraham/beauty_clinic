@@ -72,7 +72,7 @@ export default function Landing() {
                 Beauty Clinic
               </motion.p>
 
-              <div style={{ overflow: "hidden", lineHeight: 1 }}>
+              <div style={{ overflow: "hidden", lineHeight: 1, whiteSpace: "nowrap" }}>
                 <motion.h1 className="hero-title"
                   variants={stagger(0.09, 0.25)} initial="hidden" animate="show">
                   {"GLOW".split("").map((l, i) => (
