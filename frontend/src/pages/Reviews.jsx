@@ -6,7 +6,7 @@ import { useMe } from "../hooks/useAuth"
 // ─── Replace this with your Elfsight app ID once you create the widget ───────
 // Sign up free at https://elfsight.com → Create Widget → Google Reviews
 // Your ID looks like: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-const ELFSIGHT_APP_ID = ""
+const ELFSIGHT_APP_ID = "6a24d6b6-b84d-447b-bc02-368996ef5dad"
 
 function GoogleReviewsWidget() {
   useEffect(() => {
@@ -17,7 +17,7 @@ function GoogleReviewsWidget() {
       return
     }
     const script = document.createElement("script")
-    script.src = "https://static.elfsight.com/platform/platform.js"
+    script.src = "https://elfsightcdn.com/platform.js"
     script.async = true
     document.body.appendChild(script)
   }, [])
