@@ -36,7 +36,7 @@ export default function About() {
               </div>
             </div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <img src="/images/logo.png" alt="Mary Nassif Chbat Beauty Clinic" style={{ width: "100%", maxWidth: 380, objectFit: "contain" }} />
+              <img src="/images/logo.png" alt="Mary Nassif Chbat Beauty Clinic" style={{ width: 340, height: 340, objectFit: "cover", borderRadius: "50%", boxShadow: "0 8px 48px rgba(197,168,128,0.2)" }} />
             </div>
           </div>
         </div>
