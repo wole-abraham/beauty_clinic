@@ -35,8 +35,8 @@ export default function About() {
                 <a href="https://www.tiktok.com/@marynassifchbat" className="btn btn-ghost btn-sm"><i className="fab fa-tiktok" /> TikTok</a>
               </div>
             </div>
-            <div>
-              <img src="/images/about.jpg" alt="Mary Nassif Chbat Beauty Clinic" className="about-page-img" onError={e => e.target.src = "/img/team.jpg"} />
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <img src="/images/logo.png" alt="Mary Nassif Chbat Beauty Clinic" style={{ width: "100%", maxWidth: 380, objectFit: "contain" }} />
             </div>
           </div>
         </div>
