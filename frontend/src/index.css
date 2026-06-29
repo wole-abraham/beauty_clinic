@@ -301,8 +301,8 @@ button { cursor: pointer; font-family: inherit; }
   100% { transform: translateX(-50%); }
 }
 @media (max-width: 600px) {
-  .flower-strip-inner img { width: 38px; height: 38px; margin: 0 12px; }
-  .flower-strip-inner img:nth-child(even) { width: 26px; height: 26px; }
+  .hero-flower-inner img { width: 38px; height: 38px; margin: 0 12px; }
+  .hero-flower-inner img:nth-child(even) { width: 26px; height: 26px; }
 }
 
 /* ===== SERVICES MASONRY ===== */
@@ -515,8 +515,8 @@ button { cursor: pointer; font-family: inherit; }
 .review-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--pink-light); color: var(--pink); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
 .review-name { font-weight: 700; font-size: 0.87rem; color: var(--dark); }
 .review-date { font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
-@media (max-width: 900px) { .reviews-grid { grid-template-columns: 1fr; } }
-@media (min-width: 600px) and (max-width: 900px) { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px) { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .reviews-grid { grid-template-columns: 1fr; } }
 
 /* ===== CTA + CONTACT COMBINED ===== */
 .cta-contact-section { background: var(--surface); }
@@ -687,6 +687,10 @@ button { cursor: pointer; font-family: inherit; }
 .login-footer { text-align: center; margin-top: 24px; font-size: 0.87rem; color: var(--muted); }
 .login-footer a { color: var(--pink); font-weight: 600; }
 @media (max-width: 768px) { .login-split { grid-template-columns: 1fr; } .login-left { display: none; } .login-right { padding: 40px 24px; } }
+.login-mobile-brand { display: none; align-items: center; gap: 12px; margin-bottom: 28px; }
+@media (max-width: 768px) { .login-mobile-brand { display: flex; } }
+.page-header { margin-bottom: 40px; }
+@media (max-width: 768px) { .page-header { margin-bottom: 24px; } }
 
 /* ===== SIGNUP ===== */
 .signup-page { min-height: 100vh; background: var(--bg); display: flex; align-items: center; justify-content: center; padding: 60px 24px; }
@@ -695,7 +699,7 @@ button { cursor: pointer; font-family: inherit; }
 .signup-title { font-size: 1.8rem; text-align: center; margin-bottom: 6px; font-family: 'Bodoni Moda', serif; color: var(--dark); }
 .signup-sub { color: var(--muted); text-align: center; font-size: 0.87rem; margin-bottom: 32px; }
 .signup-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
-@media (max-width: 560px) { .signup-card { padding: 32px 20px; } .signup-row { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .signup-card { padding: 32px 20px; } .signup-row { grid-template-columns: 1fr; } }
 
 /* ===== BOOKINGS ===== */
 .bookings-page { padding: 60px 0 100px; background: var(--bg); min-height: 80vh; }
@@ -718,11 +722,12 @@ button { cursor: pointer; font-family: inherit; }
 .time-opt { border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 11px 6px; text-align: center; cursor: pointer; font-weight: 600; font-size: 0.84rem; transition: all 0.2s; background: var(--bg); width: 100%; color: var(--text); }
 .time-opt:hover, .time-opt.sel { border-color: var(--pink); background: rgba(197,168,128,0.06); color: var(--pink); }
 .summary-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 20px; }
-.summary-row { display: flex; justify-content: space-between; font-size: 0.87rem; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.summary-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2px 8px; font-size: 0.87rem; padding: 8px 0; border-bottom: 1px solid var(--border); }
 .summary-row:last-child { border-bottom: none; }
 .summary-label { color: var(--muted); }
 .summary-val { font-weight: 600; color: var(--dark); }
 .hours-card { background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 28px; position: sticky; top: 84px; }
+@media (max-width: 900px) { .hours-card { position: static; order: -1; } }
 .hours-title { color: var(--dark); font-size: 1.05rem; font-weight: 700; margin-bottom: 20px; font-family: 'Cormorant Garamond', serif; }
 .hours-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
 .hours-row:last-child { border-bottom: none; }
@@ -904,7 +909,7 @@ body { overflow-x: hidden; }
 
   /* Reviews */
   .reviews-section { padding: 64px 0; }
-  .reviews-grid { grid-template-columns: 1fr; gap: 16px; margin-top: 32px; }
+  .reviews-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 32px; }
   .review-card { padding: 24px 20px; }
 
   /* CTA */

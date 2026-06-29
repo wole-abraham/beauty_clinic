@@ -28,6 +28,10 @@ export default function Login() {
       </div>
 
       <div className="login-right">
+        <div className="login-mobile-brand">
+          <img src="/images/logo.png" alt="Logo" style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover" }} />
+          <span style={{ fontFamily: "'Bodoni Moda',serif", fontStyle: "italic", fontSize: "1.1rem", color: "var(--dark)" }}>Mary Nassif Chbat</span>
+        </div>
         <div className="login-form-box">
           <p className="login-form-eyebrow" style={{ fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: 3, color: "var(--pink)", fontWeight: 700, marginBottom: 10 }}>Welcome back</p>
           <h1 className="login-form-title" style={{ fontSize: "2.4rem", color: "var(--dark)", marginBottom: 6, fontFamily: "'Bodoni Moda', serif", fontStyle: "italic" }}>Sign In</h1>
