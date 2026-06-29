@@ -23,21 +23,19 @@ export default function Login() {
     <div className="login-split">
       <div className="login-left">
         <img src="/images/logo.png" alt="Logo" className="login-left-logo" onError={e => e.target.style.display = "none"} />
-        <p className="login-left-eyebrow">Beauty Clinic</p>
         <h2 className="login-left-title">Mary Nassif<br />Chbat</h2>
         <p className="login-left-sub">Sign in to manage your appointments and experience the art of beauty.</p>
-        <img src="/images/about.jpg" alt="Beauty" className="login-left-img" onError={e => e.target.style.display = "none"} />
       </div>
 
       <div className="login-right">
         <div className="login-form-box">
-          <p className="login-form-eyebrow">Welcome back</p>
-          <h1 className="login-form-title">Sign In</h1>
-          <p className="login-form-sub">Enter your credentials to continue</p>
+          <p className="login-form-eyebrow" style={{ fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: 3, color: "var(--pink)", fontWeight: 700, marginBottom: 10 }}>Welcome back</p>
+          <h1 className="login-form-title" style={{ fontSize: "2.4rem", color: "var(--dark)", marginBottom: 6, fontFamily: "'Bodoni Moda', serif", fontStyle: "italic" }}>Sign In</h1>
+          <p className="login-form-sub" style={{ color: "var(--muted)", marginBottom: 24, fontSize: "0.9rem" }}>Enter your credentials to continue</p>
 
           {err && <div className="form-error" style={{ marginBottom: 20 }}>{err}</div>}
 
-          <form onSubmit={handleSubmit} style={{ marginTop: 28 }}>
+          <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label className="form-label">Email Address</label>
               <input
