@@ -1,0 +1,12 @@
+{
+  "name": "Mary Nassif Chbat Beauty Clinic",
+  "short_name": "MNC Beauty",
+  "description": "Premium beauty treatments in Sed El Boushrieh, Lebanon",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0E0710",
+  "theme_color": "#FF4F9D",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
