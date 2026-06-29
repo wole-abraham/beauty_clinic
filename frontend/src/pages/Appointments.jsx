@@ -20,7 +20,7 @@ export default function Appointments() {
   return (
     <div className="appts-page">
       <div className="container">
-        <div style={{ marginBottom: 48 }}>
+        <div className="page-header">
           <span className="section-tag">Your Schedule</span>
           <h1 className="section-title">My Appointments</h1>
         </div>

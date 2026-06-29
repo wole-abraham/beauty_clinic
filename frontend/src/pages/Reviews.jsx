@@ -99,7 +99,7 @@ export default function Reviews() {
   return (
     <div className="reviews-page">
       <div className="container">
-        <div className="section-center" style={{ marginBottom: 56 }}>
+        <div className="section-center page-header">
           <span className="section-tag">Feedback</span>
           <h1 className="section-title">Client Reviews</h1>
           <p className="section-desc">Real experiences from our valued clients. We love hearing from you!</p>
