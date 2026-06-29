@@ -1,7 +1,9 @@
 ﻿import { Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import api from "../lib/api"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
+import { motion, useScroll, useTransform, useInView } from "framer-motion"
+import { fadeUp, fadeIn, slideLeft, slideRight, stagger, letterUp, ease } from "../lib/motion"
 
 const SERVICES = [
   { title: "Nail Care", img: "/img/nailcare.jpg", desc: "Expert nail care from classic treatments to stunning nail art. Enjoy healthy, stylish nails with personalized care and premium products." },
@@ -16,7 +18,6 @@ const SERVICES = [
   { title: "Full Makeup", img: "/img/makeup1.jpg", desc: "A full spectrum of makeup services, bridal, regular, and artistic, tailored to your personal style." },
 ]
 
-
 const HOURS = [
   ["Saturday","08:30 am - 6:00 pm"],["Sunday","08:30 am - 12:00 pm"],
   ["Monday","Closed"],["Tuesday","08:30 am - 6:00 pm"],
@@ -27,6 +28,26 @@ const stars = (n) => Array.from({ length: 5 }, (_, i) => (
   <span key={i} style={{ color: i < n ? "#FFC107" : "#ddd" }}>&#9733;</span>
 ))
 
+function CountUp({ target, suffix = "" }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, amount: 0.5 })
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    if (!inView) return
+    const end = parseInt(target)
+    const startTime = performance.now()
+    const duration = 1800
+    const tick = (now) => {
+      const t = Math.min((now - startTime) / duration, 1)
+      const eased = 1 - Math.pow(1 - t, 3)
+      setCount(Math.round(eased * end))
+      if (t < 1) requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick)
+  }, [inView, target])
+  return <span ref={ref}>{count}{suffix}</span>
+}
+
 export default function Landing() {
   const { data: reviews = [] } = useQuery({
     queryKey: ["reviews"],
@@ -35,32 +56,62 @@ export default function Landing() {
   const [showAll, setShowAll] = useState(false)
   const visibleReviews = showAll ? reviews : reviews.slice(0, 3)
 
-
+  const { scrollY } = useScroll()
+  const heroImgY = useTransform(scrollY, [0, 600], [0, -70])
+  const heroBgY = useTransform(scrollY, [0, 600], [0, 40])
 
   return (
     <>
       <section className="hero">
-
-        <div className="container">
+        <motion.div className="container" style={{ y: heroBgY }}>
           <div className="hero-inner">
             <div className="hero-content">
-              <p className="hero-eyebrow">Beauty Clinic</p>
-              <h1 className="hero-title">GLOW</h1>
-              <p className="hero-script">Mary Nassif Chbat</p>
-              <p className="hero-sub">Discover the secret to radiant beauty with our premium services, designed to make you shine with confidence and elegance.</p>
-              <div className="hero-cta">
+              <motion.p className="hero-eyebrow"
+                initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1, ease }}>
+                Beauty Clinic
+              </motion.p>
+
+              <div style={{ overflow: "hidden", lineHeight: 1 }}>
+                <motion.h1 className="hero-title"
+                  variants={stagger(0.09, 0.25)} initial="hidden" animate="show">
+                  {"GLOW".split("").map((l, i) => (
+                    <motion.span key={i} variants={letterUp} style={{ display: "inline-block" }}>{l}</motion.span>
+                  ))}
+                </motion.h1>
+              </div>
+
+              <motion.p className="hero-script"
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.72, ease }}>
+                Mary Nassif Chbat
+              </motion.p>
+
+              <motion.p className="hero-sub"
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.88, ease }}>
+                Discover the secret to radiant beauty with our premium services, designed to make you shine with confidence and elegance.
+              </motion.p>
+
+              <motion.div className="hero-cta"
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 1.05, ease }}>
                 <Link to="/bookings" className="btn-premium">
                   <span>Book Appointment</span>
                   <i className="fas fa-arrow-right" />
                 </Link>
-              </div>
+              </motion.div>
             </div>
-            <div className="hero-img-wrap">
+
+            <motion.div className="hero-img-wrap" style={{ y: heroImgY }}
+              initial={{ opacity: 0, scale: 0.92, x: 40 }} animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.3, ease }}>
               <div className="hero-img-circle" />
               <img src="/images/hero-illustration.png" alt="Beauty" className="hero-img" />
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
+
         <div className="hero-flower-strip">
           <div className="hero-flower-inner">
             {Array.from({ length: 24 }, (_, i) => (
@@ -73,51 +124,53 @@ export default function Landing() {
         </div>
       </section>
 
-
       <section className="services-section">
         <div className="container">
-          <div className="services-intro">
+          <motion.div className="services-intro"
+            variants={stagger(0.12)} initial="hidden"
+            whileInView="show" viewport={{ once: true, margin: "-80px" }}>
             <div>
-              <span className="section-tag">What We Offer</span>
-              <h2 className="section-title">Our Services</h2>
-              <p className="section-desc">Each treatment is carefully crafted to enhance your natural beauty and leave you feeling confident and radiant.</p>
+              <motion.span className="section-tag" variants={fadeUp}>What We Offer</motion.span>
+              <motion.h2 className="section-title" variants={fadeUp}>Our Services</motion.h2>
+              <motion.p className="section-desc" variants={fadeUp}>
+                Each treatment is carefully crafted to enhance your natural beauty and leave you feeling confident and radiant.
+              </motion.p>
             </div>
-            <div className="services-intro-cta">
+            <motion.div className="services-intro-cta" variants={fadeUp}>
               <Link to="/bookings" className="btn-premium">
                 <span>Book Now</span>
                 <i className="fas fa-arrow-right" />
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div className="services-masonry">
+          <motion.div className="services-masonry"
+            variants={stagger(0.06, 0.1)} initial="hidden"
+            whileInView="show" viewport={{ once: true, margin: "-60px" }}>
             {SERVICES.map((s, i) => (
-              <Link
-                to="/bookings"
-                key={i}
-                className="service-tile"
-              >
-                <img src={s.img} alt={s.title} onError={e => e.target.src = "/img/makeup.jpg"} />
-                <div className="service-tile-overlay" />
-<div className="service-tile-content">
-                  <span className="service-tile-num">{String(i + 1).padStart(2, "0")}</span>
-                  <h3 className="service-tile-name">{s.title}</h3>
-                  <p className="service-tile-desc">{s.desc}</p>
-                  <span className="service-tile-arrow">
-                    Book Now <i className="fas fa-arrow-right" />
-                  </span>
-                </div>
-              </Link>
+              <motion.div key={i} variants={fadeUp}>
+                <Link to="/bookings" className="service-tile">
+                  <img src={s.img} alt={s.title} onError={e => e.target.src = "/img/makeup.jpg"} />
+                  <div className="service-tile-overlay" />
+                  <div className="service-tile-content">
+                    <span className="service-tile-num">{String(i + 1).padStart(2, "0")}</span>
+                    <h3 className="service-tile-name">{s.title}</h3>
+                    <p className="service-tile-desc">{s.desc}</p>
+                    <span className="service-tile-arrow">Book Now <i className="fas fa-arrow-right" /></span>
+                  </div>
+                </Link>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
-
 
       <section className="about-teaser">
         <div className="container">
           <div className="about-grid">
-            <div className="about-logo-col">
+            <motion.div className="about-logo-col"
+              variants={slideLeft} initial="hidden"
+              whileInView="show" viewport={{ once: true, margin: "-80px" }}>
               <div className="about-logo-wrap">
                 <div className="about-logo-ring about-logo-ring--outer" />
                 <div className="about-logo-ring about-logo-ring--inner" />
@@ -127,38 +180,37 @@ export default function Landing() {
                 <div className="about-logo-dot about-logo-dot--2"><i className="fas fa-gem" /></div>
                 <div className="about-logo-dot about-logo-dot--3"><i className="fas fa-spa" /></div>
               </div>
-              <div className="about-stats-row">
-                {[["500+","Happy Clients"],["5+","Years"],["10","Services"]].map(([n,l]) => (
-                  <div key={l} className="about-stat">
-                    <span className="about-stat-num">{n}</span>
+              <motion.div className="about-stats-row"
+                variants={stagger(0.15, 0.2)} initial="hidden"
+                whileInView="show" viewport={{ once: true }}>
+                {[["500","+","Happy Clients"],["5","+","Years"],["10","","Services"]].map(([n,suf,l]) => (
+                  <motion.div key={l} className="about-stat" variants={fadeUp}>
+                    <span className="about-stat-num"><CountUp target={n} suffix={suf} /></span>
                     <span className="about-stat-lbl">{l}</span>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
-            </div>
-            <div className="about-text-col">
-              <span className="section-tag" style={{ color: "var(--pink)" }}>About Us</span>
-              <p className="about-script-name">Mary Nassif Chbat</p>
-              <h2 className="about-heading">Your Trusted<br /><em>Beauty Clinic</em></h2>
-              <div className="about-divider" />
-              <p className="about-body">
-                We specialize in high-quality treatments tailored to your needs — from rejuvenating facials and advanced skincare to complete beauty transformations.
-              </p>
-              <div className="about-pillars">
-                <div className="about-pillar">
-                  <span className="about-pillar-icon"><i className="fas fa-star" /></span>
-                  <span>Premium expertise</span>
-                </div>
-                <div className="about-pillar">
-                  <span className="about-pillar-icon"><i className="fas fa-heart" /></span>
-                  <span>Personalized care</span>
-                </div>
-                <div className="about-pillar">
-                  <span className="about-pillar-icon"><i className="fas fa-spa" /></span>
-                  <span>Relaxing atmosphere</span>
-                </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
+
+            <motion.div className="about-text-col"
+              variants={stagger(0.1, 0.1)} initial="hidden"
+              whileInView="show" viewport={{ once: true, margin: "-80px" }}>
+              <motion.span className="section-tag" variants={fadeUp} style={{ color: "var(--pink)" }}>About Us</motion.span>
+              <motion.p className="about-script-name" variants={fadeUp}>Mary Nassif Chbat</motion.p>
+              <motion.h2 className="about-heading" variants={fadeUp}>Your Trusted<br /><em>Beauty Clinic</em></motion.h2>
+              <motion.div className="about-divider" variants={fadeIn} />
+              <motion.p className="about-body" variants={fadeUp}>
+                We specialize in high-quality treatments tailored to your needs from rejuvenating facials and advanced skincare to complete beauty transformations.
+              </motion.p>
+              <motion.div className="about-pillars" variants={stagger(0.1, 0.1)}>
+                {[{icon:"fa-star",label:"Premium expertise"},{icon:"fa-heart",label:"Personalized care"},{icon:"fa-spa",label:"Relaxing atmosphere"}].map(({icon,label}) => (
+                  <motion.div key={label} className="about-pillar" variants={fadeUp}>
+                    <span className="about-pillar-icon"><i className={"fas " + icon} /></span>
+                    <span>{label}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -166,13 +218,17 @@ export default function Landing() {
       {reviews.length > 0 && (
         <section className="reviews-section">
           <div className="container">
-            <div className="section-center" style={{ marginBottom: 0 }}>
-              <span className="section-tag">Testimonials</span>
-              <h2 className="section-title">What Clients Say</h2>
-            </div>
-            <div className="reviews-grid">
+            <motion.div className="section-center" style={{ marginBottom: 0 }}
+              variants={stagger(0.1)} initial="hidden"
+              whileInView="show" viewport={{ once: true, margin: "-60px" }}>
+              <motion.span className="section-tag" variants={fadeUp}>Testimonials</motion.span>
+              <motion.h2 className="section-title" variants={fadeUp}>What Clients Say</motion.h2>
+            </motion.div>
+            <motion.div className="reviews-grid"
+              variants={stagger(0.1, 0.1)} initial="hidden"
+              whileInView="show" viewport={{ once: true, margin: "-40px" }}>
               {visibleReviews.map(r => (
-                <div key={r.id} className="review-card">
+                <motion.div key={r.id} className="review-card" variants={fadeUp}>
                   <div className="review-stars">{stars(parseInt(r.rating) || 5)}</div>
                   <p className="review-text">&ldquo;{r.comment}&rdquo;</p>
                   <div className="review-author">
@@ -182,15 +238,17 @@ export default function Landing() {
                       <div className="review-date">{new Date(r.date).toLocaleDateString("en-US", { month: "long", year: "numeric" })}</div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
             {reviews.length > 3 && (
-              <div style={{ textAlign: "center", marginTop: 40 }}>
+              <motion.div style={{ textAlign: "center", marginTop: 40 }}
+                initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+                transition={{ duration: 0.5 }}>
                 <button className="btn btn-outline" onClick={() => setShowAll(s => !s)}>
                   {showAll ? "Show Less" : "See All " + reviews.length + " Reviews"}
                 </button>
-              </div>
+              </motion.div>
             )}
           </div>
         </section>
@@ -200,21 +258,24 @@ export default function Landing() {
         <div className="cta-contact-top">
           <div className="container">
             <div className="cta-contact-grid">
-              <div className="cta-left">
-                <span className="section-tag" style={{ color: "var(--pink)" }}>Book a Session</span>
-                <h2 className="cta-big-title">Ready to<br /><em>Glow?</em></h2>
-                <p className="cta-big-sub">Let our expert team craft the perfect beauty experience for you — walk in, and walk out radiant.</p>
-                <Link to="/bookings" className="btn-premium">
-                  <span>Book Appointment</span>
-                  <i className="fas fa-arrow-right" />
-                </Link>
-              </div>
-              <div className="cta-right">
+              <motion.div className="cta-left"
+                variants={stagger(0.12)} initial="hidden"
+                whileInView="show" viewport={{ once: true, margin: "-80px" }}>
+                <motion.span className="section-tag" variants={fadeUp} style={{ color: "var(--pink)" }}>Book a Session</motion.span>
+                <motion.h2 className="cta-big-title" variants={fadeUp}>Ready to<br /><em>Glow?</em></motion.h2>
+                <motion.p className="cta-big-sub" variants={fadeUp}>Let our expert team craft the perfect beauty experience for you.</motion.p>
+                <motion.div variants={fadeUp}>
+                  <Link to="/bookings" className="btn-premium">
+                    <span>Book Appointment</span>
+                    <i className="fas fa-arrow-right" />
+                  </Link>
+                </motion.div>
+              </motion.div>
+              <motion.div className="cta-right"
+                variants={slideRight} initial="hidden"
+                whileInView="show" viewport={{ once: true, margin: "-80px" }}>
                 <div className="hours-panel">
-                  <div className="hours-panel-head">
-                    <i className="fas fa-clock" />
-                    <span>Opening Hours</span>
-                  </div>
+                  <div className="hours-panel-head"><i className="fas fa-clock" /><span>Opening Hours</span></div>
                   <div className="hours-panel-rows">
                     {HOURS.map(([d, h]) => (
                       <div key={d} className={"hours-panel-row" + (h === "Closed" ? " closed" : "")}>
@@ -225,36 +286,40 @@ export default function Landing() {
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
 
         <div className="cta-contact-bottom">
-          <div className="contact-cards">
-            <a href="https://maps.google.com/?q=Sed+El+Boushrieh+Ossaily+Street+Lebanon" className="contact-card" target="_blank" rel="noreferrer">
+          <motion.div className="contact-cards"
+            variants={stagger(0.12)} initial="hidden"
+            whileInView="show" viewport={{ once: true, margin: "-40px" }}>
+            <motion.a href="https://maps.google.com/?q=Sed+El+Boushrieh+Ossaily+Street+Lebanon" className="contact-card" target="_blank" rel="noreferrer" variants={fadeUp}>
               <i className="fas fa-map-marker-alt contact-card-ico" />
               <span className="contact-card-label">Find Us</span>
               <span className="contact-card-val">Sed El Boushrieh, Ossaily Street, Lebanon</span>
               <span className="contact-card-cta">Get Directions <i className="fas fa-arrow-right" /></span>
-            </a>
-            <a href="https://wa.me/9613799407" className="contact-card contact-card--pink" target="_blank" rel="noreferrer">
+            </motion.a>
+            <motion.a href="https://wa.me/9613799407" className="contact-card contact-card--pink" target="_blank" rel="noreferrer" variants={fadeUp}>
               <i className="fab fa-whatsapp contact-card-ico" />
               <span className="contact-card-label">WhatsApp Us</span>
               <span className="contact-card-val">+961 3 799 407</span>
               <span className="contact-card-cta">Message Now <i className="fas fa-arrow-right" /></span>
-            </a>
-            <a href="mailto:customerservice@marynassifchbat.com" className="contact-card">
+            </motion.a>
+            <motion.a href="mailto:customerservice@marynassifchbat.com" className="contact-card" variants={fadeUp}>
               <i className="fas fa-envelope contact-card-ico" />
               <span className="contact-card-label">Email</span>
               <span className="contact-card-val">customerservice@marynassifchbat.com</span>
               <span className="contact-card-cta">Send Email <i className="fas fa-arrow-right" /></span>
-            </a>
-          </div>
+            </motion.a>
+          </motion.div>
         </div>
       </section>
 
-      <footer className="footer">
+      <motion.footer className="footer"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 0.8 }}>
         <div className="container">
           <div className="footer-body">
             <div className="footer-brand-col">
@@ -266,7 +331,6 @@ export default function Landing() {
                 <a href="https://www.tiktok.com/@marynassifchbat" className="social-btn"><i className="fab fa-tiktok" /></a>
               </div>
             </div>
-
             <div className="footer-links-col">
               <p className="footer-col-title">Services</p>
               <div className="footer-links">
@@ -275,7 +339,6 @@ export default function Landing() {
                 ))}
               </div>
             </div>
-
             <div className="footer-links-col">
               <p className="footer-col-title">Quick Links</p>
               <div className="footer-links">
@@ -286,7 +349,6 @@ export default function Landing() {
                 <Link to="/appointments" className="footer-link">My Appointments</Link>
               </div>
             </div>
-
             <div className="footer-cta-col">
               <p className="footer-col-title">Ready to Glow?</p>
               <p className="footer-cta-sub">Book your next beauty session with us.</p>
@@ -296,7 +358,6 @@ export default function Landing() {
               </Link>
             </div>
           </div>
-
           <div className="footer-bar">
             <span>&copy; {new Date().getFullYear()} Mary Nassif Chbat. All rights reserved.</span>
             <div className="footer-bar-links">
@@ -306,8 +367,7 @@ export default function Landing() {
             </div>
           </div>
         </div>
-      </footer>
-
+      </motion.footer>
     </>
   )
 }
