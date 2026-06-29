@@ -43,6 +43,9 @@ export default function Landing() {
 
         <div className="container">
           <div className="hero-inner">
+            <div className="hero-img-wrap">
+              <img src="/images/hero-roses.png" alt="Beauty" className="hero-img" />
+            </div>
             <div className="hero-content">
               <p className="hero-eyebrow">Beauty Clinic</p>
               <h1 className="hero-title">GLOW</h1>
