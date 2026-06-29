@@ -55,17 +55,6 @@ export default function Landing() {
                 </Link>
               </div>
             </div>
-            <div className="hero-img-wrap">
-              <div className="hero-img-circle" />
-              <img src="/images/hero-girl.png" alt="Beauty" className="hero-img" />
-              <div className="hero-badge">
-                <div className="hero-badge-icon"><i className="fas fa-star" /></div>
-                <div className="hero-badge-text">
-                  <strong>5.0 Rating</strong>
-                  Trusted by 500+ clients
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div className="hero-flower-strip">
