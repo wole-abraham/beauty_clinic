@@ -38,7 +38,7 @@ function GoogleReviewsWidget() {
 
       {/* Skeleton shown while widget loads */}
       {!loaded && (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
           {[1,2,3].map(i => (
             <div key={i} style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid var(--border)" }}>
               <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 14 }}>
