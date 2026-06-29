@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
@@ -6,7 +6,7 @@ from typing import List
 from app.database import get_db
 from app.models import Review
 from app.schemas import ReviewCreate, ReviewOut
-from app.auth import get_current_user
+from app.auth import get_current_user, get_current_staff
 from app.models import User
 
 router = APIRouter(prefix="/reviews", tags=["reviews"])
@@ -35,3 +35,13 @@ async def create_review(
         select(Review).options(selectinload(Review.user)).where(Review.id == review.id)
     )
     return result.scalar_one()
+
+
+@router.delete("/{review_id}", status_code=204)
+async def delete_review(review_id: int, db: AsyncSession = Depends(get_db), _=Depends(get_current_staff)):
+    result = await db.execute(select(Review).where(Review.id == review_id))
+    review = result.scalar_one_or_none()
+    if not review:
+        raise HTTPException(status_code=404, detail="Review not found")
+    await db.delete(review)
+    await db.commit()
