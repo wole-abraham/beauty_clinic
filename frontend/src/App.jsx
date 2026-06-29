@@ -34,7 +34,7 @@ export default function App() {
           />
           <Route
             path="/admin"
-            element={<ProtectedRoute staffOnly><Admin /></ProtectedRoute>}
+            element={<Admin />}
           />
         </Routes>
       </BrowserRouter>
