@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0E0710;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a0b1e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="pink-line" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF4F9D;stop-opacity:0" />
+      <stop offset="30%" style="stop-color:#FF4F9D;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#FF4F9D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF4F9D;stop-opacity:0" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle corner decorations -->
+  <circle cx="0" cy="0" r="280" fill="#FF4F9D" opacity="0.04"/>
+  <circle cx="1200" cy="630" r="320" fill="#FF4F9D" opacity="0.05"/>
+
+  <!-- Top pink accent line -->
+  <rect x="0" y="0" width="1200" height="3" fill="url(#pink-line)" opacity="0.8"/>
+
+  <!-- Left ornament line -->
+  <rect x="80" y="100" width="1" height="430" fill="#FF4F9D" opacity="0.25"/>
+
+  <!-- Main content area -->
+  <!-- Small label -->
+  <text x="120" y="175" font-family="Georgia, 'Times New Roman', serif" font-size="14" letter-spacing="6" fill="#FF4F9D" font-weight="400" text-anchor="start">BEAUTY CLINIC · LEBANON</text>
+
+  <!-- Decorative line after label -->
+  <rect x="120" y="192" width="60" height="1.5" fill="#FF4F9D" opacity="0.6"/>
+
+  <!-- Main name - large -->
+  <text x="120" y="280" font-family="Georgia, 'Times New Roman', serif" font-size="72" fill="#ffffff" font-weight="400" font-style="italic" letter-spacing="-1">Mary Nassif Chbat</text>
+
+  <!-- Sub tagline -->
+  <text x="122" y="335" font-family="Georgia, 'Times New Roman', serif" font-size="22" fill="#C9BCAE" font-weight="400" letter-spacing="1">Premium Beauty &amp; Aesthetic Treatments</text>
+
+  <!-- Divider -->
+  <rect x="120" y="370" width="960" height="1" fill="#C9BCAE" opacity="0.15"/>
+
+  <!-- Services row -->
+  <text x="120" y="415" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#FF4F9D" letter-spacing="4" font-weight="700">SERVICES</text>
+
+  <!-- Service pills -->
+  <!-- Facial Treatments -->
+  <rect x="120" y="430" width="175" height="34" rx="17" fill="#FF4F9D" opacity="0.12"/>
+  <rect x="120" y="430" width="175" height="34" rx="17" fill="none" stroke="#FF4F9D" stroke-width="1" opacity="0.4"/>
+  <text x="207" y="452" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">Facial Treatments</text>
+
+  <!-- Makeup Artistry -->
+  <rect x="310" y="430" width="170" height="34" rx="17" fill="#FF4F9D" opacity="0.12"/>
+  <rect x="310" y="430" width="170" height="34" rx="17" fill="none" stroke="#FF4F9D" stroke-width="1" opacity="0.4"/>
+  <text x="395" y="452" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">Makeup Artistry</text>
+
+  <!-- Nail Care -->
+  <rect x="495" y="430" width="120" height="34" rx="17" fill="#FF4F9D" opacity="0.12"/>
+  <rect x="495" y="430" width="120" height="34" rx="17" fill="none" stroke="#FF4F9D" stroke-width="1" opacity="0.4"/>
+  <text x="555" y="452" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">Nail Care</text>
+
+  <!-- Mesotherapy -->
+  <rect x="630" y="430" width="140" height="34" rx="17" fill="#FF4F9D" opacity="0.12"/>
+  <rect x="630" y="430" width="140" height="34" rx="17" fill="none" stroke="#FF4F9D" stroke-width="1" opacity="0.4"/>
+  <text x="700" y="452" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">Mesotherapy</text>
+
+  <!-- Eyelash Perming -->
+  <rect x="785" y="430" width="168" height="34" rx="17" fill="#FF4F9D" opacity="0.12"/>
+  <rect x="785" y="430" width="168" height="34" rx="17" fill="none" stroke="#FF4F9D" stroke-width="1" opacity="0.4"/>
+  <text x="869" y="452" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">Eyelash Perming</text>
+
+  <!-- + More -->
+  <text x="968" y="452" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#FF4F9D">+ more</text>
+
+  <!-- Bottom divider -->
+  <rect x="120" y="500" width="960" height="1" fill="#C9BCAE" opacity="0.12"/>
+
+  <!-- Location + URL row -->
+  <!-- Location icon (simplified) -->
+  <circle cx="131" cy="537" r="8" fill="none" stroke="#FF4F9D" stroke-width="1.5" opacity="0.8"/>
+  <circle cx="131" cy="537" r="3" fill="#FF4F9D" opacity="0.8"/>
+  <text x="150" y="542" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#878A8E">Ossaily Street, Sed El Boushrieh, Lebanon</text>
+
+  <!-- Dot separator -->
+  <circle cx="460" cy="537" r="2" fill="#FF4F9D" opacity="0.5"/>
+
+  <!-- Phone -->
+  <text x="478" y="542" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#878A8E">+961 3 799 407</text>
+
+  <!-- Website URL (right aligned) -->
+  <text x="1080" y="542" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#FF4F9D" text-anchor="end" opacity="0.9">marynassifchbat.com</text>
+
+  <!-- Bottom right star decoration -->
+  <text x="1130" y="555" font-family="Arial" font-size="18" fill="#FF4F9D" opacity="0.5">✦</text>
+</svg>
