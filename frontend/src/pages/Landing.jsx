@@ -57,7 +57,7 @@ export default function Landing() {
             </div>
             <div className="hero-img-wrap">
               <div className="hero-img-circle" />
-              <img src="/images/beauty-illustration.png" alt="Beauty" className="hero-img" />
+              <img src="/images/hero-illustration.png" alt="Beauty" className="hero-img" />
             </div>
           </div>
         </div>
