@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query"
 import api from "../lib/api"
 import { useState, useRef, useEffect } from "react"
 import { motion, useScroll, useTransform, useInView } from "framer-motion"
+
+const MotionLink = motion.create(Link)
 import { fadeUp, fadeIn, slideLeft, slideRight, stagger, letterUp, ease } from "../lib/motion"
 
 const SERVICES = [
@@ -148,18 +150,16 @@ export default function Landing() {
             variants={stagger(0.06, 0.1)} initial="hidden"
             whileInView="show" viewport={{ once: true, margin: "-60px" }}>
             {SERVICES.map((s, i) => (
-              <motion.div key={i} variants={fadeUp}>
-                <Link to="/bookings" className="service-tile">
-                  <img src={s.img} alt={s.title} onError={e => e.target.src = "/img/makeup.jpg"} />
-                  <div className="service-tile-overlay" />
-                  <div className="service-tile-content">
-                    <span className="service-tile-num">{String(i + 1).padStart(2, "0")}</span>
-                    <h3 className="service-tile-name">{s.title}</h3>
-                    <p className="service-tile-desc">{s.desc}</p>
-                    <span className="service-tile-arrow">Book Now <i className="fas fa-arrow-right" /></span>
-                  </div>
-                </Link>
-              </motion.div>
+              <MotionLink key={i} to="/bookings" className="service-tile" variants={fadeUp}>
+                <img src={s.img} alt={s.title} onError={e => e.target.src = "/img/makeup.jpg"} />
+                <div className="service-tile-overlay" />
+                <div className="service-tile-content">
+                  <span className="service-tile-num">{String(i + 1).padStart(2, "0")}</span>
+                  <h3 className="service-tile-name">{s.title}</h3>
+                  <p className="service-tile-desc">{s.desc}</p>
+                  <span className="service-tile-arrow">Book Now <i className="fas fa-arrow-right" /></span>
+                </div>
+              </MotionLink>
             ))}
           </motion.div>
         </div>
