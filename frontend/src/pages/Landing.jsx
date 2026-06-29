@@ -43,9 +43,6 @@ export default function Landing() {
 
         <div className="container">
           <div className="hero-inner">
-            <div className="hero-img-wrap">
-              <img src="/images/hero-roses.png" alt="Beauty" className="hero-img" />
-            </div>
             <div className="hero-content">
               <p className="hero-eyebrow">Beauty Clinic</p>
               <h1 className="hero-title">GLOW</h1>
@@ -57,6 +54,10 @@ export default function Landing() {
                   <i className="fas fa-arrow-right" />
                 </Link>
               </div>
+            </div>
+            <div className="hero-img-wrap">
+              <div className="hero-img-circle" />
+              <img src="/images/hero-roses.png" alt="Beauty" className="hero-img" />
             </div>
           </div>
         </div>
