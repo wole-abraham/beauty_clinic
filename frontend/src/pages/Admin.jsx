@@ -1,277 +1,395 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import api from "../lib/api"
+import { useMe } from "../hooks/useAuth"
 
 const today = new Date().toISOString().split("T")[0]
 
+// ── Access guard ─────────────────────────────────────────────────────────────
+function useAdminGuard() {
+  const navigate = useNavigate()
+  const { data: user, isLoading } = useMe()
+
+  if (!isLoading && !user) { navigate("/login"); return null }
+  if (!isLoading && user && !user.is_staff && !user.is_superuser) return "forbidden"
+  return user
+}
+
+// ── Stat card ─────────────────────────────────────────────────────────────────
+function StatCard({ icon, label, value, sub, color = "var(--pink)" }) {
+  return (
+    <div className="admin-stat">
+      <div className="admin-stat-icon" style={{ background: `${color}18`, color }}>
+        <i className={"fas " + icon} />
+      </div>
+      <div>
+        <div className="admin-stat-num">{value}</div>
+        <div className="admin-stat-label">{label}</div>
+        {sub && <div style={{ fontSize: "0.7rem", color: "var(--muted)", marginTop: 2 }}>{sub}</div>}
+      </div>
+    </div>
+  )
+}
+
+// ── Tabs ─────────────────────────────────────────────────────────────────────
+const TABS = ["Appointments", "Services", "Clients", "Reviews"]
+
+// ─────────────────────────────────────────────────────────────────────────────
 export default function Admin() {
+  const user = useAdminGuard()
   const qc = useQueryClient()
+  const [tab, setTab] = useState("Appointments")
 
   const { data: appointments = [], isLoading: loadingAppts } = useQuery({
     queryKey: ["admin-appointments"],
     queryFn: async () => { const { data } = await api.get("/appointments"); return data },
   })
-
   const { data: services = [], isLoading: loadingSvcs } = useQuery({
     queryKey: ["services"],
     queryFn: async () => { const { data } = await api.get("/services"); return data },
   })
-
-  const { data: clients = [] } = useQuery({
+  const { data: clients = [], isLoading: loadingClients } = useQuery({
     queryKey: ["admin-users"],
     queryFn: async () => { const { data } = await api.get("/users"); return data },
   })
-
-  // ── Appointment mutations ──
-  const createAppt = useMutation({
-    mutationFn: (body) => api.post("/appointments/admin", body),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-appointments"] }); setShowAddForm(false) },
+  const { data: reviews = [], isLoading: loadingReviews } = useQuery({
+    queryKey: ["reviews"],
+    queryFn: async () => { const { data } = await api.get("/reviews"); return data },
   })
 
+  // Stats
+  const todayAppts = appointments.filter(a => a.date === today && a.status !== "Cancelled")
+  const revenue = appointments
+    .filter(a => a.status === "Scheduled")
+    .reduce((sum, a) => sum + parseFloat(a.service?.price || 0), 0)
+
+  if (!user) return <div className="loading-wrap"><div className="spinner" /></div>
+  if (user === "forbidden") return (
+    <div className="admin-page">
+      <div className="container" style={{ textAlign: "center", paddingTop: 80 }}>
+        <i className="fas fa-lock" style={{ fontSize: "3rem", color: "var(--muted)", marginBottom: 20, display: "block" }} />
+        <h2>Access Denied</h2>
+        <p style={{ color: "var(--muted)" }}>You need staff privileges to view this page.</p>
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="admin-page">
+      <div className="container">
+
+        {/* Header */}
+        <div style={{ marginBottom: 36 }}>
+          <span className="section-tag">Management</span>
+          <h1 className="section-title" style={{ marginBottom: 4 }}>Admin Dashboard</h1>
+          <p style={{ color: "var(--muted)", fontSize: "0.88rem" }}>Welcome back, {user.first_name}</p>
+        </div>
+
+        {/* Stats */}
+        <div className="admin-stats" style={{ marginBottom: 36 }}>
+          <StatCard icon="fa-calendar-check" label="Active Today" value={todayAppts.length} sub={`of ${appointments.length} total`} />
+          <StatCard icon="fa-users" label="Clients" value={clients.length} color="#4ade80" />
+          <StatCard icon="fa-cut" label="Services" value={services.length} color="#60a5fa" />
+          <StatCard icon="fa-dollar-sign" label="Est. Revenue" value={`$${revenue.toFixed(0)}`} sub="scheduled appts" color="#f59e0b" />
+        </div>
+
+        {/* Tabs */}
+        <div style={{ display: "flex", gap: 4, borderBottom: "2px solid var(--border)", marginBottom: 28 }}>
+          {TABS.map(t => (
+            <button key={t} onClick={() => setTab(t)} style={{
+              padding: "10px 22px", background: "none", border: "none", cursor: "pointer",
+              fontWeight: 700, fontSize: "0.88rem", fontFamily: "inherit",
+              color: tab === t ? "var(--pink)" : "var(--muted)",
+              borderBottom: tab === t ? "2px solid var(--pink)" : "2px solid transparent",
+              marginBottom: -2, transition: "all 0.2s"
+            }}>{t}</button>
+          ))}
+        </div>
+
+        {tab === "Appointments" && <AppointmentsTab appointments={appointments} services={services} clients={clients} loading={loadingAppts} qc={qc} />}
+        {tab === "Services"     && <ServicesTab services={services} loading={loadingSvcs} qc={qc} />}
+        {tab === "Clients"      && <ClientsTab clients={clients} loading={loadingClients} />}
+        {tab === "Reviews"      && <ReviewsTab reviews={reviews} loading={loadingReviews} qc={qc} />}
+
+      </div>
+    </div>
+  )
+}
+
+// ── Appointments Tab ──────────────────────────────────────────────────────────
+function AppointmentsTab({ appointments, services, clients, loading, qc }) {
+  const [showForm, setShowForm] = useState(false)
+  const [newAppt, setNewAppt] = useState({ client_id: "", service_id: "", date: today, time: "09:00" })
+  const [editId, setEditId] = useState(null)
+  const [editForm, setEditForm] = useState({})
+  const [filter, setFilter] = useState("All")
+
+  const createAppt = useMutation({
+    mutationFn: (body) => api.post("/appointments/admin", body),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-appointments"] }); setShowForm(false) },
+  })
   const updateAppt = useMutation({
     mutationFn: ({ id, ...body }) => api.patch(`/appointments/${id}`, body),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-appointments"] }); setEditId(null) },
   })
-
   const cancelAppt = useMutation({
     mutationFn: (id) => api.patch(`/appointments/${id}/cancel`),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-appointments"] }),
   })
 
-  // ── Service mutations ──
+  const filtered = filter === "All" ? appointments : appointments.filter(a => a.status === filter)
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+        <div style={{ display: "flex", gap: 8 }}>
+          {["All", "Scheduled", "Pending", "Cancelled"].map(f => (
+            <button key={f} onClick={() => setFilter(f)} style={{
+              padding: "6px 14px", borderRadius: 999, border: "1.5px solid",
+              borderColor: filter === f ? "var(--pink)" : "var(--border)",
+              background: filter === f ? "rgba(255,79,157,0.08)" : "#fff",
+              color: filter === f ? "var(--pink)" : "var(--muted)",
+              fontWeight: 600, fontSize: "0.8rem", cursor: "pointer", fontFamily: "inherit"
+            }}>{f}</button>
+          ))}
+        </div>
+        <button className="btn btn-pink btn-sm" onClick={() => setShowForm(!showForm)}>
+          <i className={`fas ${showForm ? "fa-times" : "fa-plus"}`} /> {showForm ? "Close" : "New Appointment"}
+        </button>
+      </div>
+
+      {showForm && (
+        <div className="admin-panel" style={{ padding: 24, marginBottom: 24 }}>
+          <h3 style={{ fontFamily: "'Bodoni Moda',serif", fontSize: "1.15rem", marginBottom: 18 }}>Book Appointment</h3>
+          <form onSubmit={e => { e.preventDefault(); createAppt.mutate({ client_id: parseInt(newAppt.client_id), service_id: parseInt(newAppt.service_id), date: newAppt.date, time: newAppt.time }) }}
+            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: 14, alignItems: "end" }}>
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="form-label">Client</label>
+              <select className="form-select" required value={newAppt.client_id} onChange={e => setNewAppt({ ...newAppt, client_id: e.target.value })}>
+                <option value="">Select client</option>
+                {clients.map(c => <option key={c.id} value={c.id}>{c.first_name} {c.last_name}</option>)}
+              </select>
+            </div>
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="form-label">Service</label>
+              <select className="form-select" required value={newAppt.service_id} onChange={e => setNewAppt({ ...newAppt, service_id: e.target.value })}>
+                <option value="">Select service</option>
+                {services.map(s => <option key={s.id} value={s.id}>{s.servicetype} (${s.price})</option>)}
+              </select>
+            </div>
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="form-label">Date</label>
+              <input className="form-input" type="date" required value={newAppt.date} onChange={e => setNewAppt({ ...newAppt, date: e.target.value })} />
+            </div>
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="form-label">Time</label>
+              <input className="form-input" type="time" required value={newAppt.time} onChange={e => setNewAppt({ ...newAppt, time: e.target.value })} />
+            </div>
+            <button type="submit" className="btn btn-pink" style={{ height: 48, justifyContent: "center" }} disabled={createAppt.isPending}>
+              {createAppt.isPending ? "Booking…" : "Book"}
+            </button>
+          </form>
+          {createAppt.isError && <p style={{ color: "red", marginTop: 10, fontSize: "0.82rem" }}>{createAppt.error?.response?.data?.detail}</p>}
+        </div>
+      )}
+
+      <div className="admin-panel">
+        {loading ? <div className="loading-wrap"><div className="spinner" /></div> : (
+          <div style={{ overflowX: "auto" }}>
+            <table className="admin-table">
+              <thead>
+                <tr><th>Client</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                {filtered.map(a => (
+                  <tr key={a.id}>
+                    {editId === a.id ? (
+                      <>
+                        <td style={{ fontWeight: 600 }}>{a.client?.first_name} {a.client?.last_name}</td>
+                        <td>
+                          <select className="form-select" style={{ padding: "5px 8px" }} value={editForm.service_id} onChange={e => setEditForm({ ...editForm, service_id: e.target.value })}>
+                            {services.map(s => <option key={s.id} value={s.id}>{s.servicetype}</option>)}
+                          </select>
+                        </td>
+                        <td><input className="form-input" style={{ padding: "5px 8px" }} type="date" value={editForm.date} onChange={e => setEditForm({ ...editForm, date: e.target.value })} /></td>
+                        <td><input className="form-input" style={{ padding: "5px 8px" }} type="time" value={editForm.time} onChange={e => setEditForm({ ...editForm, time: e.target.value })} /></td>
+                        <td>
+                          <select className="form-select" style={{ padding: "5px 8px" }} value={editForm.status} onChange={e => setEditForm({ ...editForm, status: e.target.value })}>
+                            <option>Scheduled</option><option>Pending</option><option>Cancelled</option>
+                          </select>
+                        </td>
+                        <td>
+                          <div style={{ display: "flex", gap: 6 }}>
+                            <button className="btn-success-sm" disabled={updateAppt.isPending} onClick={() => updateAppt.mutate({ id: editId, service_id: parseInt(editForm.service_id), date: editForm.date, time: editForm.time, status: editForm.status })}>Save</button>
+                            <button className="btn-danger-sm" onClick={() => setEditId(null)}>Back</button>
+                          </div>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td>
+                          <div style={{ fontWeight: 600 }}>{a.client?.first_name} {a.client?.last_name}</div>
+                          <div style={{ fontSize: "0.75rem", color: "var(--muted)" }}>{a.client?.email}</div>
+                        </td>
+                        <td>
+                          <div>{a.service?.servicetype}</div>
+                          <div style={{ fontSize: "0.75rem", color: "var(--pink)", fontWeight: 700 }}>${a.service?.price}</div>
+                        </td>
+                        <td>{a.date}</td>
+                        <td>{a.time}</td>
+                        <td><span className={"badge " + (a.status === "Cancelled" ? "badge-danger" : a.status === "Pending" ? "badge-warning" : "badge-success")}>{a.status}</span></td>
+                        <td>
+                          <div style={{ display: "flex", gap: 6 }}>
+                            <button className="btn-success-sm" onClick={() => { setEditId(a.id); setEditForm({ service_id: a.service?.id, date: a.date, time: a.time, status: a.status }) }}>Edit</button>
+                            {a.status !== "Cancelled" && <button className="btn-danger-sm" disabled={cancelAppt.isPending} onClick={() => cancelAppt.mutate(a.id)}>Cancel</button>}
+                          </div>
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {filtered.length === 0 && <p style={{ padding: 32, textAlign: "center", color: "var(--muted)", fontSize: "0.88rem" }}>No appointments.</p>}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ── Services Tab ──────────────────────────────────────────────────────────────
+function ServicesTab({ services, loading, qc }) {
+  const [form, setForm] = useState({ servicetype: "", price: "" })
+
   const createSvc = useMutation({
     mutationFn: (body) => api.post("/services", body),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["services"] }); setNewService({ servicetype: "", price: "" }) },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["services"] }); setForm({ servicetype: "", price: "" }) },
   })
-
   const deleteSvc = useMutation({
     mutationFn: (id) => api.delete(`/services/${id}`),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["services"] }),
   })
 
-  // ── Local form state ──
-  const [showAddForm, setShowAddForm] = useState(false)
-  const [newAppt, setNewAppt] = useState({ client_id: "", service_id: "", date: today, time: "09:00" })
-  const [editId, setEditId] = useState(null)
-  const [editForm, setEditForm] = useState({})
-  const [newService, setNewService] = useState({ servicetype: "", price: "" })
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 24, alignItems: "start" }}>
+      <div className="admin-panel">
+        <div className="admin-panel-header">
+          <span className="admin-panel-title">All Services</span>
+          <span className="badge badge-success">{services.length} total</span>
+        </div>
+        {loading ? <div className="loading-wrap"><div className="spinner" /></div> : (
+          <table className="admin-table">
+            <thead><tr><th>#</th><th>Service Name</th><th>Price</th><th></th></tr></thead>
+            <tbody>
+              {services.map((s, i) => (
+                <tr key={s.id}>
+                  <td style={{ color: "var(--muted)", width: 40 }}>{i + 1}</td>
+                  <td style={{ fontWeight: 600 }}>{s.servicetype}</td>
+                  <td style={{ color: "var(--pink)", fontWeight: 700 }}>${parseFloat(s.price).toFixed(2)}</td>
+                  <td><button className="btn-danger-sm" onClick={() => deleteSvc.mutate(s.id)} disabled={deleteSvc.isPending}><i className="fas fa-trash" /></button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
 
-  const todayAppts = appointments.filter(a => a.date === today && a.status !== "Cancelled")
+      <div className="admin-panel" style={{ padding: 24 }}>
+        <h3 style={{ fontFamily: "'Bodoni Moda',serif", fontSize: "1.15rem", marginBottom: 20 }}>Add Service</h3>
+        <form onSubmit={e => { e.preventDefault(); createSvc.mutate({ servicetype: form.servicetype, price: parseFloat(form.price) }) }}>
+          <div className="form-group">
+            <label className="form-label">Service Name</label>
+            <input className="form-input" placeholder="e.g. Skin Hydration" required value={form.servicetype} onChange={e => setForm({ ...form, servicetype: e.target.value })} />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Price (USD)</label>
+            <input className="form-input" type="number" placeholder="50" required value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} />
+          </div>
+          <button type="submit" className="btn btn-pink" style={{ width: "100%", justifyContent: "center" }} disabled={createSvc.isPending}>
+            <i className="fas fa-plus" /> {createSvc.isPending ? "Adding…" : "Add Service"}
+          </button>
+        </form>
+      </div>
+    </div>
+  )
+}
 
-  const handleAddAppt = (e) => {
-    e.preventDefault()
-    createAppt.mutate({
-      client_id: parseInt(newAppt.client_id),
-      service_id: parseInt(newAppt.service_id),
-      date: newAppt.date,
-      time: newAppt.time,
-    })
-  }
-
-  const handleStartEdit = (a) => {
-    setEditId(a.id)
-    setEditForm({ service_id: a.service?.id, date: a.date, time: a.time, status: a.status })
-  }
-
-  const handleSaveEdit = () => {
-    updateAppt.mutate({
-      id: editId,
-      service_id: parseInt(editForm.service_id),
-      date: editForm.date,
-      time: editForm.time,
-      status: editForm.status,
-    })
-  }
-
-  const handleAddService = (e) => {
-    e.preventDefault()
-    createSvc.mutate({ servicetype: newService.servicetype, price: parseFloat(newService.price) })
-  }
+// ── Clients Tab ───────────────────────────────────────────────────────────────
+function ClientsTab({ clients, loading }) {
+  const [search, setSearch] = useState("")
+  const filtered = clients.filter(c =>
+    `${c.first_name} ${c.last_name} ${c.email}`.toLowerCase().includes(search.toLowerCase())
+  )
 
   return (
-    <div className="admin-page">
-      <div className="container">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 36, flexWrap: "wrap", gap: 16 }}>
-          <div>
-            <span className="section-tag">Management</span>
-            <h1 className="section-title" style={{ marginBottom: 0 }}>Admin Dashboard</h1>
-          </div>
-          <button className="btn btn-pink" onClick={() => setShowAddForm(!showAddForm)}>
-            <i className={`fas ${showAddForm ? "fa-times" : "fa-calendar-plus"}`} />
-            {showAddForm ? "Close" : "Book Appointment"}
-          </button>
-        </div>
-
-        {/* Add Appointment Form */}
-        {showAddForm && (
-          <div className="admin-panel" style={{ marginBottom: 32, padding: 28 }}>
-            <h3 style={{ fontFamily: "'Bodoni Moda', serif", fontSize: "1.3rem", marginBottom: 20 }}>New Appointment</h3>
-            <form onSubmit={handleAddAppt} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, alignItems: "end" }}>
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label">Client</label>
-                <select className="form-select" required value={newAppt.client_id} onChange={e => setNewAppt({ ...newAppt, client_id: e.target.value })}>
-                  <option value="">Select client</option>
-                  {clients.map(c => <option key={c.id} value={c.id}>{c.first_name} {c.last_name}</option>)}
-                </select>
-              </div>
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label">Service</label>
-                <select className="form-select" required value={newAppt.service_id} onChange={e => setNewAppt({ ...newAppt, service_id: e.target.value })}>
-                  <option value="">Select service</option>
-                  {services.map(s => <option key={s.id} value={s.id}>{s.servicetype} (${s.price})</option>)}
-                </select>
-              </div>
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label">Date</label>
-                <input className="form-input" type="date" required value={newAppt.date} onChange={e => setNewAppt({ ...newAppt, date: e.target.value })} />
-              </div>
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label">Time</label>
-                <input className="form-input" type="time" required value={newAppt.time} onChange={e => setNewAppt({ ...newAppt, time: e.target.value })} />
-              </div>
-              <button type="submit" className="btn btn-pink" style={{ justifyContent: "center", height: 48 }} disabled={createAppt.isPending}>
-                {createAppt.isPending ? "Booking…" : "Add Appointment"}
-              </button>
-            </form>
-            {createAppt.isError && <p style={{ color: "red", marginTop: 10, fontSize: "0.85rem" }}>Error: {createAppt.error?.response?.data?.detail || "Failed"}</p>}
-          </div>
-        )}
-
-        {/* Stat Cards */}
-        <div className="admin-stats" style={{ marginBottom: 36 }}>
-          {[
-            { icon: "fa-calendar-check", label: "Active Today", value: todayAppts.length },
-            { icon: "fa-users", label: "Total Clients", value: clients.length },
-            { icon: "fa-cut", label: "Services Offered", value: services.length },
-          ].map(s => (
-            <div key={s.label} className="admin-stat">
-              <div className="admin-stat-icon"><i className={"fas " + s.icon} /></div>
-              <div>
-                <div className="admin-stat-num">{s.value}</div>
-                <div className="admin-stat-label">{s.label}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="admin-layout">
-          {/* Appointments Panel */}
-          <div className="admin-panel">
-            <div className="admin-panel-header">
-              <span className="admin-panel-title">All Appointments</span>
-              <span className="badge badge-success">{appointments.length} total</span>
-            </div>
-            {loadingAppts ? (
-              <div className="loading-wrap"><div className="spinner" /></div>
-            ) : (
-              <div style={{ overflowX: "auto" }}>
-                <table className="admin-table">
-                  <thead>
-                    <tr>
-                      <th>Client</th>
-                      <th>Service</th>
-                      <th>Date</th>
-                      <th>Time</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {appointments.map(a => (
-                      <tr key={a.id}>
-                        {editId === a.id ? (
-                          <>
-                            <td style={{ fontWeight: 600 }}>{a.client?.first_name} {a.client?.last_name}</td>
-                            <td>
-                              <select className="form-select" style={{ padding: "5px 8px" }} value={editForm.service_id} onChange={e => setEditForm({ ...editForm, service_id: e.target.value })}>
-                                {services.map(s => <option key={s.id} value={s.id}>{s.servicetype}</option>)}
-                              </select>
-                            </td>
-                            <td><input className="form-input" style={{ padding: "5px 8px" }} type="date" value={editForm.date} onChange={e => setEditForm({ ...editForm, date: e.target.value })} /></td>
-                            <td><input className="form-input" style={{ padding: "5px 8px" }} type="time" value={editForm.time} onChange={e => setEditForm({ ...editForm, time: e.target.value })} /></td>
-                            <td>
-                              <select className="form-select" style={{ padding: "5px 8px" }} value={editForm.status} onChange={e => setEditForm({ ...editForm, status: e.target.value })}>
-                                <option>Scheduled</option>
-                                <option>Pending</option>
-                                <option>Cancelled</option>
-                              </select>
-                            </td>
-                            <td>
-                              <div style={{ display: "flex", gap: 6 }}>
-                                <button className="btn-success-sm" onClick={handleSaveEdit} disabled={updateAppt.isPending}>Save</button>
-                                <button className="btn-danger-sm" onClick={() => setEditId(null)}>Back</button>
-                              </div>
-                            </td>
-                          </>
-                        ) : (
-                          <>
-                            <td>
-                              <div style={{ fontWeight: 600 }}>{a.client?.first_name} {a.client?.last_name}</div>
-                              <div style={{ fontSize: "0.75rem", color: "var(--muted)" }}>{a.client?.email}</div>
-                            </td>
-                            <td>{a.service?.servicetype} <span style={{ color: "var(--pink)", fontWeight: 700 }}>${a.service?.price}</span></td>
-                            <td>{a.date}</td>
-                            <td>{a.time}</td>
-                            <td>
-                              <span className={"badge " + (a.status === "Cancelled" ? "badge-danger" : a.status === "Pending" ? "badge-warning" : "badge-success")}>
-                                {a.status}
-                              </span>
-                            </td>
-                            <td>
-                              <div style={{ display: "flex", gap: 6 }}>
-                                <button className="btn-success-sm" onClick={() => handleStartEdit(a)}>Edit</button>
-                                {a.status !== "Cancelled" && (
-                                  <button className="btn-danger-sm" onClick={() => cancelAppt.mutate(a.id)} disabled={cancelAppt.isPending}>Cancel</button>
-                                )}
-                              </div>
-                            </td>
-                          </>
-                        )}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                {appointments.length === 0 && (
-                  <p style={{ padding: 32, textAlign: "center", color: "var(--muted)", fontSize: "0.88rem" }}>No appointments yet.</p>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Services Panel */}
-          <div className="admin-panel">
-            <div className="admin-panel-header">
-              <span className="admin-panel-title">Services</span>
-              <span className="badge badge-success">{services.length} total</span>
-            </div>
-            {loadingSvcs ? (
-              <div className="loading-wrap"><div className="spinner" /></div>
-            ) : (
-              <div style={{ maxHeight: 360, overflowY: "auto" }}>
-                {services.map(s => (
-                  <div key={s.id} className="svc-item">
-                    <span className="svc-item-name">{s.servicetype}</span>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <span className="svc-item-price">${parseFloat(s.price).toFixed(2)}</span>
-                      <button className="btn-danger-sm" onClick={() => deleteSvc.mutate(s.id)} disabled={deleteSvc.isPending}>
-                        <i className="fas fa-trash" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-            <form onSubmit={handleAddService} className="add-svc-form">
-              <p style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--muted)", textTransform: "uppercase", letterSpacing: 1 }}>Add Service</p>
-              <input className="add-svc-input" placeholder="Service name" required value={newService.servicetype} onChange={e => setNewService({ ...newService, servicetype: e.target.value })} />
-              <input className="add-svc-input" type="number" placeholder="Price (USD)" required value={newService.price} onChange={e => setNewService({ ...newService, price: e.target.value })} />
-              <button type="submit" className="btn btn-pink btn-sm" style={{ justifyContent: "center" }} disabled={createSvc.isPending || !newService.servicetype || !newService.price}>
-                <i className="fas fa-plus" /> {createSvc.isPending ? "Adding…" : "Add Service"}
-              </button>
-            </form>
-          </div>
-        </div>
+    <div className="admin-panel">
+      <div className="admin-panel-header">
+        <span className="admin-panel-title">All Clients</span>
+        <input className="form-input" placeholder="Search…" value={search} onChange={e => setSearch(e.target.value)}
+          style={{ width: 200, padding: "6px 12px", fontSize: "0.85rem" }} />
       </div>
+      {loading ? <div className="loading-wrap"><div className="spinner" /></div> : (
+        <div style={{ overflowX: "auto" }}>
+          <table className="admin-table">
+            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Country</th><th>Gender</th><th>Role</th></tr></thead>
+            <tbody>
+              {filtered.map(c => (
+                <tr key={c.id}>
+                  <td style={{ fontWeight: 600 }}>{c.first_name} {c.last_name}</td>
+                  <td style={{ color: "var(--muted)" }}>{c.email}</td>
+                  <td>{c.phone_number || <span style={{ color: "var(--border)" }}>—</span>}</td>
+                  <td>{c.country || <span style={{ color: "var(--border)" }}>—</span>}</td>
+                  <td>{c.gender || <span style={{ color: "var(--border)" }}>—</span>}</td>
+                  <td>
+                    {c.is_superuser
+                      ? <span className="badge badge-danger">Admin</span>
+                      : c.is_staff
+                        ? <span className="badge badge-warning">Staff</span>
+                        : <span className="badge badge-success">Client</span>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {filtered.length === 0 && <p style={{ padding: 32, textAlign: "center", color: "var(--muted)", fontSize: "0.88rem" }}>No clients found.</p>}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Reviews Tab ───────────────────────────────────────────────────────────────
+function ReviewsTab({ reviews, loading, qc }) {
+  const deleteReview = useMutation({
+    mutationFn: (id) => api.delete(`/reviews/${id}`),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["reviews"] }),
+  })
+
+  return (
+    <div className="admin-panel">
+      <div className="admin-panel-header">
+        <span className="admin-panel-title">Site Reviews</span>
+        <span className="badge badge-success">{reviews.length} total</span>
+      </div>
+      {loading ? <div className="loading-wrap"><div className="spinner" /></div> : (
+        <table className="admin-table">
+          <thead><tr><th>Client</th><th>Rating</th><th>Review</th><th>Date</th><th></th></tr></thead>
+          <tbody>
+            {reviews.map(r => (
+              <tr key={r.id}>
+                <td style={{ fontWeight: 600, whiteSpace: "nowrap" }}>{r.user?.first_name} {r.user?.last_name}</td>
+                <td style={{ color: "#FFC107", letterSpacing: 2 }}>{"★".repeat(parseInt(r.rating) || 5)}</td>
+                <td style={{ maxWidth: 320, color: "var(--muted)", fontSize: "0.85rem" }}>{r.comment}</td>
+                <td style={{ whiteSpace: "nowrap", color: "var(--muted)", fontSize: "0.8rem" }}>{new Date(r.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</td>
+                <td><button className="btn-danger-sm" onClick={() => deleteReview.mutate(r.id)} disabled={deleteReview.isPending}><i className="fas fa-trash" /></button></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {reviews.length === 0 && !loading && <p style={{ padding: 32, textAlign: "center", color: "var(--muted)", fontSize: "0.88rem" }}>No reviews yet.</p>}
     </div>
   )
 }
