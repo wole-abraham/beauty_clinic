@@ -55,10 +55,6 @@ export default function Landing() {
                 </Link>
               </div>
             </div>
-            <div className="hero-img-wrap">
-              <div className="hero-img-circle" />
-              <img src="/images/hero-roses.png" alt="Beauty" className="hero-img" />
-            </div>
           </div>
         </div>
         <div className="hero-flower-strip">
