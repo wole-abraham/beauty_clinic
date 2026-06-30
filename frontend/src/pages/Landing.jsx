@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring }
 import { fadeUp, fadeIn, slideLeft, slideRight, stagger, letterUp, ease } from "../lib/motion"
 import GoogleReviewsWidget from "../components/GoogleReviewsWidget"
 import FloatingParticles from "../components/FloatingParticles"
+import GridDistortion from "../components/GridDistortion"
 
 const MotionLink = motion.create(Link)
 
@@ -151,11 +152,17 @@ export default function Landing() {
               </motion.div>
             </motion.div>
 
-            <motion.div className="hero-img-wrap" style={{ y: heroImgY, x: imgDriftX }}
-              initial={{ opacity: 0, scale: 0.92, x: 40 }} animate={{ opacity: 1, scale: 1, x: 0 }}
-              transition={{ duration: 1, delay: 0.3, ease }}>
-              <div className="hero-img-circle" />
-              <img src="/images/hero-illustration.png" alt="Beauty" className="hero-img" />
+            <motion.div className="hero-img-wrap"
+              initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.1, delay: 0.4, ease }}
+              style={{ borderRadius: 24, overflow: "hidden", height: "520px" }}>
+              <GridDistortion
+                imageSrc="/img/makeup2.jpg"
+                grid={12}
+                mouse={0.12}
+                strength={0.18}
+                relaxation={0.88}
+              />
             </motion.div>
           </div>
         </motion.div>
