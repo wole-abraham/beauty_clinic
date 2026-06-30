@@ -1,11 +1,10 @@
 ﻿import { Link } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
-import api from "../lib/api"
-import { useState, useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import { motion, useScroll, useTransform, useInView } from "framer-motion"
 
 const MotionLink = motion.create(Link)
 import { fadeUp, fadeIn, slideLeft, slideRight, stagger, letterUp, ease } from "../lib/motion"
+import GoogleReviewsWidget from "../components/GoogleReviewsWidget"
 
 const SERVICES = [
   { title: "Nail Care", img: "/img/nailcare.jpg", desc: "Expert nail care from classic treatments to stunning nail art. Enjoy healthy, stylish nails with personalized care and premium products." },
@@ -26,9 +25,6 @@ const HOURS = [
   ["Wednesday","Closed"],["Thursday","08:30 am - 6:00 pm"],["Friday","08:30 am - 6:00 pm"],
 ]
 
-const stars = (n) => Array.from({ length: 5 }, (_, i) => (
-  <span key={i} style={{ color: i < n ? "#FFC107" : "#ddd" }}>&#9733;</span>
-))
 
 function CountUp({ target, suffix = "" }) {
   const ref = useRef(null)
@@ -51,13 +47,6 @@ function CountUp({ target, suffix = "" }) {
 }
 
 export default function Landing() {
-  const { data: reviews = [] } = useQuery({
-    queryKey: ["reviews"],
-    queryFn: async () => { const { data } = await api.get("/reviews"); return data },
-  })
-  const [showAll, setShowAll] = useState(false)
-  const visibleReviews = showAll ? reviews : reviews.slice(0, 3)
-
   const { scrollY } = useScroll()
   const heroImgY = useTransform(scrollY, [0, 600], [0, -70])
   const heroBgY = useTransform(scrollY, [0, 600], [0, 40])
@@ -215,44 +204,17 @@ export default function Landing() {
         </div>
       </section>
 
-      {reviews.length > 0 && (
-        <section className="reviews-section">
-          <div className="container">
-            <motion.div className="section-center" style={{ marginBottom: 0 }}
-              variants={stagger(0.1)} initial="hidden"
-              whileInView="show" viewport={{ once: true, margin: "-60px" }}>
-              <motion.span className="section-tag" variants={fadeUp}>Testimonials</motion.span>
-              <motion.h2 className="section-title" variants={fadeUp}>What Clients Say</motion.h2>
-            </motion.div>
-            <motion.div className="reviews-grid"
-              variants={stagger(0.1, 0.1)} initial="hidden"
-              whileInView="show" viewport={{ once: true, margin: "-40px" }}>
-              {visibleReviews.map(r => (
-                <motion.div key={r.id} className="review-card" variants={fadeUp}>
-                  <div className="review-stars">{stars(parseInt(r.rating) || 5)}</div>
-                  <p className="review-text">&ldquo;{r.comment}&rdquo;</p>
-                  <div className="review-author">
-                    <div className="review-avatar">{(r.user?.first_name || r.user?.username || "?")[0].toUpperCase()}</div>
-                    <div>
-                      <div className="review-name">{r.user?.first_name ? (r.user.first_name + " " + (r.user.last_name || "")).trim() : r.user?.username}</div>
-                      <div className="review-date">{new Date(r.date).toLocaleDateString("en-US", { month: "long", year: "numeric" })}</div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-            {reviews.length > 3 && (
-              <motion.div style={{ textAlign: "center", marginTop: 40 }}
-                initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-                transition={{ duration: 0.5 }}>
-                <button className="btn btn-outline" onClick={() => setShowAll(s => !s)}>
-                  {showAll ? "Show Less" : "See All " + reviews.length + " Reviews"}
-                </button>
-              </motion.div>
-            )}
+      <motion.section className="reviews-section"
+        initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.8, ease }}>
+        <div className="container">
+          <div className="section-center" style={{ marginBottom: 40 }}>
+            <span className="section-tag">Testimonials</span>
+            <h2 className="section-title">What Clients Say</h2>
           </div>
-        </section>
-      )}
+          <GoogleReviewsWidget showHeader={false} />
+        </div>
+      </motion.section>
 
       <section className="cta-contact-section">
         <div className="cta-contact-top">
