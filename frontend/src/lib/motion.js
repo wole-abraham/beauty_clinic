@@ -37,7 +37,7 @@ export const stagger = (children = 0.09, delay = 0) => ({
 })
 
 export const pageVariants = {
-  initial: { opacity: 0, y: 18 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.45, ease } },
-  exit: { opacity: 0, y: -10, transition: { duration: 0.28, ease } },
+  initial: { opacity: 0, y: 14 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.4, ease } },
+  exit: { opacity: 0, transition: { duration: 0.15 } },
 }
