@@ -21,7 +21,7 @@ export default function Preloader() {
           key="preloader"
           style={{
             position: "fixed", inset: 0, zIndex: 999999,
-            background: "#0E0710",
+            background: "#F4EBE6",
             display: "flex", flexDirection: "column",
             alignItems: "center", justifyContent: "center",
             gap: 20,
@@ -39,7 +39,7 @@ export default function Preloader() {
               src="/images/logo.png"
               alt="MNC"
               style={{ width: 90, height: 90, borderRadius: "50%", objectFit: "cover",
-                boxShadow: "0 0 40px rgba(255,79,157,0.35)", border: "2px solid rgba(197,168,128,0.3)" }}
+                boxShadow: "0 8px 40px rgba(197,168,128,0.35)", border: "3px solid rgba(197,168,128,0.4)" }}
             />
           </motion.div>
 
@@ -52,8 +52,7 @@ export default function Preloader() {
               style={{
                 fontFamily: "'Bodoni Moda', serif", fontStyle: "italic",
                 fontSize: "clamp(1.1rem, 3vw, 1.6rem)",
-                color: "rgba(197,168,128,0.9)", letterSpacing: 2,
-                margin: 0,
+                color: "#1A1519", letterSpacing: 2, margin: 0,
               }}
             >
               Mary Nassif Chbat
@@ -67,7 +66,7 @@ export default function Preloader() {
               animate={{ y: phase !== "logo" ? "0%" : "100%", opacity: phase !== "logo" ? 1 : 0 }}
               transition={{ duration: 0.6, delay: 0.12, ease: [0.25, 0.1, 0.25, 1] }}
               style={{
-                color: "rgba(255,255,255,0.35)", fontSize: "0.72rem",
+                color: "#C5A880", fontSize: "0.68rem",
                 letterSpacing: 6, textTransform: "uppercase", margin: 0,
               }}
             >

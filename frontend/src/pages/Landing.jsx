@@ -160,33 +160,14 @@ export default function Landing() {
           </div>
         </motion.div>
 
-        <div className="hero-flower-strip">
-          <div className="hero-flower-inner">
-            {Array.from({ length: 24 }, (_, i) => (
-              <img key={i} src="/images/flower.svg" alt="" aria-hidden="true" />
-            ))}
-            {Array.from({ length: 24 }, (_, i) => (
-              <img key={"b" + i} src="/images/flower.svg" alt="" aria-hidden="true" />
-            ))}
-          </div>
-        </div>
       </section>
 
-      {/* Wave transition */}
-      <div className="wave-divider" style={{ background: "#0E0710" }}>
-        <svg viewBox="0 0 1440 60" preserveAspectRatio="none" style={{ height: 60, width: "100%" }}>
-          <path d="M0,40 C360,80 1080,0 1440,40 L1440,60 L0,60 Z" fill="var(--bg)" />
-        </svg>
-      </div>
-
-      {/* Services ticker */}
-      <div className="services-ticker">
-        <div className="services-ticker-inner">
+      {/* Elegant themed marquee banner */}
+      <div className="marquee-banner">
+        <div className="marquee-track">
           {[...Array(2)].map((_, rep) =>
-            ["Nail Care","Artistic Makeup","Wax Care","Eyelash Perming","Facial Care","Bridal Makeup","Mesotherapy","Hair Removal"].map((s, i) => (
-              <span key={`${rep}-${i}`} className="ticker-item">
-                <span className="ticker-dot" /> {s}
-              </span>
+            ["Nail Care","✦","Artistic Makeup","✦","Wax Care","✦","Eyelash Perming","✦","Facial Care","✦","Bridal Makeup","✦","Mesotherapy","✦","Hair Removal","✦"].map((s, i) => (
+              <span key={`${rep}-${i}`} className={s === "✦" ? "marquee-star" : "marquee-item"}>{s}</span>
             ))
           )}
         </div>

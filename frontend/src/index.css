@@ -319,13 +319,13 @@ body::after {
   opacity: 0.028;
 }
 
-/* ===== SERVICES MARQUEE TICKER ===== */
-.services-ticker { overflow: hidden; padding: 16px 0; background: var(--dark); border-top: 1px solid rgba(197,168,128,0.15); border-bottom: 1px solid rgba(197,168,128,0.15); margin-bottom: 0; }
-.services-ticker-inner { display: flex; gap: 0; width: max-content; animation: tickerScroll 28s linear infinite; }
-.services-ticker-inner:hover { animation-play-state: paused; }
-.ticker-item { display: flex; align-items: center; gap: 12px; padding: 0 40px; white-space: nowrap; color: rgba(197,168,128,0.8); font-size: 0.78rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 500; }
-.ticker-dot { width: 4px; height: 4px; border-radius: 50%; background: #FF4F9D; flex-shrink: 0; }
-@keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+/* ===== ELEGANT MARQUEE BANNER ===== */
+.marquee-banner { overflow: hidden; padding: 14px 0; background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.marquee-track { display: flex; width: max-content; animation: marqueeScroll 32s linear infinite; }
+.marquee-track:hover { animation-play-state: paused; }
+.marquee-item { padding: 0 28px; white-space: nowrap; color: var(--muted); font-size: 0.72rem; letter-spacing: 3.5px; text-transform: uppercase; font-weight: 500; }
+.marquee-star { padding: 0 8px; color: var(--pink); font-size: 0.6rem; }
+@keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
 /* ===== SERVICES MASONRY ===== */
 .services-section { padding: 100px 0; background: var(--bg); }
