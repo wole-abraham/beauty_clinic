@@ -159,7 +159,7 @@ button { cursor: pointer; font-family: inherit; }
 /* ===== HERO ===== */
 .hero {
   background: var(--bg);
-  min-height: calc(100vh - 68px); position: relative; overflow: hidden; border-bottom: none;
+  min-height: calc(100vh - 68px); position: relative; overflow: hidden; border-bottom: none; padding-bottom: 52px;
 }
 
 .hero-inner { display: grid; grid-template-columns: 1fr 1.1fr; align-items: center; gap: 0; padding: 72px 0 0; min-height: calc(100vh - 68px); position: relative; z-index: 2; }
@@ -320,7 +320,7 @@ body::after {
 }
 
 /* ===== ELEGANT MARQUEE BANNER ===== */
-.marquee-banner { overflow: hidden; padding: 14px 0; background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.marquee-banner { overflow: hidden; padding: 14px 0; background: rgba(244,235,230,0.92); backdrop-filter: blur(8px); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .marquee-track { display: flex; width: max-content; animation: marqueeScroll 32s linear infinite; }
 .marquee-track:hover { animation-play-state: paused; }
 .marquee-item { padding: 0 28px; white-space: nowrap; color: var(--muted); font-size: 0.72rem; letter-spacing: 3.5px; text-transform: uppercase; font-weight: 500; }

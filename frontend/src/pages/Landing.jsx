@@ -160,18 +160,17 @@ export default function Landing() {
           </div>
         </motion.div>
 
-      </section>
-
-      {/* Elegant themed marquee banner */}
-      <div className="marquee-banner">
-        <div className="marquee-track">
-          {[...Array(2)].map((_, rep) =>
-            ["Nail Care","✦","Artistic Makeup","✦","Wax Care","✦","Eyelash Perming","✦","Facial Care","✦","Bridal Makeup","✦","Mesotherapy","✦","Hair Removal","✦"].map((s, i) => (
-              <span key={`${rep}-${i}`} className={s === "✦" ? "marquee-star" : "marquee-item"}>{s}</span>
-            ))
-          )}
+        {/* Marquee sits at the bottom of the hero — always in viewport */}
+        <div className="marquee-banner" style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 3 }}>
+          <div className="marquee-track">
+            {[...Array(2)].map((_, rep) =>
+              ["Nail Care","✦","Artistic Makeup","✦","Wax Care","✦","Eyelash Perming","✦","Facial Care","✦","Bridal Makeup","✦","Mesotherapy","✦","Hair Removal","✦"].map((s, i) => (
+                <span key={`${rep}-${i}`} className={s === "✦" ? "marquee-star" : "marquee-item"}>{s}</span>
+              ))
+            )}
+          </div>
         </div>
-      </div>
+      </section>
 
       <section className="services-section">
         <div className="container">
