@@ -23,6 +23,8 @@
 }
 
 html { scroll-behavior: smooth; }
+@media (pointer: fine) { *, *::before, *::after { cursor: none !important; } }
+.services-masonry { perspective: 1200px; }
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   color: var(--text);
