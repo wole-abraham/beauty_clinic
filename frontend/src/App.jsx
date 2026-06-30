@@ -12,7 +12,6 @@ import Appointments from "./pages/Appointments"
 import Reviews from "./pages/Reviews"
 import Admin from "./pages/Admin"
 import About from "./pages/About"
-import Cursor from "./components/Cursor"
 import Preloader from "./components/Preloader"
 
 const queryClient = new QueryClient()
@@ -43,7 +42,6 @@ export default function App() {
       <BrowserRouter>
         <ScrollReset />
         <Preloader />
-        <Cursor />
         <Navbar />
         <Routes>
           <Route path="/" element={<PageWrapper><Landing /></PageWrapper>} />
