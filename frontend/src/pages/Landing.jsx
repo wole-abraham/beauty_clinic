@@ -3,6 +3,7 @@ import { useRef, useEffect, useState } from "react"
 import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from "framer-motion"
 import { fadeUp, fadeIn, slideLeft, slideRight, stagger, letterUp, ease } from "../lib/motion"
 import GoogleReviewsWidget from "../components/GoogleReviewsWidget"
+import FloatingParticles from "../components/FloatingParticles"
 
 const MotionLink = motion.create(Link)
 
@@ -101,8 +102,16 @@ export default function Landing() {
 
   return (
     <>
-      <section className="hero" onMouseMove={onHeroMouseMove} onMouseLeave={onHeroMouseLeave}>
-        <motion.div className="container" style={{ y: heroBgY }}>
+      <section className="hero" onMouseMove={onHeroMouseMove} onMouseLeave={onHeroMouseLeave} style={{ position: "relative" }}>
+        {/* Always-moving background effects */}
+        <div className="hero-orbs">
+          <div className="hero-orb hero-orb--1" />
+          <div className="hero-orb hero-orb--2" />
+          <div className="hero-orb hero-orb--3" />
+        </div>
+        <FloatingParticles count={30} />
+
+        <motion.div className="container" style={{ y: heroBgY, position: "relative", zIndex: 2 }}>
           <div className="hero-inner">
             <motion.div className="hero-content" style={{ x: contentDriftX, y: contentDriftY }}>
               <motion.p className="hero-eyebrow"
