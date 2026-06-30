@@ -13,6 +13,7 @@ import Reviews from "./pages/Reviews"
 import Admin from "./pages/Admin"
 import About from "./pages/About"
 import Cursor from "./components/Cursor"
+import Preloader from "./components/Preloader"
 
 const queryClient = new QueryClient()
 
@@ -41,6 +42,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ScrollReset />
+        <Preloader />
         <Cursor />
         <Navbar />
         <Routes>
