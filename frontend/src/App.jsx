@@ -12,6 +12,7 @@ import Appointments from "./pages/Appointments"
 import Reviews from "./pages/Reviews"
 import Admin from "./pages/Admin"
 import About from "./pages/About"
+import Cursor from "./components/Cursor"
 
 const queryClient = new QueryClient()
 
@@ -40,6 +41,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ScrollReset />
+        <Cursor />
         <Navbar />
         <Routes>
           <Route path="/" element={<PageWrapper><Landing /></PageWrapper>} />

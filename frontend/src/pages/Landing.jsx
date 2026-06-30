@@ -1,10 +1,41 @@
 ﻿import { Link } from "react-router-dom"
 import { useRef, useEffect, useState } from "react"
-import { motion, useScroll, useTransform, useInView } from "framer-motion"
-
-const MotionLink = motion.create(Link)
+import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from "framer-motion"
 import { fadeUp, fadeIn, slideLeft, slideRight, stagger, letterUp, ease } from "../lib/motion"
 import GoogleReviewsWidget from "../components/GoogleReviewsWidget"
+
+const MotionLink = motion.create(Link)
+
+function ServiceTile({ s, i }) {
+  const mx = useMotionValue(0)
+  const my = useMotionValue(0)
+  const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [7, -7]), { stiffness: 350, damping: 30 })
+  const rotateY = useSpring(useTransform(mx, [-0.5, 0.5], [-7, 7]), { stiffness: 350, damping: 30 })
+
+  return (
+    <MotionLink
+      to="/bookings"
+      className="service-tile"
+      variants={fadeUp}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect()
+        mx.set((e.clientX - r.left) / r.width - 0.5)
+        my.set((e.clientY - r.top) / r.height - 0.5)
+      }}
+      onMouseLeave={() => { mx.set(0); my.set(0) }}
+    >
+      <img src={s.img} alt={s.title} onError={e => e.target.src = "/img/makeup.jpg"} />
+      <div className="service-tile-overlay" />
+      <div className="service-tile-content">
+        <span className="service-tile-num">{String(i + 1).padStart(2, "0")}</span>
+        <h3 className="service-tile-name">{s.title}</h3>
+        <p className="service-tile-desc">{s.desc}</p>
+        <span className="service-tile-arrow">Book Now <i className="fas fa-arrow-right" /></span>
+      </div>
+    </MotionLink>
+  )
+}
 
 const SERVICES = [
   { title: "Nail Care", img: "/img/nailcare.jpg", desc: "Expert nail care from classic treatments to stunning nail art. Enjoy healthy, stylish nails with personalized care and premium products." },
@@ -51,12 +82,29 @@ export default function Landing() {
   const heroImgY = useTransform(scrollY, [0, 600], [0, -70])
   const heroBgY = useTransform(scrollY, [0, 600], [0, 40])
 
+  // Hero mouse parallax
+  const heroMouseX = useMotionValue(0)
+  const heroMouseY = useMotionValue(0)
+  const heroSpringX = useSpring(heroMouseX, { stiffness: 70, damping: 22 })
+  const heroSpringY = useSpring(heroMouseY, { stiffness: 70, damping: 22 })
+  const contentDriftX = useTransform(heroSpringX, [-0.5, 0.5], [-18, 18])
+  const contentDriftY = useTransform(heroSpringY, [-0.5, 0.5], [-10, 10])
+  const imgDriftX = useTransform(heroSpringX, [-0.5, 0.5], [28, -28])
+  const imgDriftY = useTransform(heroSpringY, [-0.5, 0.5], [16, -16])
+
+  const onHeroMouseMove = (e) => {
+    const r = e.currentTarget.getBoundingClientRect()
+    heroMouseX.set((e.clientX - r.left) / r.width - 0.5)
+    heroMouseY.set((e.clientY - r.top) / r.height - 0.5)
+  }
+  const onHeroMouseLeave = () => { heroMouseX.set(0); heroMouseY.set(0) }
+
   return (
     <>
-      <section className="hero">
+      <section className="hero" onMouseMove={onHeroMouseMove} onMouseLeave={onHeroMouseLeave}>
         <motion.div className="container" style={{ y: heroBgY }}>
           <div className="hero-inner">
-            <div className="hero-content">
+            <motion.div className="hero-content" style={{ x: contentDriftX, y: contentDriftY }}>
               <motion.p className="hero-eyebrow"
                 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1, ease }}>
@@ -92,9 +140,9 @@ export default function Landing() {
                   <i className="fas fa-arrow-right" />
                 </Link>
               </motion.div>
-            </div>
+            </motion.div>
 
-            <motion.div className="hero-img-wrap" style={{ y: heroImgY }}
+            <motion.div className="hero-img-wrap" style={{ y: heroImgY, x: imgDriftX }}
               initial={{ opacity: 0, scale: 0.92, x: 40 }} animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.3, ease }}>
               <div className="hero-img-circle" />
@@ -138,18 +186,7 @@ export default function Landing() {
           <motion.div className="services-masonry"
             variants={stagger(0.06, 0.1)} initial="hidden"
             whileInView="show" viewport={{ once: true, margin: "-60px" }}>
-            {SERVICES.map((s, i) => (
-              <MotionLink key={i} to="/bookings" className="service-tile" variants={fadeUp}>
-                <img src={s.img} alt={s.title} onError={e => e.target.src = "/img/makeup.jpg"} />
-                <div className="service-tile-overlay" />
-                <div className="service-tile-content">
-                  <span className="service-tile-num">{String(i + 1).padStart(2, "0")}</span>
-                  <h3 className="service-tile-name">{s.title}</h3>
-                  <p className="service-tile-desc">{s.desc}</p>
-                  <span className="service-tile-arrow">Book Now <i className="fas fa-arrow-right" /></span>
-                </div>
-              </MotionLink>
-            ))}
+            {SERVICES.map((s, i) => <ServiceTile key={i} s={s} i={i} />)}
           </motion.div>
         </div>
       </section>
