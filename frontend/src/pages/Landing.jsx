@@ -103,11 +103,12 @@ export default function Landing() {
   return (
     <>
       <section className="hero" onMouseMove={onHeroMouseMove} onMouseLeave={onHeroMouseLeave} style={{ position: "relative" }}>
-        {/* Always-moving background effects */}
+        {/* Flowing aurora mesh — always-moving immersive background */}
         <div className="hero-orbs">
-          <div className="hero-orb hero-orb--1" />
-          <div className="hero-orb hero-orb--2" />
-          <div className="hero-orb hero-orb--3" />
+          <div className="aurora-blob aurora-blob--1" />
+          <div className="aurora-blob aurora-blob--2" />
+          <div className="aurora-blob aurora-blob--3" />
+          <div className="aurora-blob aurora-blob--4" />
         </div>
         <FloatingParticles count={30} />
 
