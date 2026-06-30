@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring }
 import { fadeUp, fadeIn, slideLeft, slideRight, stagger, letterUp, ease } from "../lib/motion"
 import GoogleReviewsWidget from "../components/GoogleReviewsWidget"
 import FloatingParticles from "../components/FloatingParticles"
+import BlurText from "../components/BlurText"
 
 const MotionLink = motion.create(Link)
 
@@ -161,7 +162,7 @@ export default function Landing() {
         </motion.div>
 
         {/* Marquee sits at the bottom of the hero — always in viewport */}
-        <div className="marquee-banner" style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 3 }}>
+        <div className="marquee-banner liquid-glass" style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 3 }}>
           <div className="marquee-track">
             {[...Array(2)].map((_, rep) =>
               ["Nail Care","✦","Artistic Makeup","✦","Wax Care","✦","Eyelash Perming","✦","Facial Care","✦","Bridal Makeup","✦","Mesotherapy","✦","Hair Removal","✦"].map((s, i) => (
@@ -179,7 +180,7 @@ export default function Landing() {
             whileInView="show" viewport={{ once: true, margin: "-80px" }}>
             <div>
               <motion.span className="section-tag" variants={fadeUp}>What We Offer</motion.span>
-              <motion.h2 className="section-title" variants={fadeUp}>Our Services</motion.h2>
+              <BlurText text="Our Services" className="section-title" delay={120} />
               <motion.p className="section-desc" variants={fadeUp}>
                 Each treatment is carefully crafted to enhance your natural beauty and leave you feeling confident and radiant.
               </motion.p>
@@ -219,7 +220,7 @@ export default function Landing() {
                 variants={stagger(0.15, 0.2)} initial="hidden"
                 whileInView="show" viewport={{ once: true }}>
                 {[["500","+","Happy Clients"],["5","+","Years"],["10","","Services"]].map(([n,suf,l]) => (
-                  <motion.div key={l} className="about-stat" variants={fadeUp}>
+                  <motion.div key={l} className="about-stat liquid-glass" variants={fadeUp}>
                     <span className="about-stat-num"><CountUp target={n} suffix={suf} /></span>
                     <span className="about-stat-lbl">{l}</span>
                   </motion.div>
@@ -254,9 +255,9 @@ export default function Landing() {
         initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.8, ease }}>
         <div className="container">
-          <div className="section-center" style={{ marginBottom: 40 }}>
+          <div className="section-center" style={{ marginBottom: 40, alignItems: "center" }}>
             <span className="section-tag">Testimonials</span>
-            <h2 className="section-title">What Clients Say</h2>
+            <BlurText text="What Clients Say" className="section-title" delay={120} as="h2" center />
           </div>
           <GoogleReviewsWidget showHeader={false} />
         </div>
