@@ -13,6 +13,7 @@ import Reviews from "./pages/Reviews"
 import Admin from "./pages/Admin"
 import About from "./pages/About"
 import Preloader from "./components/Preloader"
+import ErrorBoundary from "./components/ErrorBoundary"
 
 const queryClient = new QueryClient()
 
@@ -25,7 +26,7 @@ function PageWrapper({ children }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
     >
-      {children}
+      <ErrorBoundary key={pathname}>{children}</ErrorBoundary>
     </motion.div>
   )
 }
