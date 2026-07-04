@@ -1209,3 +1209,75 @@ body { overflow-x: hidden; }
   .footer-socials { gap: 8px; }
   .back-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
 }
+
+/* ===== PINNED CINEMATIC SHOWCASE ===== */
+.pinned-showcase { position: relative; background: var(--dark); }
+.pinned-sticky {
+  position: sticky; top: 0; height: 100vh;
+  display: flex; align-items: center;
+  overflow: hidden;
+}
+.pinned-grid {
+  display: grid; grid-template-columns: 1.05fr 1fr;
+  gap: 64px; align-items: center; width: 100%;
+}
+
+/* Left visual */
+.pinned-visual {
+  position: relative; aspect-ratio: 4 / 5; width: 100%;
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+}
+.pinned-img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; will-change: opacity, transform;
+}
+.pinned-visual-frame {
+  position: absolute; inset: 14px; border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 12px; pointer-events: none; z-index: 2;
+}
+.pinned-progress {
+  position: absolute; right: 18px; top: 18px; bottom: 18px; width: 3px;
+  background: rgba(255,255,255,0.18); border-radius: 3px; z-index: 3;
+}
+.pinned-progress-fill {
+  transform-origin: top; height: 100%; width: 100%;
+  background: var(--pink); border-radius: 3px;
+}
+
+/* Right text */
+.pinned-text { position: relative; color: #fff; }
+.pinned-text .section-tag { color: var(--pink); }
+.pinned-index {
+  display: flex; align-items: baseline; gap: 6px;
+  font-family: 'Bodoni Moda', serif; margin: 8px 0 22px;
+}
+.pinned-index-cur { font-size: 3.4rem; line-height: 1; color: #fff; }
+.pinned-index-sep, .pinned-index-tot { font-size: 1.4rem; color: rgba(255,255,255,0.4); }
+
+.pinned-slide { position: relative; }
+.pinned-slide:not(:first-of-type) { position: absolute; top: 0; left: 0; right: 0; }
+.pinned-slide-tag {
+  display: inline-block; font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--pink); margin-bottom: 14px; font-weight: 700;
+}
+.pinned-slide-title {
+  font-family: 'Bodoni Moda', serif; font-size: clamp(2.2rem, 4vw, 3.4rem);
+  line-height: 1.05; color: #fff; margin-bottom: 18px;
+}
+.pinned-slide-desc {
+  font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.72);
+  max-width: 440px; margin-bottom: 30px;
+}
+.pinned-dots { display: flex; gap: 10px; margin-top: 40px; }
+.pinned-dot {
+  width: 28px; height: 3px; border-radius: 3px;
+  background: rgba(255,255,255,0.2); transition: background 0.4s ease;
+}
+.pinned-dot.active { background: var(--pink); }
+
+/* Pinned scroll doesn't translate to touch/mobile — the responsive
+   masonry grid below already showcases every service on small screens. */
+@media (max-width: 900px) {
+  .pinned-showcase { display: none; }
+}

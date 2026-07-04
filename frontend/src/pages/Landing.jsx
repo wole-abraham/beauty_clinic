@@ -38,6 +38,94 @@ function ServiceTile({ s, i }) {
   )
 }
 
+// Featured services for the cinematic pinned scroll (La Prairie–style)
+const FEATURED = [
+  { title: "Artistic Makeup", img: "/img/makeup5.jpg", desc: "Natural looks that let your skin glow with a romantic, radiant finish — crafted for any occasion.", tag: "Makeup" },
+  { title: "Facial Care", img: "/img/services-2.jpg", desc: "Personalized facial treatments for smoother, healthier, more luminous skin.", tag: "Skincare" },
+  { title: "Bridal Makeup", img: "/img/makeup2.jpg", desc: "Stunning bridal looks designed to make you glow on your most special day.", tag: "Bridal" },
+  { title: "Mesotherapy", img: "/img/services-4.jpg", desc: "A rejuvenating treatment combining advanced techniques for radiant, youthful skin.", tag: "Advanced" },
+]
+
+function PinnedShowcase() {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] })
+  const [active, setActive] = useState(0)
+
+  useEffect(() => {
+    return scrollYProgress.on("change", (v) => {
+      const idx = Math.min(FEATURED.length - 1, Math.floor(v * FEATURED.length))
+      setActive(idx)
+    })
+  }, [scrollYProgress])
+
+  const barScale = useTransform(scrollYProgress, [0, 1], [0, 1])
+
+  return (
+    <section className="pinned-showcase" ref={ref} style={{ height: `${FEATURED.length * 100}vh` }}>
+      <div className="pinned-sticky">
+        <div className="container pinned-grid">
+          {/* Left: crossfading images */}
+          <div className="pinned-visual">
+            {FEATURED.map((s, i) => (
+              <motion.img
+                key={s.title}
+                src={s.img}
+                alt={s.title}
+                className="pinned-img"
+                onError={(e) => (e.target.src = "/img/makeup.jpg")}
+                animate={{
+                  opacity: active === i ? 1 : 0,
+                  scale: active === i ? 1 : 1.08,
+                }}
+                transition={{ duration: 0.8, ease }}
+              />
+            ))}
+            <div className="pinned-visual-frame" />
+            <div className="pinned-progress">
+              <motion.div className="pinned-progress-fill" style={{ scaleY: barScale }} />
+            </div>
+          </div>
+
+          {/* Right: changing text */}
+          <div className="pinned-text">
+            <span className="section-tag">Signature Treatments</span>
+            <div className="pinned-index">
+              <span className="pinned-index-cur">{String(active + 1).padStart(2, "0")}</span>
+              <span className="pinned-index-sep">/</span>
+              <span className="pinned-index-tot">{String(FEATURED.length).padStart(2, "0")}</span>
+            </div>
+            {FEATURED.map((s, i) => (
+              <motion.div
+                key={s.title}
+                className="pinned-slide"
+                animate={{
+                  opacity: active === i ? 1 : 0,
+                  y: active === i ? 0 : 24,
+                  pointerEvents: active === i ? "auto" : "none",
+                }}
+                transition={{ duration: 0.55, ease }}
+              >
+                <span className="pinned-slide-tag">{s.tag}</span>
+                <h2 className="pinned-slide-title">{s.title}</h2>
+                <p className="pinned-slide-desc">{s.desc}</p>
+                <Link to="/bookings" className="btn-premium">
+                  <span>Book This</span>
+                  <i className="fas fa-arrow-right" />
+                </Link>
+              </motion.div>
+            ))}
+            <div className="pinned-dots">
+              {FEATURED.map((s, i) => (
+                <span key={s.title} className={"pinned-dot" + (active === i ? " active" : "")} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 const SERVICES = [
   { title: "Nail Care", img: "/img/nailcare.jpg", desc: "Expert nail care from classic treatments to stunning nail art. Enjoy healthy, stylish nails with personalized care and premium products." },
   { title: "Artistic Makeup", img: "/img/makeup5.jpg", desc: "Natural looks that let your skin glow with that romantic and sweet radiance perfect for any occasion." },
@@ -172,6 +260,8 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
+      <PinnedShowcase />
 
       <section className="services-section">
         <div className="container">
