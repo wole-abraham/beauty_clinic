@@ -94,26 +94,28 @@ function PinnedShowcase() {
               <span className="pinned-index-sep">/</span>
               <span className="pinned-index-tot">{String(FEATURED.length).padStart(2, "0")}</span>
             </div>
-            {FEATURED.map((s, i) => (
-              <motion.div
-                key={s.title}
-                className="pinned-slide"
-                animate={{
-                  opacity: active === i ? 1 : 0,
-                  y: active === i ? 0 : 24,
-                  pointerEvents: active === i ? "auto" : "none",
-                }}
-                transition={{ duration: 0.55, ease }}
-              >
-                <span className="pinned-slide-tag">{s.tag}</span>
-                <h2 className="pinned-slide-title">{s.title}</h2>
-                <p className="pinned-slide-desc">{s.desc}</p>
-                <Link to="/bookings" className="btn-premium">
-                  <span>Book This</span>
-                  <i className="fas fa-arrow-right" />
-                </Link>
-              </motion.div>
-            ))}
+            <div className="pinned-slides">
+              {FEATURED.map((s, i) => (
+                <motion.div
+                  key={s.title}
+                  className="pinned-slide"
+                  animate={{
+                    opacity: active === i ? 1 : 0,
+                    y: active === i ? 0 : 24,
+                    pointerEvents: active === i ? "auto" : "none",
+                  }}
+                  transition={{ duration: 0.55, ease }}
+                >
+                  <span className="pinned-slide-tag">{s.tag}</span>
+                  <h2 className="pinned-slide-title">{s.title}</h2>
+                  <p className="pinned-slide-desc">{s.desc}</p>
+                  <Link to="/bookings" className="btn-premium">
+                    <span>Book This</span>
+                    <i className="fas fa-arrow-right" />
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
             <div className="pinned-dots">
               {FEATURED.map((s, i) => (
                 <span key={s.title} className={"pinned-dot" + (active === i ? " active" : "")} />

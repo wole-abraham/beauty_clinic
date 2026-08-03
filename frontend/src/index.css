@@ -1255,8 +1255,9 @@ body { overflow-x: hidden; }
 .pinned-index-cur { font-size: 3.4rem; line-height: 1; color: #fff; }
 .pinned-index-sep, .pinned-index-tot { font-size: 1.4rem; color: rgba(255,255,255,0.4); }
 
-.pinned-slide { position: relative; }
-.pinned-slide:not(:first-of-type) { position: absolute; top: 0; left: 0; right: 0; }
+.pinned-slides { position: relative; min-height: 340px; }
+.pinned-slide { position: absolute; top: 0; left: 0; right: 0; }
+.pinned-slide:first-of-type { position: relative; }
 .pinned-slide-tag {
   display: inline-block; font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase;
   color: var(--pink); margin-bottom: 14px; font-weight: 700;
