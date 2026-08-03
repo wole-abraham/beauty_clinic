@@ -989,8 +989,10 @@ body::after {
 .empty-icon { font-size: 2.8rem; color: #eadbc8; display: block; margin-bottom: 16px; }
 
 /* ===== GLOBAL MOBILE BASE ===== */
-html { overflow-x: hidden; }
-body { overflow-x: hidden; }
+/* overflow-x: clip (not hidden) stops sideways scroll without turning
+   the page into a scroll container — which would break position: sticky. */
+html { overflow-x: clip; }
+body { overflow-x: clip; }
 
 /* ===== TABLET (≤768px) ===== */
 @media (max-width: 768px) {
