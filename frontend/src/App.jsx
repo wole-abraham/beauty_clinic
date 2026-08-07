@@ -43,9 +43,6 @@ export default function App() {
       <BrowserRouter>
         <ScrollReset />
         <Preloader />
-        <div style={{ background: "#884CD2", color: "#fff", textAlign: "center", padding: "8px 12px", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.5px" }}>
-          🚀 DEPLOY TEST — if you can see this, the new build is live
-        </div>
         <Navbar />
         <Routes>
           <Route path="/" element={<PageWrapper><Landing /></PageWrapper>} />
