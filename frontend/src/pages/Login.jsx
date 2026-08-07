@@ -33,9 +33,9 @@ export default function Login() {
           <span style={{ fontFamily: "'Bodoni Moda',serif", fontStyle: "italic", fontSize: "1.1rem", color: "var(--dark)" }}>Mary Nassif Chbat</span>
         </div>
         <div className="login-form-box">
-          <p className="login-form-eyebrow" style={{ fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: 3, color: "var(--pink)", fontWeight: 700, marginBottom: 10 }}>Welcome back</p>
-          <h1 className="login-form-title" style={{ fontSize: "2.4rem", color: "var(--dark)", marginBottom: 6, fontFamily: "'Bodoni Moda', serif", fontStyle: "italic" }}>Sign In</h1>
-          <p className="login-form-sub" style={{ color: "var(--muted)", marginBottom: 24, fontSize: "0.9rem" }}>Enter your credentials to continue</p>
+          <p className="login-form-eyebrow">Welcome back</p>
+          <h1 className="login-form-title">Sign In</h1>
+          <p className="login-form-sub">Enter your credentials to continue</p>
 
           {err && <div className="form-error" style={{ marginBottom: 20 }}>{err}</div>}
 

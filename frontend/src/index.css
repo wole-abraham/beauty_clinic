@@ -704,11 +704,14 @@ body::after {
 .login-left-logo { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(197,168,128,0.4); margin-bottom: 28px; filter: grayscale(1) contrast(1.2) brightness(1.1); }
 .login-left-title { font-family: 'Bodoni Moda', serif; font-size: clamp(2.2rem, 4vw, 3rem); color: var(--dark); margin-bottom: 12px; font-style: italic; }
 .login-left-sub { color: var(--muted); font-size: 1rem; line-height: 1.6; max-width: 340px; }
-.login-right { display: flex; align-items: center; justify-content: center; padding: 60px 48px; background: #ffffff; }
+.login-right { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 48px; background: #ffffff; }
 .login-form-box { width: 100%; max-width: 400px; }
+.login-form-eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 3px; color: var(--pink); font-weight: 700; margin-bottom: 10px; }
+.login-form-title { font-size: clamp(1.9rem, 8vw, 2.4rem); color: var(--dark); margin-bottom: 6px; font-family: 'Bodoni Moda', serif; font-style: italic; }
+.login-form-sub { color: var(--muted); margin-bottom: 24px; font-size: 0.9rem; }
 .login-footer { text-align: center; margin-top: 24px; font-size: 0.87rem; color: var(--muted); }
 .login-footer a { color: var(--pink); font-weight: 600; }
-@media (max-width: 768px) { .login-split { grid-template-columns: 1fr; } .login-left { display: none; } .login-right { padding: 40px 24px; } }
+@media (max-width: 768px) { .login-split { grid-template-columns: 1fr; min-height: calc(100vh - 68px); } .login-left { display: none; } .login-right { padding: 32px 22px 48px; } }
 .login-mobile-brand { display: none; align-items: center; gap: 12px; margin-bottom: 28px; }
 @media (max-width: 768px) { .login-mobile-brand { display: flex; } }
 .page-header { margin-bottom: 40px; }
@@ -1046,13 +1049,17 @@ body { overflow-x: clip; }
   .footer-inner { grid-template-columns: 1fr; gap: 32px; padding-bottom: 40px; }
   .footer-bar { flex-direction: column; gap: 12px; text-align: center; font-size: 0.76rem; }
 
+  /* Inputs: 16px min stops iOS from zooming in on focus */
+  .form-input, .form-select, .form-textarea { font-size: 16px; padding: 12px 14px; }
+
   /* Login */
-  .login-split { grid-template-columns: 1fr; }
+  .login-split { grid-template-columns: 1fr; min-height: calc(100vh - 68px); }
   .login-left { display: none; }
-  .login-right { padding: 40px 20px; }
+  .login-right { padding: 32px 20px 48px; }
 
   /* Signup */
-  .signup-card { padding: 32px 20px; }
+  .signup-page { padding: 32px 16px 56px; align-items: flex-start; }
+  .signup-card { padding: 28px 20px; }
 
   /* Bookings */
   .bookings-page { padding: 40px 0 80px; }
