@@ -7,6 +7,9 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 60
     make_webhook_url: str = ""
+    resend_api_key: str = ""
+    resend_from: str = ""
+    frontend_url: str = ""
 
     class Config:
         env_file = ".env"
