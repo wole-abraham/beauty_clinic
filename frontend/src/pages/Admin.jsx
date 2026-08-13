@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import api from "../lib/api"
@@ -9,9 +9,12 @@ const today = new Date().toISOString().split("T")[0]
 // ── Access guard ─────────────────────────────────────────────────────────────
 function useAdminGuard() {
   const navigate = useNavigate()
-  const { data: user, isLoading } = useMe()
+  const { data: user, isLoading, isError } = useMe()
 
-  if (!isLoading && !user) { navigate("/login"); return null }
+  useEffect(() => {
+    if (!isLoading && (!user || isError)) navigate("/login")
+  }, [isLoading, user, isError, navigate])
+
   if (!isLoading && user && !user.is_staff && !user.is_superuser) return "forbidden"
   return user
 }

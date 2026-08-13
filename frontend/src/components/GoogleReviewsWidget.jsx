@@ -8,7 +8,7 @@ export default function GoogleReviewsWidget({ showHeader = true }) {
   useEffect(() => {
     if (!ELFSIGHT_APP_ID) return
     if (document.querySelector('script[src*="elfsight"]')) {
-      if (window.eapps) window.eapps.Platform.start()
+      try { if (window.eapps?.Platform?.start) window.eapps.Platform.start() } catch (_) {}
       setLoaded(true)
       return
     }

@@ -44,16 +44,18 @@ export default function App() {
         <ScrollReset />
         <Preloader />
         <Navbar />
-        <Routes>
-          <Route path="/" element={<PageWrapper><Landing /></PageWrapper>} />
-          <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
-          <Route path="/signup" element={<PageWrapper><Signup /></PageWrapper>} />
-          <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
-          <Route path="/reviews" element={<PageWrapper><Reviews /></PageWrapper>} />
-          <Route path="/bookings" element={<PageWrapper><ProtectedRoute><Bookings /></ProtectedRoute></PageWrapper>} />
-          <Route path="/appointments" element={<PageWrapper><ProtectedRoute><Appointments /></ProtectedRoute></PageWrapper>} />
-          <Route path="/admin" element={<PageWrapper><Admin /></PageWrapper>} />
-        </Routes>
+        <main className="app-main">
+          <Routes>
+            <Route path="/" element={<PageWrapper><Landing /></PageWrapper>} />
+            <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
+            <Route path="/signup" element={<PageWrapper><Signup /></PageWrapper>} />
+            <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
+            <Route path="/reviews" element={<PageWrapper><Reviews /></PageWrapper>} />
+            <Route path="/bookings" element={<PageWrapper><ProtectedRoute><Bookings /></ProtectedRoute></PageWrapper>} />
+            <Route path="/appointments" element={<PageWrapper><ProtectedRoute><Appointments /></ProtectedRoute></PageWrapper>} />
+            <Route path="/admin" element={<PageWrapper><Admin /></PageWrapper>} />
+          </Routes>
+        </main>
       </BrowserRouter>
     </QueryClientProvider>
   )

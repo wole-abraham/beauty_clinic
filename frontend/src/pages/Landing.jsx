@@ -263,8 +263,6 @@ export default function Landing() {
         </div>
       </section>
 
-      <PinnedShowcase />
-
       <section className="services-section">
         <div className="container">
           <motion.div className="services-intro"
