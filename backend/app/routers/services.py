@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.database import get_db
 from app.models import Service
-from app.schemas import ServiceCreate, ServiceOut
+from app.schemas import ServiceCreate, ServiceUpdate, ServiceOut
 from app.auth import get_current_staff
 from typing import List
 
@@ -20,6 +20,21 @@ async def list_services(db: AsyncSession = Depends(get_db)):
 async def create_service(data: ServiceCreate, db: AsyncSession = Depends(get_db), _=Depends(get_current_staff)):
     service = Service(servicetype=data.servicetype, price=data.price)
     db.add(service)
+    await db.commit()
+    await db.refresh(service)
+    return service
+
+
+@router.patch("/{service_id}", response_model=ServiceOut)
+async def update_service(service_id: int, data: ServiceUpdate, db: AsyncSession = Depends(get_db), _=Depends(get_current_staff)):
+    result = await db.execute(select(Service).where(Service.id == service_id))
+    service = result.scalar_one_or_none()
+    if not service:
+        raise HTTPException(status_code=404, detail="Service not found")
+    if data.servicetype is not None:
+        service.servicetype = data.servicetype
+    if data.price is not None:
+        service.price = data.price
     await db.commit()
     await db.refresh(service)
     return service

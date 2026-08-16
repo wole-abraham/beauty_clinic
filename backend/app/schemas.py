@@ -50,6 +50,11 @@ class ServiceCreate(BaseModel):
     price: float
 
 
+class ServiceUpdate(BaseModel):
+    servicetype: Optional[str] = None
+    price: Optional[float] = None
+
+
 class ServiceOut(BaseModel):
     id: int
     servicetype: str

@@ -327,10 +327,16 @@ function AppointmentsTab({ appointments, services, clients, loading, qc }) {
 // ── Services Tab ──────────────────────────────────────────────────────────────
 function ServicesTab({ services, loading, qc }) {
   const [form, setForm] = useState({ servicetype: "", price: "" })
+  const [editId, setEditId] = useState(null)
+  const [editForm, setEditForm] = useState({ servicetype: "", price: "" })
 
   const createSvc = useMutation({
     mutationFn: (body) => api.post("/services", body),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["services"] }); setForm({ servicetype: "", price: "" }) },
+  })
+  const updateSvc = useMutation({
+    mutationFn: ({ id, ...body }) => api.patch(`/services/${id}`, body),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["services"] }); setEditId(null) },
   })
   const deleteSvc = useMutation({
     mutationFn: (id) => api.delete(`/services/${id}`),
@@ -338,26 +344,48 @@ function ServicesTab({ services, loading, qc }) {
   })
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 24, alignItems: "start" }}>
+    <div className="admin-services-grid">
       <div className="admin-panel">
         <div className="admin-panel-header">
           <span className="admin-panel-title">All Services</span>
           <span className="badge badge-success">{services.length} total</span>
         </div>
         {loading ? <div className="loading-wrap"><div className="spinner" /></div> : (
-          <table className="admin-table">
-            <thead><tr><th>#</th><th>Service Name</th><th>Price</th><th></th></tr></thead>
-            <tbody>
-              {services.map((s, i) => (
-                <tr key={s.id}>
-                  <td style={{ color: "var(--muted)", width: 40 }}>{i + 1}</td>
-                  <td style={{ fontWeight: 600 }}>{s.servicetype}</td>
-                  <td style={{ color: "var(--pink)", fontWeight: 700 }}>${parseFloat(s.price).toFixed(2)}</td>
-                  <td><button className="btn-danger-sm" onClick={() => deleteSvc.mutate(s.id)} disabled={deleteSvc.isPending}><i className="fas fa-trash" /></button></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div style={{ overflowX: "auto" }}>
+            <table className="admin-table">
+              <thead><tr><th>#</th><th>Service Name</th><th>Price</th><th>Actions</th></tr></thead>
+              <tbody>
+                {services.map((s, i) => (
+                  <tr key={s.id}>
+                    <td style={{ color: "var(--muted)", width: 40 }}>{i + 1}</td>
+                    {editId === s.id ? (
+                      <>
+                        <td><input className="form-input" style={{ padding: "5px 8px" }} value={editForm.servicetype} onChange={e => setEditForm({ ...editForm, servicetype: e.target.value })} /></td>
+                        <td><input className="form-input" style={{ padding: "5px 8px", width: 90 }} type="number" value={editForm.price} onChange={e => setEditForm({ ...editForm, price: e.target.value })} /></td>
+                        <td>
+                          <div style={{ display: "flex", gap: 6 }}>
+                            <button className="btn-success-sm" disabled={updateSvc.isPending} onClick={() => updateSvc.mutate({ id: s.id, servicetype: editForm.servicetype, price: parseFloat(editForm.price) })}>Save</button>
+                            <button className="btn-danger-sm" onClick={() => setEditId(null)}>Cancel</button>
+                          </div>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td style={{ fontWeight: 600 }}>{s.servicetype}</td>
+                        <td style={{ color: "var(--pink)", fontWeight: 700 }}>${parseFloat(s.price).toFixed(2)}</td>
+                        <td>
+                          <div style={{ display: "flex", gap: 6 }}>
+                            <button className="btn-success-sm" onClick={() => { setEditId(s.id); setEditForm({ servicetype: s.servicetype, price: s.price }) }}><i className="fas fa-pen" /></button>
+                            <button className="btn-danger-sm" onClick={() => deleteSvc.mutate(s.id)} disabled={deleteSvc.isPending}><i className="fas fa-trash" /></button>
+                          </div>
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
@@ -370,7 +398,7 @@ function ServicesTab({ services, loading, qc }) {
           </div>
           <div className="form-group">
             <label className="form-label">Price (USD)</label>
-            <input className="form-input" type="number" placeholder="50" required value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} />
+            <input className="form-input" type="number" placeholder="50" required min="0" step="0.01" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} />
           </div>
           <button type="submit" className="btn btn-pink" style={{ width: "100%", justifyContent: "center" }} disabled={createSvc.isPending}>
             <i className="fas fa-plus" /> {createSvc.isPending ? "Adding…" : "Add Service"}
