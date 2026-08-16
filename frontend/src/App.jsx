@@ -11,6 +11,7 @@ import Bookings from "./pages/Bookings"
 import Appointments from "./pages/Appointments"
 import Reviews from "./pages/Reviews"
 import Admin from "./pages/Admin"
+import AssistantLogin from "./pages/AssistantLogin"
 import About from "./pages/About"
 import Preloader from "./components/Preloader"
 import ErrorBoundary from "./components/ErrorBoundary"
@@ -43,19 +44,26 @@ export default function App() {
       <BrowserRouter>
         <ScrollReset />
         <Preloader />
-        <Navbar />
-        <main className="app-main">
-          <Routes>
-            <Route path="/" element={<PageWrapper><Landing /></PageWrapper>} />
-            <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
-            <Route path="/signup" element={<PageWrapper><Signup /></PageWrapper>} />
-            <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
-            <Route path="/reviews" element={<PageWrapper><Reviews /></PageWrapper>} />
-            <Route path="/bookings" element={<PageWrapper><ProtectedRoute><Bookings /></ProtectedRoute></PageWrapper>} />
-            <Route path="/appointments" element={<PageWrapper><ProtectedRoute><Appointments /></ProtectedRoute></PageWrapper>} />
-            <Route path="/admin" element={<PageWrapper><Admin /></PageWrapper>} />
-          </Routes>
-        </main>
+        <Routes>
+          <Route path="/assistant" element={<AssistantLogin />} />
+          <Route path="*" element={
+            <>
+              <Navbar />
+              <main className="app-main">
+                <Routes>
+                  <Route path="/" element={<PageWrapper><Landing /></PageWrapper>} />
+                  <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
+                  <Route path="/signup" element={<PageWrapper><Signup /></PageWrapper>} />
+                  <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
+                  <Route path="/reviews" element={<PageWrapper><Reviews /></PageWrapper>} />
+                  <Route path="/bookings" element={<PageWrapper><ProtectedRoute><Bookings /></ProtectedRoute></PageWrapper>} />
+                  <Route path="/appointments" element={<PageWrapper><ProtectedRoute><Appointments /></ProtectedRoute></PageWrapper>} />
+                  <Route path="/admin" element={<PageWrapper><Admin /></PageWrapper>} />
+                </Routes>
+              </main>
+            </>
+          } />
+        </Routes>
       </BrowserRouter>
     </QueryClientProvider>
   )

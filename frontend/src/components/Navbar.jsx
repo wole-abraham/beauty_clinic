@@ -36,7 +36,6 @@ export function Navbar() {
             {link("/reviews", "Reviews")}
             {link("/bookings", "Bookings")}
             {link("/appointments", "Appointments")}
-            {(user?.is_staff || user?.is_superuser) && link("/admin", "Dashboard")}
           </div>
 
           <div className="navbar-actions">
@@ -64,7 +63,6 @@ export function Navbar() {
           {link("/reviews", "Reviews")}
           {link("/bookings", "Bookings")}
           {link("/appointments", "Appointments")}
-          {(user?.is_staff || user?.is_superuser) && link("/admin", "Dashboard")}
           <div style={{ padding: "12px 20px", display: "flex", gap: 8, borderTop: "1px solid var(--border)", marginTop: 8 }}>
             {user ? (
               <button className="btn btn-ghost btn-sm" onClick={handleLogout}>Logout</button>
