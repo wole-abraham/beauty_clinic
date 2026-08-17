@@ -744,6 +744,22 @@ body::after {
 .bookings-page { padding: 60px 0 100px; background: var(--bg); min-height: 80vh; }
 .bookings-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; align-items: start; }
 .booking-card { background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 36px; box-shadow: var(--shadow-sm); margin-bottom: 24px; }
+
+/* ── Booking wizard ── */
+.wizard-card { background: #fff; border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow-sm); overflow: hidden; display: flex; flex-direction: column; }
+.wizard-steps { display: flex; align-items: flex-start; padding: 28px 36px 0; gap: 0; }
+.wizard-step-item { display: flex; align-items: center; flex: 1; flex-direction: row; position: relative; }
+.wizard-step-item:last-child { flex: none; }
+.wizard-step-dot { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border); background: #fff; color: var(--muted); font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.25s; cursor: default; font-family: inherit; }
+.wizard-step-dot.active { border-color: var(--pink); background: var(--pink); color: #fff; box-shadow: 0 0 0 4px rgba(197,168,128,0.15); }
+.wizard-step-dot.done { border-color: var(--pink); background: var(--pink); color: #fff; }
+.wizard-step-label { font-size: 0.72rem; font-weight: 700; color: var(--muted); margin-left: 8px; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.04em; transition: color 0.2s; }
+.wizard-step-label.active { color: var(--pink); }
+.wizard-step-line { flex: 1; height: 2px; background: var(--border); margin: 0 10px; transition: background 0.3s; }
+.wizard-step-line.done { background: var(--pink); }
+.wizard-body { padding: 28px 36px; min-height: 280px; overflow: hidden; }
+.wizard-step-heading { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--dark); margin-bottom: 20px; }
+.wizard-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 36px 28px; border-top: 1px solid var(--border); background: var(--bg); }
 .booking-step-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--pink); font-weight: 700; margin-bottom: 10px; font-family: 'Plus Jakarta Sans', sans-serif; }
 .booking-step-title { font-size: 1.5rem; color: var(--dark); margin-bottom: 24px; }
 .service-opts { display: flex; flex-direction: column; gap: 10px; }
@@ -1097,6 +1113,10 @@ body { overflow-x: clip; }
   .booking-card { padding: 24px 20px; }
   .date-opts { grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .time-opts { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .wizard-steps { padding: 20px 20px 0; gap: 0; }
+  .wizard-step-label { display: none; }
+  .wizard-body { padding: 20px; min-height: 260px; }
+  .wizard-nav { padding: 16px 20px 20px; }
 
   /* Appointments */
   .appts-page { padding: 40px 0 80px; }
